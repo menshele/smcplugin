@@ -1,0 +1,133 @@
+{
+  parserClass="com.smcplugin.parser.SmcParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Smc"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.smcplugin.psi"
+  psiImplPackage="com.smcplugin.psi.impl"
+
+  elementTypeHolderClass="com.smcplugin.psi.SmcTypes"
+  elementTypeClass="com.smcplugin.psi.SmcElementType"
+  tokenTypeClass="com.smcplugin.psi.SmcTokenType"
+
+  psiImplUtilClass="com.smcplugin.psi.impl.SmcPsiImplUtil"
+
+
+
+  tokens = [
+      VERBATIM_OPEN="%{"
+      VERBATIM_CLOSE="%}"
+      CLASS_KEYWORD="%class"
+      PACKAGE_KEYWORD="%package"
+      FSM_CLASS_KEYWORD="%fsmclass"
+      FSM_FILE_KEYWORD="%fsmfile"
+      ACCESS_KEYWORD="%access"
+      HEADER_KEYWORD="%header"
+      DECLARE_KEYWORD="%declare"
+      IMPORT_KEYWORD="%import"
+      INCLUDE_KEYWORD="%include"
+      START_KEYWORD="%start"
+      MAP_KEYWORD="%map"
+      BRACE_OPEN="{"
+      BRACE_CLOSE="}"
+      BRACKET_OPEN="("
+      BRACKET_CLOSE=")"
+      ENTRY_KEYWORD="Entry "
+      EXIT_KEYWORD="Exit "
+      GUARD_OPEN="["
+      GUARD_CLOSE="]"
+
+      MAP_SECTION_OPEN='%%'
+      MAP_SECTION_CLOSE="%%}"
+      COLON=":"
+      COMMA=","
+      SEMICOLON=";"
+      POP_KEYWORD="pop"
+      PUSH_KEYWORD="push"
+      ASSIGN_OP="="
+      NIL_KEYWORD="nil"
+      SLASH_SIGN="/"
+      CRLF='regexp:\n|\r|\r\n'
+
+      WORD = "regexp:[A-Za-z][A-Za-z0-9_.]* | _[A-Za-z][A-Za-z0-9_.]*"
+// Reads in code verbatim until end-of-line is reached.
+      RAW_CODE_LINE = "regexp:.*\n\r\f"
+
+// Read in code verbatim.
+      RAW_CODE = 'regexp:.*|\n\r\f'
+      LINE_COMMENT="regexp://.*"
+      BLOCK_COMMENT="regexp:/\*(.|\n)*\*/"
+    ]
+}
+
+fsmFile ::= (source| start_state| class_name| header_file| include_file|
+package_name| class_import| declare| access| map+|LINE_COMMENT|BLOCK_COMMENT|CRLF)*
+
+source ::= VERBATIM_OPEN RAW_CODE VERBATIM_CLOSE
+
+start_state ::= START_KEYWORD WORD
+
+class_name ::= CLASS_KEYWORD WORD
+
+header_file ::= HEADER_KEYWORD RAW_CODE_LINE
+
+include_file ::= INCLUDE_KEYWORD RAW_CODE_LINE
+
+package_name ::= PACKAGE_KEYWORD WORD
+
+class_import ::= IMPORT_KEYWORD RAW_CODE_LINE
+
+declare ::= DECLARE_KEYWORD RAW_CODE_LINE
+
+access ::= ACCESS_KEYWORD RAW_CODE_LINE
+
+map ::= MAP_KEYWORD WORD MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=1}
+
+states ::= state*
+
+state ::=WORD (entry| exit)? BRACE_OPEN transitions BRACE_CLOSE {pin=1}
+
+transitions ::= transition*
+
+transition ::= WORD transition_args? guard? next_state BRACE_OPEN actions BRACE_CLOSE {pin=1}
+
+entry ::= ENTRY_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
+
+exit ::= EXIT_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
+
+transition_args ::= BRACKET_OPEN parameters BRACKET_CLOSE {pin=1}
+
+parameters ::= parameter COMMA parameters | parameter
+
+parameter ::= WORD COLON WORD
+
+guard ::= GUARD_OPEN RAW_CODE GUARD_CLOSE
+
+next_state ::= WORD |
+              NIL_KEYWORD|
+              push_transition |
+              pop_transition
+
+push_transition ::= WORD SLASH_SIGN PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE |
+                   NIL_KEYWORD SLASH_SIGN PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE |
+                   PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE
+
+pop_transition ::= POP_KEYWORD |
+                  POP_KEYWORD BRACKET_OPEN WORD? BRACKET_CLOSE |
+                  POP_KEYWORD BRACKET_OPEN WORD COMMA pop_arguments* BRACKET_CLOSE
+
+pop_arguments ::= RAW_CODE |
+                 RAW_CODE COMMA pop_arguments
+
+actions ::= dotnet_assignment |
+           action |
+           action actions
+
+dotnet_assignment ::= WORD ASSIGN_OP RAW_CODE SEMICOLON
+
+action ::= WORD BRACKET_OPEN arguments* BRACKET_CLOSE SEMICOLON
+
+arguments ::= RAW_CODE |
+             RAW_CODE COMMA arguments

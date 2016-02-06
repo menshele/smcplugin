@@ -1,11 +1,22 @@
-%class Turnstile
+%{
+wqsqwl;sk;
+%}
+%class asd
 %package turnstile
-%start MainMap::Locked
-%map MainMap
+%start MainMapLocked
+%map
+MainMap
 %%
 Locked
+Entry {
+
+}
 {
- coin Unlocked { unlock(); }
+
+ coin ( arggs : asd , arg: test )
+ Unlocked {
+    unlock();
+ }
  pass nil { alarm(); }
 }
 Unlocked

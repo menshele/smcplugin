@@ -91,10 +91,6 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitSource(@NotNull SmcSource o) {
-    visitPsiElement(o);
-  }
-
   public void visitStartState(@NotNull SmcStartState o) {
     visitPsiElement(o);
   }

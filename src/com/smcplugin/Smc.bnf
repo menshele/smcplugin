@@ -39,8 +39,6 @@
       GUARD_OPEN="["
       GUARD_CLOSE="]"
 
-      MAP_SECTION_OPEN='%%'
-      MAP_SECTION_CLOSE="%%}"
       COLON=":"
       COMMA=","
       SEMICOLON=";"
@@ -56,16 +54,14 @@
       RAW_CODE_LINE = "regexp:.*\n\r\f"
 
 // Read in code verbatim.
-      RAW_CODE = 'regexp:.*|\n\r\f'
+      RAW_CODE="regexp:%\{(.|\n)*%\}"
       LINE_COMMENT="regexp://.*"
       BLOCK_COMMENT="regexp:/\*(.|\n)*\*/"
     ]
 }
 
-fsmFile ::= (source| start_state| class_name| header_file| include_file|
+fsmFile ::= (RAW_CODE| start_state| class_name| header_file| include_file|
 package_name| class_import| declare| access| map+|LINE_COMMENT|BLOCK_COMMENT|CRLF)*
-
-source ::= VERBATIM_OPEN RAW_CODE VERBATIM_CLOSE
 
 start_state ::= START_KEYWORD WORD
 
@@ -93,9 +89,9 @@ transitions ::= transition*
 
 transition ::= WORD transition_args? guard? next_state BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
-entry ::= ENTRY_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
+entry ::= ENTRY_KEYWORD BRACE_OPEN actions* BRACE_CLOSE {pin=1}
 
-exit ::= EXIT_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
+exit ::= EXIT_KEYWORD BRACE_OPEN actions* BRACE_CLOSE {pin=1}
 
 transition_args ::= BRACKET_OPEN parameters BRACKET_CLOSE {pin=1}
 
@@ -125,7 +121,7 @@ actions ::= dotnet_assignment |
            action |
            action actions
 
-dotnet_assignment ::= WORD ASSIGN_OP RAW_CODE SEMICOLON
+dotnet_assignment ::= WORD ASSIGN_OP WORD SEMICOLON {pin=2}
 
 action ::= WORD BRACKET_OPEN arguments* BRACKET_CLOSE SEMICOLON
 

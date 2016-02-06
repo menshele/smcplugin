@@ -22,16 +22,4 @@ public class SmcDotnetAssignmentImpl extends ASTWrapperPsiElement implements Smc
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getRawCode() {
-    return findNotNullChildByType(RAW_CODE);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getWord() {
-    return findNotNullChildByType(WORD);
-  }
-
 }

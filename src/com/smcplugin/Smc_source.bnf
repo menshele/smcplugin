@@ -34,6 +34,7 @@
       id="regexp:\w+"
       string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
       number="regexp:\d+"
+      number="regexp:.*"
 
       WORD = "regexp:[A-Za-z][A-Za-z0-9_.]*' | '_regexp:[A-Za-z][A-Za-z0-9_.]*"
 // Reads in code verbatim until end-of-line is reached.
@@ -43,6 +44,7 @@
       RAW_CODE = 'regexp:.*|\n\r\f'
       LINE_COMMENT="regexp://.*"
       BLOCK_COMMENT="regexp:/\*(.|\n)*\*/"
+       RAW_CODE = 'regexp:\{((.||\n\r\f)*?)\}'
     ]
 }
 

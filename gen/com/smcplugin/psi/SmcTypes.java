@@ -29,7 +29,6 @@ public interface SmcTypes {
   IElementType POP_ARGUMENTS = new SmcElementType("POP_ARGUMENTS");
   IElementType POP_TRANSITION = new SmcElementType("POP_TRANSITION");
   IElementType PUSH_TRANSITION = new SmcElementType("PUSH_TRANSITION");
-  IElementType SOURCE = new SmcElementType("SOURCE");
   IElementType START_STATE = new SmcElementType("START_STATE");
   IElementType STATE = new SmcElementType("STATE");
   IElementType STATES = new SmcElementType("STATES");
@@ -61,8 +60,6 @@ public interface SmcTypes {
   IElementType LINE_COMMENT = new SmcTokenType("LINE_COMMENT");
   IElementType MAP_KEYWORD = new SmcTokenType("%map");
   IElementType MAP_SECTION_BOUND = new SmcTokenType("MAP_SECTION_BOUND");
-  IElementType MAP_SECTION_CLOSE = new SmcTokenType("%%}");
-  IElementType MAP_SECTION_OPEN = new SmcTokenType("%%");
   IElementType NIL_KEYWORD = new SmcTokenType("nil");
   IElementType PACKAGE_KEYWORD = new SmcTokenType("%package");
   IElementType POP_KEYWORD = new SmcTokenType("pop");
@@ -141,9 +138,6 @@ public interface SmcTypes {
       }
       else if (type == PUSH_TRANSITION) {
         return new SmcPushTransitionImpl(node);
-      }
-      else if (type == SOURCE) {
-        return new SmcSourceImpl(node);
       }
       else if (type == START_STATE) {
         return new SmcStartStateImpl(node);

@@ -7,10 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcDotnetAssignment extends PsiElement {
 
-  @NotNull
-  PsiElement getRawCode();
-
-  @NotNull
-  PsiElement getWord();
-
 }

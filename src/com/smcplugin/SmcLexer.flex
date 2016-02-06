@@ -1,6 +1,7 @@
 package com.smcplugin;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.TokenType;
 import static com.smcplugin.psi.SmcTypes.*;
 
 %%
@@ -25,20 +26,19 @@ WHITE_SPACE=({LINE_WS}|{EOL})+
 CRLF=\n|\r|\r\n
 WORD=[A-Za-z][A-Za-z0-9_.]* | _[A-Za-z][A-Za-z0-9_.]*
 RAW_CODE_LINE=.*\n\r\f
-RAW_CODE=.*|\n\r\f
+RAW_CODE=%\{(.|\n)*%\}
 LINE_COMMENT="//".*
 BLOCK_COMMENT="/"\*(.|\n)*\*"/"
 
 FIRST_RAW_CHARACTER=[^ \n\r\f\\] | "\\"{CRLF} | "\\".
 RAW_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
 
-%state RAW_CODE_WAITING
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}        { return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {WHITE_SPACE}        { return TokenType.WHITE_SPACE; }
 
-  "%{"                 { yybegin(RAW_CODE_WAITING); return VERBATIM_OPEN; }
+  "%{"                 { return VERBATIM_OPEN; }
   "%}"                 { return VERBATIM_CLOSE; }
   "%class"             { return CLASS_KEYWORD; }
   "%package"           { return PACKAGE_KEYWORD; }
@@ -71,15 +71,11 @@ RAW_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
 
   {CRLF}               { return CRLF; }
   {WORD}               { return WORD; }
+  {RAW_CODE}           { return RAW_CODE; }
   {RAW_CODE_LINE}      { return RAW_CODE_LINE; }
 
   {LINE_COMMENT}       { return LINE_COMMENT; }
   {BLOCK_COMMENT}      { return BLOCK_COMMENT; }
 
-  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
-}
-<RAW_CODE_WAITING>{
-   {WHITE_SPACE}+                         { yybegin(RAW_CODE_WAITING); return com.intellij.psi.TokenType.WHITE_SPACE; }
-
-   {FIRST_RAW_CHARACTER}{RAW_CHARACTER}*   { yybegin(YYINITIAL); return RAW_CODE; }
+  [^] { return TokenType.BAD_CHARACTER; }
 }

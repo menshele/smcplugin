@@ -23,9 +23,9 @@ public class SmcExitImpl extends ASTWrapperPsiElement implements SmcExit {
   }
 
   @Override
-  @Nullable
-  public SmcActions getActions() {
-    return findChildByClass(SmcActions.class);
+  @NotNull
+  public List<SmcActions> getActionsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcActions.class);
   }
 
 }

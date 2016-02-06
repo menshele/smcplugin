@@ -83,7 +83,7 @@ map ::= MAP_KEYWORD WORD MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=1}
 
 states ::= state*
 
-state ::=WORD (entry| exit)? BRACE_OPEN transitions BRACE_CLOSE {pin=1}
+state ::=WORD ((entry exit)|(exit entry)|((entry|exit)?))? BRACE_OPEN transitions BRACE_CLOSE {pin=1}
 
 transitions ::= transition*
 

@@ -589,7 +589,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WORD (entry| exit)? BRACE_OPEN transitions BRACE_CLOSE
+  // WORD ((entry exit)|(exit entry)|((entry|exit)?))? BRACE_OPEN transitions BRACE_CLOSE
   public static boolean state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "state")) return false;
     if (!nextTokenIs(b, WORD)) return false;
@@ -605,16 +605,57 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // (entry| exit)?
+  // ((entry exit)|(exit entry)|((entry|exit)?))?
   private static boolean state_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "state_1")) return false;
     state_1_0(b, l + 1);
     return true;
   }
 
-  // entry| exit
+  // (entry exit)|(exit entry)|((entry|exit)?)
   private static boolean state_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "state_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = state_1_0_0(b, l + 1);
+    if (!r) r = state_1_0_1(b, l + 1);
+    if (!r) r = state_1_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // entry exit
+  private static boolean state_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_1_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = entry(b, l + 1);
+    r = r && exit(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // exit entry
+  private static boolean state_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_1_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = exit(b, l + 1);
+    r = r && entry(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (entry|exit)?
+  private static boolean state_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_1_0_2")) return false;
+    state_1_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // entry|exit
+  private static boolean state_1_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_1_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = entry(b, l + 1);

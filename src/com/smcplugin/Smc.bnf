@@ -14,8 +14,6 @@
 
   psiImplUtilClass="com.smcplugin.psi.impl.SmcPsiImplUtil"
 
-
-
   tokens = [
       VERBATIM_OPEN="%{"
       VERBATIM_CLOSE="%}"
@@ -47,47 +45,43 @@
       ASSIGN_OP="="
       NIL_KEYWORD="nil"
       SLASH_SIGN="/"
-      CRLF='regexp:\n|\r|\r\n'
-
-      WORD = "regexp:[A-Za-z][A-Za-z0-9_.]* | _[A-Za-z][A-Za-z0-9_.]*"
-// Reads in code verbatim until end-of-line is reached.
-      RAW_CODE_LINE = "regexp:.*\n\r\f"
-
-// Read in code verbatim.
-      RAW_CODE="regexp:%\{(.|\n)*%\}"
-      LINE_COMMENT="regexp://.*"
-      BLOCK_COMMENT="regexp:/\*(.|\n)*\*/"
-    ]
+     ]
 }
 
-fsmFile ::= (RAW_CODE| start_state| class_name| header_file| include_file|
-package_name| class_import| declare| access| map+|LINE_COMMENT|BLOCK_COMMENT|CRLF)*
+fsmFile ::= (verbatim_code_section|class_name| start_state|fsm_class|fsm_file| header_file| include_file|
+package_name| import_class| declare| access| map+|LINE_COMMENT|BLOCK_COMMENT|CRLF)*
 
-start_state ::= START_KEYWORD WORD
+fsm_file ::= FSM_FILE_KEYWORD FSM_FILE_NAME
 
-class_name ::= CLASS_KEYWORD WORD
+fsm_class ::= FSM_CLASS_KEYWORD FSM_CLASS_NAME
 
-header_file ::= HEADER_KEYWORD RAW_CODE_LINE
+verbatim_code_section::= VERBATIM_OPEN VERBATIM_CODE? VERBATIM_CLOSE
 
-include_file ::= INCLUDE_KEYWORD RAW_CODE_LINE
+start_state ::= START_KEYWORD START_STATE_NAME
 
-package_name ::= PACKAGE_KEYWORD RAW_CODE_LINE
+class_name ::= CLASS_KEYWORD CONTEXT_CLASS_NAME
 
-class_import ::= IMPORT_KEYWORD RAW_CODE_LINE
+header_file ::= HEADER_KEYWORD HEADER_FILE_NAME
 
-declare ::= DECLARE_KEYWORD RAW_CODE_LINE
+include_file ::= INCLUDE_KEYWORD INCLUDE_FILE_NAME
 
-access ::= ACCESS_KEYWORD RAW_CODE_LINE
+package_name ::= PACKAGE_KEYWORD PACKAGE_STATEMENT
 
-map ::= MAP_KEYWORD WORD MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=1}
+import_class ::= IMPORT_KEYWORD STATIC_JAVA_KEYWORD? IMPORT_CLASS_STATEMENT
+
+declare ::= DECLARE_KEYWORD DECLARE_STATEMENT
+
+access ::= ACCESS_KEYWORD ACCESS_LEVEL
+
+map ::= MAP_KEYWORD MAP_NAME MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=1}
 
 states ::= state*
 
-state ::=WORD ((entry exit)|(exit entry)|((entry|exit)?))? BRACE_OPEN transitions BRACE_CLOSE {pin=1}
+state ::=STATE_NAME ((entry exit)|(exit entry)|((entry|exit)?))? BRACE_OPEN transitions BRACE_CLOSE {pin=1}
 
 transitions ::= transition*
 
-transition ::= WORD transition_args? guard? next_state BRACE_OPEN actions BRACE_CLOSE {pin=1}
+transition ::= TRANSITION_NAME transition_args? guard? next_state BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
 entry ::= ENTRY_KEYWORD BRACE_OPEN actions* BRACE_CLOSE {pin=1}
 
@@ -97,11 +91,11 @@ transition_args ::= BRACKET_OPEN parameters BRACKET_CLOSE {pin=1}
 
 parameters ::= parameter COMMA parameters | parameter
 
-parameter ::= WORD COLON WORD
+parameter ::= PARAMETER_TYPE COLON PARAMETER_NAME
 
-guard ::= GUARD_OPEN RAW_CODE_IN_PARAMS GUARD_CLOSE
+guard ::= GUARD_OPEN GUARD_RAW_CODE GUARD_CLOSE
 
-next_state ::= WORD |
+next_state ::= NEXT_STATE_NAME |
               NIL_KEYWORD|
               push_transition |
               pop_transition
@@ -114,8 +108,8 @@ pop_transition ::= POP_KEYWORD |
                   POP_KEYWORD BRACKET_OPEN WORD? BRACKET_CLOSE |
                   POP_KEYWORD BRACKET_OPEN WORD COMMA pop_arguments* BRACKET_CLOSE
 
-pop_arguments ::= RAW_CODE |
-                 RAW_CODE COMMA pop_arguments
+pop_arguments ::= POP_ARGUMENT_RAW_CODE |
+                 POP_ARGUMENT_RAW_CODE COMMA pop_arguments
 
 actions ::= dotnet_assignment |
            action |
@@ -125,5 +119,5 @@ dotnet_assignment ::= WORD ASSIGN_OP WORD SEMICOLON {pin=2}
 
 action ::= WORD BRACKET_OPEN arguments* BRACKET_CLOSE SEMICOLON
 
-arguments ::= RAW_CODE_IN_PARAMS |
-             RAW_CODE_IN_PARAMS COMMA arguments
+arguments ::= ARGUMENT_STATEMENT |
+             ARGUMENT_STATEMENT COMMA arguments

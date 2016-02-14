@@ -25,57 +25,56 @@ WHITE_SPACE=({LINE_WS}|{EOL})+
 
 CRLF=\n|\r|\r\n
 WORD=[A-Za-z][A-Za-z0-9_.]* | _[A-Za-z][A-Za-z0-9_.]*
-RAW_CODE_LINE=.*\n\r\f
+RAW_CODE_LINE=[A-Za-z][A-Za-z0-9_.\*]*\; | _[A-Za-z][A-Za-z0-9_.\*]*\;\n\r\f
+RAW_CODE_IN_PARAMS=[A-Za-z][A-Za-z0-9_.]*\; | _[A-Za-z][A-Za-z0-9_.]*\n\r\f
 RAW_CODE=%\{(.|\n)*%\}
+//RAW_CODE=(.|\n)*
 LINE_COMMENT="//".*
 BLOCK_COMMENT="/"\*(.|\n)*\*"/"
 
-FIRST_RAW_CHARACTER=[^ \n\r\f\\] | "\\"{CRLF} | "\\".
-RAW_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
-
-
+%state RAW_CODE_WAIT
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}        { return TokenType.WHITE_SPACE; }
+  {WHITE_SPACE}        { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-  "%{"                 { return VERBATIM_OPEN; }
-  "%}"                 { return VERBATIM_CLOSE; }
-  "%class"             { return CLASS_KEYWORD; }
-  "%package"           { return PACKAGE_KEYWORD; }
-  "%fsmclass"          { return FSM_CLASS_KEYWORD; }
-  "%fsmfile"           { return FSM_FILE_KEYWORD; }
-  "%access"            { return ACCESS_KEYWORD; }
-  "%header"            { return HEADER_KEYWORD; }
-  "%declare"           { return DECLARE_KEYWORD; }
-  "%import"            { return IMPORT_KEYWORD; }
-  "%include"           { return INCLUDE_KEYWORD; }
-  "%start"             { return START_KEYWORD; }
-  "%map"               { return MAP_KEYWORD; }
-  "{"                  { return BRACE_OPEN; }
-  "}"                  { return BRACE_CLOSE; }
-  "("                  { return BRACKET_OPEN; }
-  ")"                  { return BRACKET_CLOSE; }
-  "Entry "             { return ENTRY_KEYWORD; }
-  "Exit "              { return EXIT_KEYWORD; }
-  "["                  { return GUARD_OPEN; }
-  "]"                  { return GUARD_CLOSE; }
-  "%%"                 { return MAP_SECTION_BOUND; }
-  ":"                  { return COLON; }
-  ","                  { return COMMA; }
-  ";"                  { return SEMICOLON; }
-  "pop"                { return POP_KEYWORD; }
-  "push"               { return PUSH_KEYWORD; }
-  "="                  { return ASSIGN_OP; }
-  "nil"                { return NIL_KEYWORD; }
-  "/"                  { return SLASH_SIGN; }
+  "%{"                 { yybegin(YYINITIAL); return VERBATIM_OPEN; }
+  "%}"                 { yybegin(YYINITIAL); return VERBATIM_CLOSE; }
+  "%class"             { yybegin(YYINITIAL); return CLASS_KEYWORD; }
+  "%package"           { yybegin(YYINITIAL); return PACKAGE_KEYWORD; }
+  "%fsmclass"          { yybegin(YYINITIAL); return FSM_CLASS_KEYWORD; }
+  "%fsmfile"           { yybegin(YYINITIAL); return FSM_FILE_KEYWORD; }
+  "%access"            { yybegin(YYINITIAL); return ACCESS_KEYWORD; }
+  "%header"            { yybegin(YYINITIAL); return HEADER_KEYWORD; }
+  "%declare"           { yybegin(YYINITIAL); return DECLARE_KEYWORD; }
+  "%import"            { yybegin(YYINITIAL); return IMPORT_KEYWORD; }
+  "%include"           { yybegin(YYINITIAL); return INCLUDE_KEYWORD; }
+  "%start"             { yybegin(YYINITIAL); return START_KEYWORD; }
+  "%map"               { yybegin(YYINITIAL); return MAP_KEYWORD; }
+  "{"                  { yybegin(YYINITIAL); return BRACE_OPEN; }
+  "}"                  { yybegin(YYINITIAL); return BRACE_CLOSE; }
+  "("                  { yybegin(YYINITIAL); return BRACKET_OPEN; }
+  ")"                  { yybegin(YYINITIAL); return BRACKET_CLOSE; }
+  "Entry "             { yybegin(YYINITIAL); return ENTRY_KEYWORD; }
+  "Exit "              { yybegin(YYINITIAL); return EXIT_KEYWORD; }
+  "["                  { yybegin(YYINITIAL); return GUARD_OPEN; }
+  "]"                  { yybegin(YYINITIAL); return GUARD_CLOSE; }
+  "%%"                 { yybegin(YYINITIAL); return MAP_SECTION_BOUND; }
+  ":"                  { yybegin(YYINITIAL); return COLON; }
+  ","                  { yybegin(YYINITIAL); return COMMA; }
+  ";"                  { yybegin(YYINITIAL); return SEMICOLON; }
+  "pop"                { yybegin(YYINITIAL); return POP_KEYWORD; }
+  "push"               { yybegin(YYINITIAL); return PUSH_KEYWORD; }
+  "="                  { yybegin(YYINITIAL); return ASSIGN_OP; }
+  "nil"                { yybegin(YYINITIAL); return NIL_KEYWORD; }
+  "/"                  { yybegin(YYINITIAL); return SLASH_SIGN; }
 
-  {CRLF}               { return CRLF; }
-  {WORD}               { return WORD; }
-  {RAW_CODE}           { return RAW_CODE; }
-  {RAW_CODE_LINE}      { return RAW_CODE_LINE; }
+  {WORD}               { yybegin(YYINITIAL); return WORD; }
+  {RAW_CODE}           { yybegin(YYINITIAL); return RAW_CODE; }
+  {RAW_CODE_LINE}      { yybegin(YYINITIAL); return RAW_CODE_LINE; }
+  {RAW_CODE_IN_PARAMS} { yybegin(YYINITIAL); return RAW_CODE_IN_PARAMS; }
 
-  {LINE_COMMENT}       { return LINE_COMMENT; }
-  {BLOCK_COMMENT}      { return BLOCK_COMMENT; }
+  {LINE_COMMENT}       { yybegin(YYINITIAL); return LINE_COMMENT; }
+  {BLOCK_COMMENT}      { yybegin(YYINITIAL); return BLOCK_COMMENT; }
 
   [^] { return TokenType.BAD_CHARACTER; }
 }

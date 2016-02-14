@@ -71,7 +71,7 @@ header_file ::= HEADER_KEYWORD RAW_CODE_LINE
 
 include_file ::= INCLUDE_KEYWORD RAW_CODE_LINE
 
-package_name ::= PACKAGE_KEYWORD WORD
+package_name ::= PACKAGE_KEYWORD RAW_CODE_LINE
 
 class_import ::= IMPORT_KEYWORD RAW_CODE_LINE
 
@@ -99,7 +99,7 @@ parameters ::= parameter COMMA parameters | parameter
 
 parameter ::= WORD COLON WORD
 
-guard ::= GUARD_OPEN RAW_CODE GUARD_CLOSE
+guard ::= GUARD_OPEN RAW_CODE_IN_PARAMS GUARD_CLOSE
 
 next_state ::= WORD |
               NIL_KEYWORD|
@@ -125,5 +125,5 @@ dotnet_assignment ::= WORD ASSIGN_OP WORD SEMICOLON {pin=2}
 
 action ::= WORD BRACKET_OPEN arguments* BRACKET_CLOSE SEMICOLON
 
-arguments ::= RAW_CODE |
-             RAW_CODE COMMA arguments
+arguments ::= RAW_CODE_IN_PARAMS |
+             RAW_CODE_IN_PARAMS COMMA arguments

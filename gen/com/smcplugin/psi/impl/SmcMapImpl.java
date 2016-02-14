@@ -28,10 +28,4 @@ public class SmcMapImpl extends ASTWrapperPsiElement implements SmcMap {
     return findChildByClass(SmcStates.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getWord() {
-    return findChildByType(WORD);
-  }
-
 }

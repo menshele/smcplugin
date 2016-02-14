@@ -19,7 +19,4 @@ public interface SmcTransition extends PsiElement {
   @Nullable
   SmcTransitionArgs getTransitionArgs();
 
-  @NotNull
-  PsiElement getWord();
-
 }

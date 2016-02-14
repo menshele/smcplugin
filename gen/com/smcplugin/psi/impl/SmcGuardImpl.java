@@ -22,10 +22,4 @@ public class SmcGuardImpl extends ASTWrapperPsiElement implements SmcGuard {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getRawCode() {
-    return findNotNullChildByType(RAW_CODE);
-  }
-
 }

@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcClassName extends PsiElement {
 
-  @NotNull
-  PsiElement getWord();
-
 }

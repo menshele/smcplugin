@@ -22,10 +22,4 @@ public class SmcPackageNameImpl extends ASTWrapperPsiElement implements SmcPacka
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getWord() {
-    return findNotNullChildByType(WORD);
-  }
-
 }

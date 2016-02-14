@@ -34,10 +34,4 @@ public class SmcNextStateImpl extends ASTWrapperPsiElement implements SmcNextSta
     return findChildByClass(SmcPushTransition.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getWord() {
-    return findChildByType(WORD);
-  }
-
 }

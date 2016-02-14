@@ -40,10 +40,4 @@ public class SmcStateImpl extends ASTWrapperPsiElement implements SmcState {
     return findChildByClass(SmcTransitions.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getWord() {
-    return findNotNullChildByType(WORD);
-  }
-
 }

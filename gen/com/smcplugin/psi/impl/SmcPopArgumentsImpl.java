@@ -28,10 +28,4 @@ public class SmcPopArgumentsImpl extends ASTWrapperPsiElement implements SmcPopA
     return findChildByClass(SmcPopArguments.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getRawCode() {
-    return findNotNullChildByType(RAW_CODE);
-  }
-
 }

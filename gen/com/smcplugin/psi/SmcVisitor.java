@@ -23,10 +23,6 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitClassImport(@NotNull SmcClassImport o) {
-    visitPsiElement(o);
-  }
-
   public void visitClassName(@NotNull SmcClassName o) {
     visitPsiElement(o);
   }
@@ -47,11 +43,23 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFsmClass(@NotNull SmcFsmClass o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFsmFile(@NotNull SmcFsmFile o) {
+    visitPsiElement(o);
+  }
+
   public void visitGuard(@NotNull SmcGuard o) {
     visitPsiElement(o);
   }
 
   public void visitHeaderFile(@NotNull SmcHeaderFile o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImportClass(@NotNull SmcImportClass o) {
     visitPsiElement(o);
   }
 
@@ -112,6 +120,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitTransitions(@NotNull SmcTransitions o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVerbatimCodeSection(@NotNull SmcVerbatimCodeSection o) {
     visitPsiElement(o);
   }
 

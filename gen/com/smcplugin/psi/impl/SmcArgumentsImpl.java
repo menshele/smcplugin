@@ -28,10 +28,4 @@ public class SmcArgumentsImpl extends ASTWrapperPsiElement implements SmcArgumen
     return findChildByClass(SmcArguments.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getRawCode() {
-    return findNotNullChildByType(RAW_CODE);
-  }
-
 }

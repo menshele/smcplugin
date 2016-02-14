@@ -22,10 +22,4 @@ public class SmcIncludeFileImpl extends ASTWrapperPsiElement implements SmcInclu
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getRawCodeLine() {
-    return findNotNullChildByType(RAW_CODE_LINE);
-  }
-
 }

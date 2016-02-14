@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcAccess extends PsiElement {
 
-  @NotNull
-  PsiElement getRawCodeLine();
-
 }

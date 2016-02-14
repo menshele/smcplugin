@@ -46,10 +46,4 @@ public class SmcTransitionImpl extends ASTWrapperPsiElement implements SmcTransi
     return findChildByClass(SmcTransitionArgs.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getWord() {
-    return findNotNullChildByType(WORD);
-  }
-
 }

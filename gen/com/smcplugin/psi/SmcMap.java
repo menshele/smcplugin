@@ -10,7 +10,4 @@ public interface SmcMap extends PsiElement {
   @Nullable
   SmcStates getStates();
 
-  @Nullable
-  PsiElement getWord();
-
 }

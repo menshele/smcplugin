@@ -28,10 +28,4 @@ public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcArguments.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getWord() {
-    return findNotNullChildByType(WORD);
-  }
-
 }

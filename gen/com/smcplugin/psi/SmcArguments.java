@@ -10,7 +10,4 @@ public interface SmcArguments extends PsiElement {
   @Nullable
   SmcArguments getArguments();
 
-  @NotNull
-  PsiElement getRawCode();
-
 }

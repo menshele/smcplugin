@@ -22,10 +22,4 @@ public class SmcStartStateImpl extends ASTWrapperPsiElement implements SmcStartS
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getWord() {
-    return findNotNullChildByType(WORD);
-  }
-
 }

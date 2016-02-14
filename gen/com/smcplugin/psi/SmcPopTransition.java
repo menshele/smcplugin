@@ -10,7 +10,4 @@ public interface SmcPopTransition extends PsiElement {
   @NotNull
   List<SmcPopArguments> getPopArgumentsList();
 
-  @Nullable
-  PsiElement getWord();
-
 }

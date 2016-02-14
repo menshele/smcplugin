@@ -16,7 +16,4 @@ public interface SmcState extends PsiElement {
   @Nullable
   SmcTransitions getTransitions();
 
-  @NotNull
-  PsiElement getWord();
-
 }

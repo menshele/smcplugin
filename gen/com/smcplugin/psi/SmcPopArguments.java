@@ -10,7 +10,4 @@ public interface SmcPopArguments extends PsiElement {
   @Nullable
   SmcPopArguments getPopArguments();
 
-  @NotNull
-  PsiElement getRawCode();
-
 }

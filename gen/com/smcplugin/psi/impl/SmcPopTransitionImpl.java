@@ -28,10 +28,4 @@ public class SmcPopTransitionImpl extends ASTWrapperPsiElement implements SmcPop
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcPopArguments.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getWord() {
-    return findChildByType(WORD);
-  }
-
 }

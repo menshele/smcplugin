@@ -13,7 +13,4 @@ public interface SmcNextState extends PsiElement {
   @Nullable
   SmcPushTransition getPushTransition();
 
-  @Nullable
-  PsiElement getWord();
-
 }

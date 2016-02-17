@@ -83,9 +83,9 @@ transitions ::= transition*
 
 transition ::= TRANSITION_NAME transition_args? guard? next_state BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
-entry ::= ENTRY_KEYWORD BRACE_OPEN actions* BRACE_CLOSE {pin=1}
+entry ::= ENTRY_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
-exit ::= EXIT_KEYWORD BRACE_OPEN actions* BRACE_CLOSE {pin=1}
+exit ::= EXIT_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
 transition_args ::= BRACKET_OPEN parameters BRACKET_CLOSE {pin=1}
 
@@ -112,7 +112,7 @@ pop_arguments ::= POP_ARGUMENT_RAW_CODE |
                  POP_ARGUMENT_RAW_CODE COMMA pop_arguments
 
 actions ::= dotnet_assignment |
-           action actions|action
+           action actions|action?
 
 
 

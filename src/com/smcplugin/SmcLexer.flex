@@ -64,6 +64,8 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 %state WAITING_FOR_ARGUMENTS
 %state WAITING_FOR_STATE_ENTRY
 %state WAITING_FOR_STATE_EXIT
+%state WAITING_FOR_ENTRY_EXIT_ACTIONS
+%state WAITING_FOR_ENTRY_EXIT_ARGUMENTS
 %state WAITING_FOR_TRANSITIONS
 %state WAITING_FOR_PARAMETERS
 %state WAITING_FOR_PARAMETER_TYPE
@@ -202,17 +204,35 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 }
 <WAITING_FOR_STATE_ENTRY>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_STATE_ENTRY); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  "{"                         { yybegin(WAITING_FOR_STATE_ENTRY); return BRACE_OPEN; }
+  "{"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return BRACE_OPEN; }
   "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 
 <WAITING_FOR_STATE_EXIT>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_STATE_EXIT); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  "{"                         { yybegin(WAITING_FOR_STATE_EXIT); return BRACE_OPEN; }
+  "{"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return BRACE_OPEN; }
   "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
+
+<WAITING_FOR_ENTRY_EXIT_ACTIONS>{
+  {WHITE_SPACE}               { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  "("                         { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS);  return BRACKET_OPEN; }
+  ";"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return SEMICOLON; }
+  "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
+  {WORD}                      { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return ACTION_NAME; }
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+<WAITING_FOR_ENTRY_EXIT_ARGUMENTS>{
+  {WHITE_SPACE}               { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  ","                         { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS); return COMMA; }
+  ")"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return BRACKET_CLOSE; }
+  {WORD}                      { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS); return ARGUMENT_STATEMENT;}
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
 <WAITING_FOR_TRANSITIONS>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_TRANSITIONS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
@@ -239,7 +259,8 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 <WAITING_FOR_PARAMETER_TYPE>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETER_TYPE); return com.intellij.psi.TokenType.WHITE_SPACE; }
   ")"                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE; }
-  {WORD}                      { yybegin(WAITING_FOR_PARAMETER_TYPE); return PARAMETER_NAME; }
+  ","                         { yybegin(WAITING_FOR_PARAMETER_NAME); return COMMA; }
+  {WORD}                      { yybegin(WAITING_FOR_PARAMETER_TYPE); return PARAMETER_TYPE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 <WAITING_FOR_NEXT_STATE_NAME>{

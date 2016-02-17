@@ -23,9 +23,9 @@ public class SmcEntryImpl extends ASTWrapperPsiElement implements SmcEntry {
   }
 
   @Override
-  @NotNull
-  public List<SmcActions> getActionsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcActions.class);
+  @Nullable
+  public SmcActions getActions() {
+    return findChildByClass(SmcActions.class);
   }
 
 }

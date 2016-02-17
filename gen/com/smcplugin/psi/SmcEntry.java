@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcEntry extends PsiElement {
 
-  @NotNull
-  List<SmcActions> getActionsList();
+  @Nullable
+  SmcActions getActions();
 
 }

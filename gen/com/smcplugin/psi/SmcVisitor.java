@@ -31,10 +31,6 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitDotnetAssignment(@NotNull SmcDotnetAssignment o) {
-    visitPsiElement(o);
-  }
-
   public void visitEntry(@NotNull SmcEntry o) {
     visitPsiElement(o);
   }

@@ -32,8 +32,8 @@
       BRACE_CLOSE="}"
       BRACKET_OPEN="("
       BRACKET_CLOSE=")"
-      ENTRY_KEYWORD="Entry "
-      EXIT_KEYWORD="Exit "
+      ENTRY_KEYWORD="Entry"
+      EXIT_KEYWORD="Exit"
       GUARD_OPEN="["
       GUARD_CLOSE="]"
 
@@ -91,7 +91,7 @@ transition_args ::= BRACKET_OPEN parameters BRACKET_CLOSE {pin=1}
 
 parameters ::= parameter COMMA parameters | parameter
 
-parameter ::= PARAMETER_TYPE COLON PARAMETER_NAME
+parameter ::= PARAMETER_NAME COLON PARAMETER_TYPE
 
 guard ::= GUARD_OPEN GUARD_RAW_CODE GUARD_CLOSE
 
@@ -112,12 +112,10 @@ pop_arguments ::= POP_ARGUMENT_RAW_CODE |
                  POP_ARGUMENT_RAW_CODE COMMA pop_arguments
 
 actions ::= dotnet_assignment |
-           action |
-           action actions
+           action actions|action
 
-dotnet_assignment ::= WORD ASSIGN_OP WORD SEMICOLON {pin=2}
 
-action ::= WORD BRACKET_OPEN arguments* BRACKET_CLOSE SEMICOLON
 
-arguments ::= ARGUMENT_STATEMENT |
-             ARGUMENT_STATEMENT COMMA arguments
+action ::= ACTION_NAME BRACKET_OPEN arguments? BRACKET_CLOSE SEMICOLON {pin=1}
+
+arguments ::= ARGUMENT_STATEMENT COMMA arguments|ARGUMENT_STATEMENT {pin=1}

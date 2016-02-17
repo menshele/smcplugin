@@ -34,10 +34,4 @@ public class SmcActionsImpl extends ASTWrapperPsiElement implements SmcActions {
     return findChildByClass(SmcActions.class);
   }
 
-  @Override
-  @Nullable
-  public SmcDotnetAssignment getDotnetAssignment() {
-    return findChildByClass(SmcDotnetAssignment.class);
-  }
-
 }

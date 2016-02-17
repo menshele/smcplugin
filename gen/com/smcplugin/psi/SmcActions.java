@@ -13,7 +13,4 @@ public interface SmcActions extends PsiElement {
   @Nullable
   SmcActions getActions();
 
-  @Nullable
-  SmcDotnetAssignment getDotnetAssignment();
-
 }

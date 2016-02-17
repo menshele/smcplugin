@@ -14,7 +14,6 @@ public interface SmcTypes {
   IElementType ARGUMENTS = new SmcElementType("ARGUMENTS");
   IElementType CLASS_NAME = new SmcElementType("CLASS_NAME");
   IElementType DECLARE = new SmcElementType("DECLARE");
-  IElementType DOTNET_ASSIGNMENT = new SmcElementType("DOTNET_ASSIGNMENT");
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
   IElementType FSM_CLASS = new SmcElementType("FSM_CLASS");
@@ -41,6 +40,7 @@ public interface SmcTypes {
 
   IElementType ACCESS_KEYWORD = new SmcTokenType("%access");
   IElementType ACCESS_LEVEL = new SmcTokenType("ACCESS_LEVEL");
+  IElementType ACTION_NAME = new SmcTokenType("ACTION_NAME");
   IElementType ARGUMENT_STATEMENT = new SmcTokenType("ARGUMENT_STATEMENT");
   IElementType ASSIGN_OP = new SmcTokenType("=");
   IElementType BLOCK_COMMENT = new SmcTokenType("BLOCK_COMMENT");
@@ -55,8 +55,9 @@ public interface SmcTypes {
   IElementType CRLF = new SmcTokenType("CRLF");
   IElementType DECLARE_KEYWORD = new SmcTokenType("%declare");
   IElementType DECLARE_STATEMENT = new SmcTokenType("DECLARE_STATEMENT");
-  IElementType ENTRY_KEYWORD = new SmcTokenType("Entry ");
-  IElementType EXIT_KEYWORD = new SmcTokenType("Exit ");
+  IElementType DOTNET_ASSIGNMENT = new SmcTokenType("dotnet_assignment");
+  IElementType ENTRY_KEYWORD = new SmcTokenType("Entry");
+  IElementType EXIT_KEYWORD = new SmcTokenType("Exit");
   IElementType FSM_CLASS_KEYWORD = new SmcTokenType("%fsmclass");
   IElementType FSM_CLASS_NAME = new SmcTokenType("FSM_CLASS_NAME");
   IElementType FSM_FILE_KEYWORD = new SmcTokenType("%fsmfile");
@@ -115,9 +116,6 @@ public interface SmcTypes {
       }
       else if (type == DECLARE) {
         return new SmcDeclareImpl(node);
-      }
-      else if (type == DOTNET_ASSIGNMENT) {
-        return new SmcDotnetAssignmentImpl(node);
       }
       else if (type == ENTRY) {
         return new SmcEntryImpl(node);

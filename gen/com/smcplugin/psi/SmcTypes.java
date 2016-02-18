@@ -55,7 +55,6 @@ public interface SmcTypes {
   IElementType CRLF = new SmcTokenType("CRLF");
   IElementType DECLARE_KEYWORD = new SmcTokenType("%declare");
   IElementType DECLARE_STATEMENT = new SmcTokenType("DECLARE_STATEMENT");
-  IElementType DOTNET_ASSIGNMENT = new SmcTokenType("dotnet_assignment");
   IElementType ENTRY_KEYWORD = new SmcTokenType("Entry");
   IElementType EXIT_KEYWORD = new SmcTokenType("Exit");
   IElementType FSM_CLASS_KEYWORD = new SmcTokenType("%fsmclass");

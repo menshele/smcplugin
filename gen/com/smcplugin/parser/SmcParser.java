@@ -155,22 +155,20 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // dotnet_assignment |
-  //            action actions|action?
+  // action actions|action?
   public static boolean actions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "actions")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<actions>");
-    r = consumeToken(b, DOTNET_ASSIGNMENT);
+    r = actions_0(b, l + 1);
     if (!r) r = actions_1(b, l + 1);
-    if (!r) r = actions_2(b, l + 1);
     exit_section_(b, l, m, ACTIONS, r, false, null);
     return r;
   }
 
   // action actions
-  private static boolean actions_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "actions_1")) return false;
+  private static boolean actions_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "actions_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = action(b, l + 1);
@@ -180,8 +178,8 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   // action?
-  private static boolean actions_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "actions_2")) return false;
+  private static boolean actions_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "actions_1")) return false;
     action(b, l + 1);
     return true;
   }

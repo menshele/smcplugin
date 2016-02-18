@@ -111,8 +111,7 @@ pop_transition ::= POP_KEYWORD |
 pop_arguments ::= POP_ARGUMENT_RAW_CODE |
                  POP_ARGUMENT_RAW_CODE COMMA pop_arguments
 
-actions ::= dotnet_assignment |
-           action actions|action?
+actions ::= action actions|action?
 
 
 

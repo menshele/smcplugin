@@ -32,6 +32,7 @@ EOL="\r"|"\n"|"\r\n"
 LINE_WS=[\ \t\f]
 WHITE_SPACE=({LINE_WS}|{EOL})+
 VERBATIM_CODE=(.*|{EOL})*
+GUARD_RAW_CODE=(.*|{EOL})*
 WORD=[A-Za-z][A-Za-z0-9_.]*| [A-Za-z][A-Za-z0-9_.]*{EOL}
 CONTEXT_CLASS_NAME={WORD}
 FSM_CLASS={WORD}
@@ -47,6 +48,7 @@ START_STATE_NAME={START_STATE_WORD}|{START_STATE_WORD}{EOL}
 ACCESS_LEVEL="public"|"protected"|"private"
 IMPORT_STATEMENT=[A-Za-z][A-Za-z0-9_.\*]*| [A-Za-z][A-Za-z0-9_.\*]*{EOL}
 JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
+KEYWORD_NIL="nil"
 
 %state WAITING_FOR_VERBATIM_CODE
 %state WAITING_FOR_PACKAGE_STATEMENT
@@ -70,6 +72,7 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 %state WAITING_FOR_PARAMETERS
 %state WAITING_FOR_PARAMETER_TYPE
 %state WAITING_FOR_PARAMETER_NAME
+%state WAITING_FOR_GUARD_RAW_CODE
 %state WAITING_FOR_NEXT_STATE_NAME
 %state WAITING_FOR_ACTIONS
 %state WAITING_FOR_ACTION_NAME
@@ -131,6 +134,7 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
+//TODO: Need to implement proper Java Code Parsing instead of VERBATIM_CODE one day. http://cui.unige.ch/isi/bnf/JAVA/statement_block.html
 <WAITING_FOR_VERBATIM_CODE>{
   "%{"                        { yybegin(WAITING_FOR_VERBATIM_CODE);  return VERBATIM_OPEN; }
   {VERBATIM_CODE}"%}"         { yybegin(YYINITIAL);  yypushback(2); return VERBATIM_CODE; }
@@ -242,9 +246,10 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 <WAITING_FOR_PARAMETERS>{
  {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETERS); return com.intellij.psi.TokenType.WHITE_SPACE; }
  "("                         { yybegin(WAITING_FOR_PARAMETER_NAME);  return BRACKET_OPEN; }
- //"["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_OPEN; }
+ "["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_OPEN; }
  "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
  "{"                         { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
+ {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
  {WORD}                      { yybegin(WAITING_FOR_PARAMETERS); return NEXT_STATE_NAME; }
  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
@@ -265,9 +270,17 @@ JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 }
 <WAITING_FOR_NEXT_STATE_NAME>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_NEXT_STATE_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
- // "["                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return GUARD_OPEN; }
+  "["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_OPEN; }
+  "]"                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return GUARD_CLOSE; }
   "{"                         { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
+  {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
   {WORD}                      { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NEXT_STATE_NAME; }
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+//TODO: Need to implement proper Java Code Parsing one day. http://cui.unige.ch/isi/bnf/JAVA/expression.html
+<WAITING_FOR_GUARD_RAW_CODE>{
+  {WHITE_SPACE}               { yybegin(WAITING_FOR_GUARD_RAW_CODE); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {GUARD_RAW_CODE}"]"         { yybegin(WAITING_FOR_NEXT_STATE_NAME);  yypushback(1); return GUARD_RAW_CODE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

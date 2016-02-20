@@ -19,7 +19,7 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Action Name", SmcSyntaxHighlighter.SMC_ACTION_NAME),
-            new AttributesDescriptor("LIne Comment", SmcSyntaxHighlighter.SMC_LINE_COMMENT),
+            new AttributesDescriptor("Line Comment", SmcSyntaxHighlighter.SMC_LINE_COMMENT),
             new AttributesDescriptor("Block Comment", SmcSyntaxHighlighter.SMC_BLOCK_COMMENT),
             new AttributesDescriptor("Braces", SmcSyntaxHighlighter.SMC_BRACES),
             new AttributesDescriptor("Parentheses", SmcSyntaxHighlighter.SMC_PARENTHESES),
@@ -59,6 +59,10 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
                 "    some.row.code.Here();\n" +
                 "%}\n" +
                 "%class ClassName\n" +
+                "//Line Comment\n" +
+                "/*\n" +
+                "Multiline Comment\n" +
+                "*/\n" +
                 "%package com.example.package\n" +
                 "%start MainMap::Locked\n" +
                 "%map\n" +

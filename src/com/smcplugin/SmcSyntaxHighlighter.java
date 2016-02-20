@@ -36,6 +36,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SMC_STATE_NAME = createTextAttributesKey("SMC_STATE_MAP", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
     public static final TextAttributesKey SMC_LINE_COMMENT = createTextAttributesKey("SMC_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey SMC_BLOCK_COMMENT = createTextAttributesKey("SMC_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+    public static final TextAttributesKey SMC_STRING_LITERAL = createTextAttributesKey("SMC_STRING_LITERAL", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey SMC_DEFAULT = createTextAttributesKey("SMC_DEFAULT", HighlighterColors.NO_HIGHLIGHTING);
     public static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SMC_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -58,6 +59,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] SMC_SEMICOLON_KEYS = new TextAttributesKey[]{SMC_SEMICOLON};
     private static final TextAttributesKey[] SMC_ENTRY_KEYWORD_KEYS = new TextAttributesKey[]{SMC_ENTRY_KEYWORD};
     private static final TextAttributesKey[] SMC_EXIT_KEYWORD_KEYS = new TextAttributesKey[]{SMC_EXIT_KEYWORD};
+    private static final TextAttributesKey[] SMC_STRING_LITERAL_KEYS = new TextAttributesKey[]{SMC_STRING_LITERAL};
     private static final TextAttributesKey[] BAD_CHARACTER_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] SMC_DEFAULT_KEYS = new TextAttributesKey[]{SMC_DEFAULT};
 
@@ -117,6 +119,8 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_ENTRY_KEYWORD_KEYS;
         } else if (EXIT_KEYWORD.equals(tokenType)) {
             return SMC_EXIT_KEYWORD_KEYS;
+        } else if (STRING_LITERAL.equals(tokenType)) {
+            return SMC_STRING_LITERAL_KEYS;
         } else if (TokenType.BAD_CHARACTER.equals(tokenType)) {
             return BAD_CHARACTER_KEYS;
         } else {

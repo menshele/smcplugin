@@ -185,20 +185,19 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (ARGUMENT_STATEMENT|STRING_LITERAL) COMMA arguments| ARGUMENT_STATEMENT|STRING_LITERAL
+  // (ARGUMENT_STATEMENT | STRING_LITERAL) COMMA arguments|(STRING_LITERAL|ARGUMENT_STATEMENT)
   public static boolean arguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arguments")) return false;
     if (!nextTokenIs(b, "<arguments>", ARGUMENT_STATEMENT, STRING_LITERAL)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<arguments>");
     r = arguments_0(b, l + 1);
-    if (!r) r = consumeToken(b, ARGUMENT_STATEMENT);
-    if (!r) r = consumeToken(b, STRING_LITERAL);
+    if (!r) r = arguments_1(b, l + 1);
     exit_section_(b, l, m, ARGUMENTS, r, false, null);
     return r;
   }
 
-  // (ARGUMENT_STATEMENT|STRING_LITERAL) COMMA arguments
+  // (ARGUMENT_STATEMENT | STRING_LITERAL) COMMA arguments
   private static boolean arguments_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arguments_0")) return false;
     boolean r;
@@ -210,13 +209,24 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ARGUMENT_STATEMENT|STRING_LITERAL
+  // ARGUMENT_STATEMENT | STRING_LITERAL
   private static boolean arguments_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arguments_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ARGUMENT_STATEMENT);
     if (!r) r = consumeToken(b, STRING_LITERAL);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STRING_LITERAL|ARGUMENT_STATEMENT
+  private static boolean arguments_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arguments_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING_LITERAL);
+    if (!r) r = consumeToken(b, ARGUMENT_STATEMENT);
     exit_section_(b, m, null, r);
     return r;
   }

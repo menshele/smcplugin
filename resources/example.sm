@@ -2,6 +2,10 @@
     some.row.code.Here();
 %}
 %class ClassName
+//Line Comment
+/*
+Multiline Comment
+*/
 %package com.example.package
 %start MainMap::Locked
 %map

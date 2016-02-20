@@ -34,6 +34,7 @@ WHITE_SPACE=({LINE_WS}|{EOL})+
 VERBATIM_CODE=(.*|{EOL})*
 GUARD_RAW_CODE=(.*|{EOL})*
 WORD=[A-Za-z][A-Za-z0-9_.]*| [A-Za-z][A-Za-z0-9_.]*{EOL}
+WORD_IN_ARGUMENTS=[\"][A-Za-z0-9_.\\\*\;\:\,\:\'\"]*[\"]
 CONTEXT_CLASS_NAME={WORD}
 FSM_CLASS={WORD}
 FSM_FILE={WORD}
@@ -48,6 +49,9 @@ START_STATE_NAME={START_STATE_WORD}|{START_STATE_WORD}{EOL}
 ACCESS_LEVEL="public"|"protected"|"private"
 IMPORT_STATEMENT=[A-Za-z][A-Za-z0-9_.\*]*| [A-Za-z][A-Za-z0-9_.\*]*{EOL}
 KEYWORD_NIL="nil"
+
+LINE_COMMENT="//".*
+BLOCK_COMMENT="/"\*(.|\n)*\*"/"
 
 %state WAITING_FOR_VERBATIM_CODE
 %state WAITING_FOR_PACKAGE_STATEMENT
@@ -107,6 +111,9 @@ KEYWORD_NIL="nil"
   "="                         { return ASSIGN_OP; }
   "nil"                       { return NIL_KEYWORD; }
   "/"                         { return SLASH_SIGN; }
+
+  {LINE_COMMENT}              { return LINE_COMMENT; }
+  {BLOCK_COMMENT}             { return BLOCK_COMMENT; }
 
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
@@ -274,5 +281,6 @@ KEYWORD_NIL="nil"
   ","                         { yybegin(WAITING_FOR_ARGUMENTS); return COMMA; }
   ")"                         { yybegin(WAITING_FOR_ACTIONS); return PARENTHESES_CLOSE; }
   {WORD}                      { yybegin(WAITING_FOR_ARGUMENTS); return ARGUMENT_STATEMENT;}
+  {WORD_IN_ARGUMENTS}         { yybegin(WAITING_FOR_ARGUMENTS); return STRING_LITERAL;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }

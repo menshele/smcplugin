@@ -89,6 +89,7 @@ public interface SmcTypes {
   IElementType START_STATE_NAME = new SmcTokenType("START_STATE_NAME");
   IElementType STATE_NAME = new SmcTokenType("STATE_NAME");
   IElementType STATIC_JAVA_KEYWORD = new SmcTokenType("STATIC_JAVA_KEYWORD");
+  IElementType STRING_LITERAL = new SmcTokenType("STRING_LITERAL");
   IElementType TRANSITION_NAME = new SmcTokenType("TRANSITION_NAME");
   IElementType VERBATIM_CLOSE = new SmcTokenType("%}");
   IElementType VERBATIM_CODE = new SmcTokenType("VERBATIM_CODE");

@@ -29,8 +29,8 @@
         <fileTypeFactory implementation="com.smcplugin.SmcFileTypeFactory"/>
         <lang.parserDefinition language="smc" implementationClass="com.smcplugin.SmcParserDefinition"/>
         <lang.syntaxHighlighterFactory key="smc" implementationClass="com.smcplugin.SmcSyntaxHighlighterFactory"/>
-        <!--        <colorSettingsPage implementation="com.smcplugin.SmcColorSettingsPage"/>
-            <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
+        <colorSettingsPage implementation="com.smcplugin.SmcColorSettingsPage"/>
+        <!--       <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
             <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
             <psi.referenceContributor implementation="com.smcplugin.SmcReferenceContributor"/>

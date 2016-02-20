@@ -1,19 +1,20 @@
 %{
-wqsqwl;sk;
+    some.row.code.Here();
 %}
-%class asd
-%package turnstile
-%start MainMapLocked
+%class ClassName
+%package com.example.package
+%start MainMap::Locked
 %map
 MainMap
 %%
 Locked
 Entry {
-
+   print(param, "Entry");
 }
 {
 
  coin ( arggs : asd , arg: test )
+ [ some guard here ]
  Unlocked {
     unlock();
  }

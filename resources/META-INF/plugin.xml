@@ -1,51 +1,51 @@
 <idea-plugin version="2">
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>com.your.company.unique.plugin.id</id>
+    <name>Plugin display name here</name>
+    <version>1.0</version>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       Enter short description for your plugin here.<br>
       <em>most HTML tags may be used</em>
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
       Add change notes here.<br>
       <em>most HTML tags may be used</em>
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="141.0"/>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="141.0"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <fileTypeFactory implementation="com.smcplugin.SmcFileTypeFactory"/>
-    <lang.parserDefinition language="smc" implementationClass="com.smcplugin.SmcParserDefinition"/>
-    <!--       <lang.syntaxHighlighterFactory key="smc" implementationClass="com.smcplugin.SmcSyntaxHighlighterFactory"/>
-        <colorSettingsPage implementation="com.smcplugin.SmcColorSettingsPage"/>
-        <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
-        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
-        <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
-        <psi.referenceContributor implementation="com.smcplugin.SmcReferenceContributor"/>
-        <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.SmcRefactoringSupportProvider"/>
-        <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.SmcFindUsagesProvider"/>
-        <lang.foldingBuilder language="JAVA" implementationClass="com.smcplugin.SmcFoldingBuilder"/>
-        <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
-        <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>
-    &lt;!&ndash;    <lang.formatter language="smc" implementationClass="com.smcplugin.SmcFormattingModelBuilder"/>&ndash;&gt;
-        <codeStyleSettingsProvider implementation="com.smcplugin.SmcCodeStyleSettingsProvider"/>
-        <langCodeStyleSettingsProvider implementation="com.smcplugin.SmcLanguageCodeStyleSettingsProvider"/>
-        <lang.commenter language="smc" implementationClass="com.smcplugin.SmcCommenter"/>-->
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTypeFactory implementation="com.smcplugin.SmcFileTypeFactory"/>
+        <lang.parserDefinition language="smc" implementationClass="com.smcplugin.SmcParserDefinition"/>
+        <lang.syntaxHighlighterFactory key="smc" implementationClass="com.smcplugin.SmcSyntaxHighlighterFactory"/>
+        <!--        <colorSettingsPage implementation="com.smcplugin.SmcColorSettingsPage"/>
+            <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
+            <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
+            <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
+            <psi.referenceContributor implementation="com.smcplugin.SmcReferenceContributor"/>
+            <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.SmcRefactoringSupportProvider"/>
+            <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.SmcFindUsagesProvider"/>
+            <lang.foldingBuilder language="JAVA" implementationClass="com.smcplugin.SmcFoldingBuilder"/>
+            <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
+            <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>
+        &lt;!&ndash;    <lang.formatter language="smc" implementationClass="com.smcplugin.SmcFormattingModelBuilder"/>&ndash;&gt;
+            <codeStyleSettingsProvider implementation="com.smcplugin.SmcCodeStyleSettingsProvider"/>
+            <langCodeStyleSettingsProvider implementation="com.smcplugin.SmcLanguageCodeStyleSettingsProvider"/>
+            <lang.commenter language="smc" implementationClass="com.smcplugin.SmcCommenter"/>-->
+    </extensions>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
 </idea-plugin>

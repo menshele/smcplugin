@@ -46,8 +46,8 @@ public interface SmcTypes {
   IElementType BLOCK_COMMENT = new SmcTokenType("BLOCK_COMMENT");
   IElementType BRACE_CLOSE = new SmcTokenType("}");
   IElementType BRACE_OPEN = new SmcTokenType("{");
-  IElementType BRACKET_CLOSE = new SmcTokenType(")");
-  IElementType BRACKET_OPEN = new SmcTokenType("(");
+  IElementType BRACKET_CLOSE = new SmcTokenType("]");
+  IElementType BRACKET_OPEN = new SmcTokenType("[");
   IElementType CLASS_KEYWORD = new SmcTokenType("%class");
   IElementType COLON = new SmcTokenType(":");
   IElementType COMMA = new SmcTokenType(",");
@@ -61,8 +61,6 @@ public interface SmcTypes {
   IElementType FSM_CLASS_NAME = new SmcTokenType("FSM_CLASS_NAME");
   IElementType FSM_FILE_KEYWORD = new SmcTokenType("%fsmfile");
   IElementType FSM_FILE_NAME = new SmcTokenType("FSM_FILE_NAME");
-  IElementType GUARD_CLOSE = new SmcTokenType("]");
-  IElementType GUARD_OPEN = new SmcTokenType("[");
   IElementType GUARD_RAW_CODE = new SmcTokenType("GUARD_RAW_CODE");
   IElementType HEADER_FILE_NAME = new SmcTokenType("HEADER_FILE_NAME");
   IElementType HEADER_KEYWORD = new SmcTokenType("%header");
@@ -80,6 +78,8 @@ public interface SmcTypes {
   IElementType PACKAGE_STATEMENT = new SmcTokenType("PACKAGE_STATEMENT");
   IElementType PARAMETER_NAME = new SmcTokenType("PARAMETER_NAME");
   IElementType PARAMETER_TYPE = new SmcTokenType("PARAMETER_TYPE");
+  IElementType PARENTHESES_CLOSE = new SmcTokenType(")");
+  IElementType PARENTHESES_OPEN = new SmcTokenType("(");
   IElementType POP_ARGUMENT_RAW_CODE = new SmcTokenType("POP_ARGUMENT_RAW_CODE");
   IElementType POP_KEYWORD = new SmcTokenType("pop");
   IElementType PUSH_KEYWORD = new SmcTokenType("push");

@@ -30,12 +30,12 @@
       MAP_KEYWORD="%map"
       BRACE_OPEN="{"
       BRACE_CLOSE="}"
-      BRACKET_OPEN="("
-      BRACKET_CLOSE=")"
+      PARENTHESES_OPEN="("
+      PARENTHESES_CLOSE=")"
       ENTRY_KEYWORD="Entry"
       EXIT_KEYWORD="Exit"
-      GUARD_OPEN="["
-      GUARD_CLOSE="]"
+      BRACKET_OPEN="["
+      BRACKET_CLOSE="]"
 
       COLON=":"
       COMMA=","
@@ -87,13 +87,13 @@ entry ::= ENTRY_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
 exit ::= EXIT_KEYWORD BRACE_OPEN actions BRACE_CLOSE {pin=1}
 
-transition_args ::= BRACKET_OPEN parameters BRACKET_CLOSE {pin=1}
+transition_args ::= PARENTHESES_OPEN parameters PARENTHESES_CLOSE {pin=1}
 
 parameters ::= parameter COMMA parameters | parameter
 
 parameter ::= PARAMETER_NAME COLON PARAMETER_TYPE
 
-guard ::= GUARD_OPEN GUARD_RAW_CODE GUARD_CLOSE
+guard ::= BRACKET_OPEN GUARD_RAW_CODE BRACKET_CLOSE
 
 //TODO: Need to implement push/pop transitions
 next_state ::= NEXT_STATE_NAME |
@@ -101,13 +101,13 @@ next_state ::= NEXT_STATE_NAME |
               push_transition |
               pop_transition
 
-push_transition ::= WORD SLASH_SIGN PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE |
-                   NIL_KEYWORD SLASH_SIGN PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE |
-                   PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE
+push_transition ::= WORD SLASH_SIGN PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE |
+                   NIL_KEYWORD SLASH_SIGN PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE |
+                   PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE
 
 pop_transition ::= POP_KEYWORD |
-                  POP_KEYWORD BRACKET_OPEN WORD? BRACKET_CLOSE |
-                  POP_KEYWORD BRACKET_OPEN WORD COMMA pop_arguments* BRACKET_CLOSE
+                  POP_KEYWORD PARENTHESES_OPEN WORD? PARENTHESES_CLOSE |
+                  POP_KEYWORD PARENTHESES_OPEN WORD COMMA pop_arguments* PARENTHESES_CLOSE
 
 pop_arguments ::= POP_ARGUMENT_RAW_CODE |
                  POP_ARGUMENT_RAW_CODE COMMA pop_arguments
@@ -116,6 +116,6 @@ actions ::= action actions|action?
 
 
 
-action ::= ACTION_NAME BRACKET_OPEN arguments? BRACKET_CLOSE SEMICOLON {pin=1}
+action ::= ACTION_NAME PARENTHESES_OPEN arguments? PARENTHESES_CLOSE SEMICOLON {pin=1}
 
 arguments ::= ARGUMENT_STATEMENT COMMA arguments|ARGUMENT_STATEMENT {pin=1}

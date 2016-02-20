@@ -133,16 +133,16 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ACTION_NAME BRACKET_OPEN arguments? BRACKET_CLOSE SEMICOLON
+  // ACTION_NAME PARENTHESES_OPEN arguments? PARENTHESES_CLOSE SEMICOLON
   public static boolean action(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "action")) return false;
     if (!nextTokenIs(b, ACTION_NAME)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, null);
-    r = consumeTokens(b, 1, ACTION_NAME, BRACKET_OPEN);
+    r = consumeTokens(b, 1, ACTION_NAME, PARENTHESES_OPEN);
     p = r; // pin = 1
     r = r && report_error_(b, action_2(b, l + 1));
-    r = p && report_error_(b, consumeTokens(b, -1, BRACKET_CLOSE, SEMICOLON)) && r;
+    r = p && report_error_(b, consumeTokens(b, -1, PARENTHESES_CLOSE, SEMICOLON)) && r;
     exit_section_(b, l, m, ACTION, r, p, null);
     return r || p;
   }
@@ -342,13 +342,13 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // GUARD_OPEN GUARD_RAW_CODE GUARD_CLOSE
+  // BRACKET_OPEN GUARD_RAW_CODE BRACKET_CLOSE
   public static boolean guard(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "guard")) return false;
-    if (!nextTokenIs(b, GUARD_OPEN)) return false;
+    if (!nextTokenIs(b, BRACKET_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, GUARD_OPEN, GUARD_RAW_CODE, GUARD_CLOSE);
+    r = consumeTokens(b, 0, BRACKET_OPEN, GUARD_RAW_CODE, BRACKET_CLOSE);
     exit_section_(b, m, GUARD, r);
     return r;
   }
@@ -506,8 +506,8 @@ public class SmcParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // POP_KEYWORD |
-  //                   POP_KEYWORD BRACKET_OPEN WORD? BRACKET_CLOSE |
-  //                   POP_KEYWORD BRACKET_OPEN WORD COMMA pop_arguments* BRACKET_CLOSE
+  //                   POP_KEYWORD PARENTHESES_OPEN WORD? PARENTHESES_CLOSE |
+  //                   POP_KEYWORD PARENTHESES_OPEN WORD COMMA pop_arguments* PARENTHESES_CLOSE
   public static boolean pop_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition")) return false;
     if (!nextTokenIs(b, POP_KEYWORD)) return false;
@@ -520,14 +520,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // POP_KEYWORD BRACKET_OPEN WORD? BRACKET_CLOSE
+  // POP_KEYWORD PARENTHESES_OPEN WORD? PARENTHESES_CLOSE
   private static boolean pop_transition_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, POP_KEYWORD, BRACKET_OPEN);
+    r = consumeTokens(b, 0, POP_KEYWORD, PARENTHESES_OPEN);
     r = r && pop_transition_1_2(b, l + 1);
-    r = r && consumeToken(b, BRACKET_CLOSE);
+    r = r && consumeToken(b, PARENTHESES_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -539,14 +539,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // POP_KEYWORD BRACKET_OPEN WORD COMMA pop_arguments* BRACKET_CLOSE
+  // POP_KEYWORD PARENTHESES_OPEN WORD COMMA pop_arguments* PARENTHESES_CLOSE
   private static boolean pop_transition_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, POP_KEYWORD, BRACKET_OPEN, WORD, COMMA);
+    r = consumeTokens(b, 0, POP_KEYWORD, PARENTHESES_OPEN, WORD, COMMA);
     r = r && pop_transition_2_4(b, l + 1);
-    r = r && consumeToken(b, BRACKET_CLOSE);
+    r = r && consumeToken(b, PARENTHESES_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -564,16 +564,16 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WORD SLASH_SIGN PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE |
-  //                    NIL_KEYWORD SLASH_SIGN PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE |
-  //                    PUSH_KEYWORD BRACKET_OPEN WORD BRACKET_CLOSE
+  // WORD SLASH_SIGN PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE |
+  //                    NIL_KEYWORD SLASH_SIGN PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE |
+  //                    PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE
   public static boolean push_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_transition")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<push transition>");
-    r = parseTokens(b, 0, WORD, SLASH_SIGN, PUSH_KEYWORD, BRACKET_OPEN, WORD, BRACKET_CLOSE);
-    if (!r) r = parseTokens(b, 0, NIL_KEYWORD, SLASH_SIGN, PUSH_KEYWORD, BRACKET_OPEN, WORD, BRACKET_CLOSE);
-    if (!r) r = parseTokens(b, 0, PUSH_KEYWORD, BRACKET_OPEN, WORD, BRACKET_CLOSE);
+    r = parseTokens(b, 0, WORD, SLASH_SIGN, PUSH_KEYWORD, PARENTHESES_OPEN, WORD, PARENTHESES_CLOSE);
+    if (!r) r = parseTokens(b, 0, NIL_KEYWORD, SLASH_SIGN, PUSH_KEYWORD, PARENTHESES_OPEN, WORD, PARENTHESES_CLOSE);
+    if (!r) r = parseTokens(b, 0, PUSH_KEYWORD, PARENTHESES_OPEN, WORD, PARENTHESES_CLOSE);
     exit_section_(b, l, m, PUSH_TRANSITION, r, false, null);
     return r;
   }
@@ -715,16 +715,16 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BRACKET_OPEN parameters BRACKET_CLOSE
+  // PARENTHESES_OPEN parameters PARENTHESES_CLOSE
   public static boolean transition_args(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "transition_args")) return false;
-    if (!nextTokenIs(b, BRACKET_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESES_OPEN)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, null);
-    r = consumeToken(b, BRACKET_OPEN);
+    r = consumeToken(b, PARENTHESES_OPEN);
     p = r; // pin = 1
     r = r && report_error_(b, parameters(b, l + 1));
-    r = p && consumeToken(b, BRACKET_CLOSE) && r;
+    r = p && consumeToken(b, PARENTHESES_CLOSE) && r;
     exit_section_(b, l, m, TRANSITION_ARGS, r, p, null);
     return r || p;
   }

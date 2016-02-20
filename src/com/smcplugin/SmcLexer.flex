@@ -47,7 +47,6 @@ START_STATE_WORD=[A-Za-z][A-Za-z0-9]+::[A-Za-z][A-Za-z0-9]+
 START_STATE_NAME={START_STATE_WORD}|{START_STATE_WORD}{EOL}
 ACCESS_LEVEL="public"|"protected"|"private"
 IMPORT_STATEMENT=[A-Za-z][A-Za-z0-9_.\*]*| [A-Za-z][A-Za-z0-9_.\*]*{EOL}
-JAVA_CODE_STATEMENT=[A-Za-z][A-Za-z0-9_.()]*| [A-Za-z][A-Za-z0-9_.()]*{EOL}
 KEYWORD_NIL="nil"
 
 %state WAITING_FOR_VERBATIM_CODE
@@ -96,10 +95,10 @@ KEYWORD_NIL="nil"
   "%map"                      { yybegin(WAITING_FOR_MAP); return MAP_KEYWORD; }
   "{"                         { return BRACE_OPEN; }
   "}"                         { return BRACE_CLOSE; }
-  "("                         { return BRACKET_OPEN; }
-  ")"                         { return BRACKET_CLOSE; }
-  "["                         { return GUARD_OPEN; }
-  "]"                         { return GUARD_CLOSE; }
+  "("                         { return PARENTHESES_OPEN; }
+  ")"                         { return PARENTHESES_CLOSE; }
+  "["                         { return BRACKET_OPEN; }
+  "]"                         { return BRACKET_CLOSE; }
   ":"                         { return COLON; }
   ","                         { return COMMA; }
   ";"                         { return SEMICOLON; }
@@ -108,29 +107,6 @@ KEYWORD_NIL="nil"
   "="                         { return ASSIGN_OP; }
   "nil"                       { return NIL_KEYWORD; }
   "/"                         { return SLASH_SIGN; }
-  "LINE_COMMENT"              { return LINE_COMMENT; }
-  "BLOCK_COMMENT"             { return BLOCK_COMMENT; }
-  "CRLF"                      { return CRLF; }
-  "START_STATE_NAME"          { return START_STATE_NAME; }
-  "CONTEXT_CLASS_NAME"        { return CONTEXT_CLASS_NAME; }
-  "HEADER_FILE_NAME"          { return HEADER_FILE_NAME; }
-  "INCLUDE_FILE_NAME"         { return INCLUDE_FILE_NAME; }
-  "PACKAGE_STATEMENT"         { return PACKAGE_STATEMENT; }
-  "IMPORT_CLASS_STATEMENT"    { return IMPORT_CLASS_STATEMENT; }
-  "DECLARE_STATEMENT"         { return DECLARE_STATEMENT; }
-  "ACCESS_LEVEL"              { return ACCESS_LEVEL; }
-  "MAP_NAME"                  { return MAP_NAME; }
-  "MAP_SECTION_BOUND"         { return MAP_SECTION_BOUND; }
-  "STATE_NAME"                { return STATE_NAME; }
-  "TRANSITION_NAME"           { return TRANSITION_NAME; }
-  "PARAMETER_TYPE"            { return PARAMETER_TYPE; }
-  "PARAMETER_NAME"            { return PARAMETER_NAME; }
-  "GUARD_RAW_CODE"            { return GUARD_RAW_CODE; }
-  "NEXT_STATE_NAME"           { return NEXT_STATE_NAME; }
-  "WORD"                      { return WORD; }
-  "POP_ARGUMENT_RAW_CODE"     { return POP_ARGUMENT_RAW_CODE; }
-  "ARGUMENT_STATEMENT"        { return ARGUMENT_STATEMENT; }
-
 
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
@@ -222,7 +198,7 @@ KEYWORD_NIL="nil"
 
 <WAITING_FOR_ENTRY_EXIT_ACTIONS>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  "("                         { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS);  return BRACKET_OPEN; }
+  "("                         { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS);  return PARENTHESES_OPEN; }
   ";"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return SEMICOLON; }
   "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
   {WORD}                      { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return ACTION_NAME; }
@@ -232,7 +208,7 @@ KEYWORD_NIL="nil"
 <WAITING_FOR_ENTRY_EXIT_ARGUMENTS>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   ","                         { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS); return COMMA; }
-  ")"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return BRACKET_CLOSE; }
+  ")"                         { yybegin(WAITING_FOR_ENTRY_EXIT_ACTIONS); return PARENTHESES_CLOSE; }
   {WORD}                      { yybegin(WAITING_FOR_ENTRY_EXIT_ARGUMENTS); return ARGUMENT_STATEMENT;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
@@ -245,8 +221,8 @@ KEYWORD_NIL="nil"
 }
 <WAITING_FOR_PARAMETERS>{
  {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETERS); return com.intellij.psi.TokenType.WHITE_SPACE; }
- "("                         { yybegin(WAITING_FOR_PARAMETER_NAME);  return BRACKET_OPEN; }
- "["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_OPEN; }
+ "("                         { yybegin(WAITING_FOR_PARAMETER_NAME);  return PARENTHESES_OPEN; }
+ "["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return BRACKET_OPEN; }
  "}"                         { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
  "{"                         { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
  {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
@@ -263,15 +239,15 @@ KEYWORD_NIL="nil"
 }
 <WAITING_FOR_PARAMETER_TYPE>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETER_TYPE); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  ")"                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE; }
+  ")"                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return PARENTHESES_CLOSE; }
   ","                         { yybegin(WAITING_FOR_PARAMETER_NAME); return COMMA; }
   {WORD}                      { yybegin(WAITING_FOR_PARAMETER_TYPE); return PARAMETER_TYPE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 <WAITING_FOR_NEXT_STATE_NAME>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_NEXT_STATE_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  "["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_OPEN; }
-  "]"                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return GUARD_CLOSE; }
+  "["                         { yybegin(WAITING_FOR_GUARD_RAW_CODE); return BRACKET_OPEN; }
+  "]"                         { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE; }
   "{"                         { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
   {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
   {WORD}                      { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NEXT_STATE_NAME; }
@@ -286,7 +262,7 @@ KEYWORD_NIL="nil"
 
 <WAITING_FOR_ACTIONS>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_ACTIONS); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  "("                         { yybegin(WAITING_FOR_ARGUMENTS);  return BRACKET_OPEN; }
+  "("                         { yybegin(WAITING_FOR_ARGUMENTS);  return PARENTHESES_OPEN; }
   ";"                         { yybegin(WAITING_FOR_ACTIONS); return SEMICOLON; }
   "}"                         { yybegin(WAITING_FOR_TRANSITIONS); return BRACE_CLOSE; }
   {WORD}                      { yybegin(WAITING_FOR_ACTIONS); return ACTION_NAME; }
@@ -296,7 +272,7 @@ KEYWORD_NIL="nil"
 <WAITING_FOR_ARGUMENTS>{
   {WHITE_SPACE}               { yybegin(WAITING_FOR_ARGUMENTS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   ","                         { yybegin(WAITING_FOR_ARGUMENTS); return COMMA; }
-  ")"                         { yybegin(WAITING_FOR_ACTIONS); return BRACKET_CLOSE; }
+  ")"                         { yybegin(WAITING_FOR_ACTIONS); return PARENTHESES_CLOSE; }
   {WORD}                      { yybegin(WAITING_FOR_ARGUMENTS); return ARGUMENT_STATEMENT;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }

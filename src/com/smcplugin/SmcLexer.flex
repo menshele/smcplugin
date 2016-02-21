@@ -2,6 +2,8 @@ package com.smcplugin;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import static com.smcplugin.psi.SmcTypes.*;
 
 %%
@@ -19,6 +21,11 @@ import static com.smcplugin.psi.SmcTypes.*;
   public void yypopState() {
     yybegin(stack.pop());
   }
+  private static final Pattern JAVA_LITERAL_PATTERN = Pattern.compile("\"(?:\\\\[\\\\'\"tnbfru01234567]|[^\\\\\"])*?\"");
+  public IElementType validateJavaString(CharSequence match) {
+    Matcher matcher = JAVA_LITERAL_PATTERN.matcher(match);
+    return matcher.matches()? STRING_LITERAL: com.intellij.psi.TokenType.BAD_CHARACTER;
+  }
 %}
 
 %public
@@ -34,7 +41,9 @@ WHITE_SPACE=({LINE_WS}|{EOL})+
 VERBATIM_CODE=(.*|{EOL})*
 GUARD_RAW_CODE=(.*|{EOL})*
 WORD=[A-Za-z][A-Za-z0-9_.]*| [A-Za-z][A-Za-z0-9_.]*{EOL}
-WORD_IN_ARGUMENTS=[\"][A-Za-z0-9_.\\\*\;\:\,\:\'\"]*[\"]
+//JAVA_LITERAL_CHAR=[\ \t\fA-Za-z0-9_-.\\\*\;\:\,\:\'!|\\\/\(\)\{\}]
+//WORD_IN_ARGUMENTS=[\"]([\ \t\fA-Za-z0-9_-.\%\*\_\:\,\:\'\"!|\/\(\)\{\}])*[\"]
+WORD_IN_ARGUMENTS=\"(.*)\"
 CONTEXT_CLASS_NAME={WORD}
 FSM_CLASS={WORD}
 FSM_FILE={WORD}
@@ -281,6 +290,6 @@ BLOCK_COMMENT="/"\*(.|\n)*\*"/"
   ","                         { yybegin(WAITING_FOR_ARGUMENTS); return COMMA; }
   ")"                         { yybegin(WAITING_FOR_ACTIONS); return PARENTHESES_CLOSE; }
   {WORD}                      { yybegin(WAITING_FOR_ARGUMENTS); return ARGUMENT_STATEMENT;}
-  {WORD_IN_ARGUMENTS}         { yybegin(WAITING_FOR_ARGUMENTS); return STRING_LITERAL;}
+  {WORD_IN_ARGUMENTS}         { yybegin(WAITING_FOR_ARGUMENTS); return validateJavaString(yytext());}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }

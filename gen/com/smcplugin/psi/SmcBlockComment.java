@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcMap extends PsiElement {
-
-  @NotNull
-  List<SmcComment> getCommentList();
-
-  @Nullable
-  SmcStates getStates();
+public interface SmcBlockComment extends PsiElement {
 
 }

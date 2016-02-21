@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface SmcTransitions extends PsiElement {
 
   @NotNull
+  List<SmcComment> getCommentList();
+
+  @NotNull
   List<SmcTransition> getTransitionList();
 
 }

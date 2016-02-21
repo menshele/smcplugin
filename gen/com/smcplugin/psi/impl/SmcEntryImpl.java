@@ -28,4 +28,10 @@ public class SmcEntryImpl extends ASTWrapperPsiElement implements SmcEntry {
     return findChildByClass(SmcActions.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface SmcParameters extends PsiElement {
 
   @NotNull
+  List<SmcComment> getCommentList();
+
+  @NotNull
   SmcParameter getParameter();
 
   @Nullable

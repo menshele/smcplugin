@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcState extends PsiElement {
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
   @Nullable
   SmcEntry getEntry();
 

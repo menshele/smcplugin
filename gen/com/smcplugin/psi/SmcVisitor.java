@@ -23,7 +23,15 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitBlockComment(@NotNull SmcBlockComment o) {
+    visitPsiElement(o);
+  }
+
   public void visitClassName(@NotNull SmcClassName o) {
+    visitPsiElement(o);
+  }
+
+  public void visitComment(@NotNull SmcComment o) {
     visitPsiElement(o);
   }
 

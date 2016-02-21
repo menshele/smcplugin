@@ -22,4 +22,10 @@ public class SmcGuardImpl extends ASTWrapperPsiElement implements SmcGuard {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

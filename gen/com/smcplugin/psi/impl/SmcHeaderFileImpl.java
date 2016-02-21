@@ -22,4 +22,10 @@ public class SmcHeaderFileImpl extends ASTWrapperPsiElement implements SmcHeader
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

@@ -20,7 +20,9 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Action Name", SmcSyntaxHighlighter.SMC_ACTION_NAME),
             new AttributesDescriptor("Line Comment", SmcSyntaxHighlighter.SMC_LINE_COMMENT),
-            new AttributesDescriptor("Block Comment", SmcSyntaxHighlighter.SMC_BLOCK_COMMENT),
+            new AttributesDescriptor("Block Comment Start", SmcSyntaxHighlighter.SMC_BLOCK_COMMENT_OPEN),
+            new AttributesDescriptor("Block Comment Content", SmcSyntaxHighlighter.SMC_BLOCK_COMMENT_CONTENT),
+            new AttributesDescriptor("Block Comment End", SmcSyntaxHighlighter.SMC_BLOCK_COMMENT_CLOSE),
             new AttributesDescriptor("Braces", SmcSyntaxHighlighter.SMC_BRACES),
             new AttributesDescriptor("Parentheses", SmcSyntaxHighlighter.SMC_PARENTHESES),
             new AttributesDescriptor("Brackets", SmcSyntaxHighlighter.SMC_BRACKETS),
@@ -37,9 +39,9 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("State Name", SmcSyntaxHighlighter.SMC_STATE_NAME),
             new AttributesDescriptor("Start State Name", SmcSyntaxHighlighter.SMC_START_STATE_NAME),
             new AttributesDescriptor("Transition Name", SmcSyntaxHighlighter.SMC_TRANSITION_NAME),
-            new AttributesDescriptor("Transition Parameter", SmcSyntaxHighlighter.SMC_PARAMETER),
-            new AttributesDescriptor("Other", SmcSyntaxHighlighter.SMC_DEFAULT),
-
+            new AttributesDescriptor("Transition Parameter Name", SmcSyntaxHighlighter.SMC_PARAMETER_NAME),
+            new AttributesDescriptor("Transition Parameter Type", SmcSyntaxHighlighter.SMC_PARAMETER_TYPE),
+            new AttributesDescriptor("Other", SmcSyntaxHighlighter.SMC_DEFAULT)
     };
 
     @Nullable

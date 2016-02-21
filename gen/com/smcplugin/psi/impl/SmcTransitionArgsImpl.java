@@ -23,6 +23,12 @@ public class SmcTransitionArgsImpl extends ASTWrapperPsiElement implements SmcTr
   }
 
   @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  @Override
   @Nullable
   public SmcParameters getParameters() {
     return findChildByClass(SmcParameters.class);

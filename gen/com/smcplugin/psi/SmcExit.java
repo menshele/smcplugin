@@ -10,4 +10,7 @@ public interface SmcExit extends PsiElement {
   @Nullable
   SmcActions getActions();
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
 }

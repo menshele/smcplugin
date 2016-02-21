@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcFsmClass extends PsiElement {
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
 }

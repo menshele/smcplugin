@@ -23,6 +23,12 @@ public class SmcStateImpl extends ASTWrapperPsiElement implements SmcState {
   }
 
   @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  @Override
   @Nullable
   public SmcEntry getEntry() {
     return findChildByClass(SmcEntry.class);

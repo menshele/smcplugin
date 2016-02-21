@@ -13,4 +13,7 @@ public interface SmcActions extends PsiElement {
   @Nullable
   SmcActions getActions();
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
 }

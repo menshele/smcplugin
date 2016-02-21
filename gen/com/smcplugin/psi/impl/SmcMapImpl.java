@@ -23,6 +23,12 @@ public class SmcMapImpl extends ASTWrapperPsiElement implements SmcMap {
   }
 
   @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  @Override
   @Nullable
   public SmcStates getStates() {
     return findChildByClass(SmcStates.class);

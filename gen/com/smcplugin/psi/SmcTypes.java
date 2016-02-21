@@ -12,7 +12,9 @@ public interface SmcTypes {
   IElementType ACTION = new SmcElementType("ACTION");
   IElementType ACTIONS = new SmcElementType("ACTIONS");
   IElementType ARGUMENTS = new SmcElementType("ARGUMENTS");
+  IElementType BLOCK_COMMENT = new SmcElementType("BLOCK_COMMENT");
   IElementType CLASS_NAME = new SmcElementType("CLASS_NAME");
+  IElementType COMMENT = new SmcElementType("COMMENT");
   IElementType DECLARE = new SmcElementType("DECLARE");
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
@@ -43,7 +45,9 @@ public interface SmcTypes {
   IElementType ACTION_NAME = new SmcTokenType("ACTION_NAME");
   IElementType ARGUMENT_STATEMENT = new SmcTokenType("ARGUMENT_STATEMENT");
   IElementType ASSIGN_OP = new SmcTokenType("=");
-  IElementType BLOCK_COMMENT = new SmcTokenType("BLOCK_COMMENT");
+  IElementType BLOCK_COMMENT_CLOSE = new SmcTokenType("BLOCK_COMMENT_CLOSE");
+  IElementType BLOCK_COMMENT_CONTENT = new SmcTokenType("BLOCK_COMMENT_CONTENT");
+  IElementType BLOCK_COMMENT_OPEN = new SmcTokenType("BLOCK_COMMENT_OPEN");
   IElementType BRACE_CLOSE = new SmcTokenType("}");
   IElementType BRACE_OPEN = new SmcTokenType("{");
   IElementType BRACKET_CLOSE = new SmcTokenType("]");
@@ -52,7 +56,6 @@ public interface SmcTypes {
   IElementType COLON = new SmcTokenType(":");
   IElementType COMMA = new SmcTokenType(",");
   IElementType CONTEXT_CLASS_NAME = new SmcTokenType("CONTEXT_CLASS_NAME");
-  IElementType CRLF = new SmcTokenType("CRLF");
   IElementType DECLARE_KEYWORD = new SmcTokenType("%declare");
   IElementType DECLARE_STATEMENT = new SmcTokenType("DECLARE_STATEMENT");
   IElementType ENTRY_KEYWORD = new SmcTokenType("Entry");
@@ -113,8 +116,14 @@ public interface SmcTypes {
       else if (type == ARGUMENTS) {
         return new SmcArgumentsImpl(node);
       }
+      else if (type == BLOCK_COMMENT) {
+        return new SmcBlockCommentImpl(node);
+      }
       else if (type == CLASS_NAME) {
         return new SmcClassNameImpl(node);
+      }
+      else if (type == COMMENT) {
+        return new SmcCommentImpl(node);
       }
       else if (type == DECLARE) {
         return new SmcDeclareImpl(node);

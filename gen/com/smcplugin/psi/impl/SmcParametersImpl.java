@@ -24,6 +24,12 @@ public class SmcParametersImpl extends ASTWrapperPsiElement implements SmcParame
 
   @Override
   @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  @Override
+  @NotNull
   public SmcParameter getParameter() {
     return findNotNullChildByClass(SmcParameter.class);
   }

@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcTransitionArgs extends PsiElement {
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
   @Nullable
   SmcParameters getParameters();
 

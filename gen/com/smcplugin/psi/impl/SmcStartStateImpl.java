@@ -22,4 +22,10 @@ public class SmcStartStateImpl extends ASTWrapperPsiElement implements SmcStartS
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

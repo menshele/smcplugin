@@ -28,4 +28,10 @@ public class SmcArgumentsImpl extends ASTWrapperPsiElement implements SmcArgumen
     return findChildByClass(SmcArguments.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

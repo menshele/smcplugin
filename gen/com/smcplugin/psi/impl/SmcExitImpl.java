@@ -28,4 +28,10 @@ public class SmcExitImpl extends ASTWrapperPsiElement implements SmcExit {
     return findChildByClass(SmcActions.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

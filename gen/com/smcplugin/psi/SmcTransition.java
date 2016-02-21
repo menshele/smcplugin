@@ -10,6 +10,9 @@ public interface SmcTransition extends PsiElement {
   @Nullable
   SmcActions getActions();
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
   @Nullable
   SmcGuard getGuard();
 

@@ -22,4 +22,10 @@ public class SmcAccessImpl extends ASTWrapperPsiElement implements SmcAccess {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

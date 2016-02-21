@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcGuard extends PsiElement {
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
 }

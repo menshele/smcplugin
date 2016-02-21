@@ -23,6 +23,12 @@ public class SmcNextStateImpl extends ASTWrapperPsiElement implements SmcNextSta
   }
 
   @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  @Override
   @Nullable
   public SmcPopTransition getPopTransition() {
     return findChildByClass(SmcPopTransition.class);

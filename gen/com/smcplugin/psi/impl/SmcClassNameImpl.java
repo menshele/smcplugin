@@ -22,4 +22,10 @@ public class SmcClassNameImpl extends ASTWrapperPsiElement implements SmcClassNa
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

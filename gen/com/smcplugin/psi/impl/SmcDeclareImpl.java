@@ -22,4 +22,10 @@ public class SmcDeclareImpl extends ASTWrapperPsiElement implements SmcDeclare {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

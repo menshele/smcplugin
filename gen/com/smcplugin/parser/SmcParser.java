@@ -602,13 +602,13 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // START_KEYWORD START_STATE_NAME
+  // START_KEYWORD START_MAP_NAME START_MAP_NAME_STATE_NAME_SEPARATOR START_STATE_NAME
   public static boolean start_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "start_state")) return false;
     if (!nextTokenIs(b, START_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, START_KEYWORD, START_STATE_NAME);
+    r = consumeTokens(b, 0, START_KEYWORD, START_MAP_NAME, START_MAP_NAME_STATE_NAME_SEPARATOR, START_STATE_NAME);
     exit_section_(b, m, START_STATE, r);
     return r;
   }

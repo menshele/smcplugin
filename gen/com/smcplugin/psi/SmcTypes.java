@@ -86,6 +86,8 @@ public interface SmcTypes {
   IElementType SEMICOLON = new SmcTokenType(";");
   IElementType SLASH_SIGN = new SmcTokenType("/");
   IElementType START_KEYWORD = new SmcTokenType("%start");
+  IElementType START_MAP_NAME = new SmcTokenType("START_MAP_NAME");
+  IElementType START_MAP_NAME_STATE_NAME_SEPARATOR = new SmcTokenType("START_MAP_NAME_STATE_NAME_SEPARATOR");
   IElementType START_STATE_NAME = new SmcTokenType("START_STATE_NAME");
   IElementType STATE_NAME = new SmcTokenType("STATE_NAME");
   IElementType STATIC_JAVA_KEYWORD = new SmcTokenType("STATIC_JAVA_KEYWORD");

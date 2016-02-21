@@ -13,7 +13,7 @@ MainMap
 %%
 Locked
 Entry {
-   print(param, "Entry");
+   print(param, "Entrya \n \f");
 }
 {
 

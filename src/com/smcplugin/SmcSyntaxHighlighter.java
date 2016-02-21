@@ -32,8 +32,10 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SMC_PARAMETER = createTextAttributesKey("SMC_PARAMETER", DefaultLanguageHighlighterColors.PARAMETER);
     public static final TextAttributesKey SMC_TRANSITION_NAME = createTextAttributesKey("SMC_TRANSITION_NAME", DefaultLanguageHighlighterColors.STATIC_FIELD);
     public static final TextAttributesKey SMC_ACTION_NAME = createTextAttributesKey("SMC_ACTION_NAME", DefaultLanguageHighlighterColors.FUNCTION_CALL);
-    public static final TextAttributesKey SMC_STATE_MAP_NAME = createTextAttributesKey("SMC_STATE_MAP", DefaultLanguageHighlighterColors.CONSTANT);
-    public static final TextAttributesKey SMC_STATE_NAME = createTextAttributesKey("SMC_STATE_MAP", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey SMC_MAP_NAME = createTextAttributesKey("SMC_MAP_NAME", DefaultLanguageHighlighterColors.CONSTANT);
+    public static final TextAttributesKey SMC_START_MAP_NAME = createTextAttributesKey("SMC_START_MAP_NAME", DefaultLanguageHighlighterColors.CONSTANT);
+    public static final TextAttributesKey SMC_STATE_NAME = createTextAttributesKey("SMC_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey SMC_START_STATE_NAME = createTextAttributesKey("SMC_START_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
     public static final TextAttributesKey SMC_LINE_COMMENT = createTextAttributesKey("SMC_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey SMC_BLOCK_COMMENT = createTextAttributesKey("SMC_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey SMC_STRING_LITERAL = createTextAttributesKey("SMC_STRING_LITERAL", DefaultLanguageHighlighterColors.STRING);
@@ -47,8 +49,10 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] SMC_VERBATIM_BRACKETS_KEYS = new TextAttributesKey[]{SMC_VERBATIM_BRACKETS};
     private static final TextAttributesKey[] SMC_VERBATIM_CODE_KEYS = new TextAttributesKey[]{SMC_VERBATIM_CODE};
     private static final TextAttributesKey[] SMS_KEYWORD_KEYS = new TextAttributesKey[]{SMS_KEYWORD};
-    private static final TextAttributesKey[] SMC_STATE_MAP_NAME_KEYS = new TextAttributesKey[]{SMC_STATE_MAP_NAME};
+    private static final TextAttributesKey[] SMC_MAP_NAME_KEYS = new TextAttributesKey[]{SMC_MAP_NAME};
+    private static final TextAttributesKey[] SMC_START_MAP_NAME_KEYS = new TextAttributesKey[]{SMC_START_MAP_NAME};
     private static final TextAttributesKey[] SMC_STATE_NAME_KEYS = new TextAttributesKey[]{SMC_STATE_NAME};
+    private static final TextAttributesKey[] SMC_START_STATE_NAME_KEYS = new TextAttributesKey[]{SMC_START_STATE_NAME};
     private static final TextAttributesKey[] SMC_ACTION_NAME_KEYS = new TextAttributesKey[]{SMC_ACTION_NAME};
     private static final TextAttributesKey[] SMC_TRANSITION_NAME_KEYS = new TextAttributesKey[]{SMC_TRANSITION_NAME};
     private static final TextAttributesKey[] SMC_LINE_COMMENT_KEYS = new TextAttributesKey[]{SMC_LINE_COMMENT};
@@ -90,9 +94,13 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
         } else if (ACTION_NAME.equals(tokenType)) {
             return SMC_ACTION_NAME_KEYS;
         } else if (MAP_NAME.equals(tokenType)) {
-            return SMC_STATE_MAP_NAME_KEYS;
+            return SMC_MAP_NAME_KEYS;
         } else if (STATE_NAME.equals(tokenType) || NEXT_STATE_NAME.equals(tokenType)) {
             return SMC_STATE_NAME_KEYS;
+        } else if (START_MAP_NAME.equals(tokenType)) {
+            return SMC_START_MAP_NAME_KEYS;
+        } else if (START_STATE_NAME.equals(tokenType)) {
+            return SMC_START_STATE_NAME_KEYS;
         } else if (VERBATIM_OPEN.equals(tokenType) || VERBATIM_CLOSE.equals(tokenType)) {
             return SMC_VERBATIM_BRACKETS_KEYS;
         } else if (VERBATIM_CODE.equals(tokenType)) {

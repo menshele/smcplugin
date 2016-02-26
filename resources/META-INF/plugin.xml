@@ -30,6 +30,7 @@
         <lang.parserDefinition language="smc" implementationClass="com.smcplugin.SmcParserDefinition"/>
         <lang.syntaxHighlighterFactory key="smc" implementationClass="com.smcplugin.SmcSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="com.smcplugin.SmcColorSettingsPage"/>
+        <lang.commenter language="smc" implementationClass="com.smcplugin.SmcCommenter"/>
         <!--       <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
             <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>

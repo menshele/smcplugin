@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * Created by lemen on 30.01.2016.
  */
 public class SmcCommenter implements Commenter, CustomUncommenter {
-    private static final Pattern COMMENTS_PATTERN = Pattern.compile("(/\\*.*?\\*/)", Pattern.MULTILINE | Pattern.DOTALL);
+    private static final Pattern COMMENTS_PATTERN = Pattern.compile("(^\\s*/\\*.*?\\*/)", Pattern.MULTILINE | Pattern.DOTALL);
     public static final Pattern BLOCK_COMMENT_START = Pattern.compile("(^\\s*/\\*\\s^|/\\*)", Pattern.MULTILINE);
     public static final Pattern BLOCK_COMMENT_END = Pattern.compile("($\\s*\\*/\\s*$|\\*/)", Pattern.MULTILINE);
 

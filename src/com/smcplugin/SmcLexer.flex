@@ -292,21 +292,6 @@ MAP_KEYWORD="%map"
   {WORD}                      { yybegin(WAITING_FOR_NEXT_STATE_NAME); return TRANSITION_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
-/*<WAITING_FOR_PARAMETERS>{
-  {LINE_COMMENT}              { return LINE_COMMENT; }
-  {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETERS); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
-  {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_NEXT_STATE_NAME); return PARENTHESES_OPEN; }
-
-
-  {BRACKET_OPEN}              { yybegin(WAITING_FOR_GUARD_RAW_CODE); return BRACKET_OPEN; }
-  {BRACE_CLOSE}               { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
-  {BRACE_OPEN}                { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
-  {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
-  {WORD}                      { yybegin(WAITING_FOR_PARAMETERS); return NEXT_STATE_NAME; }
-  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
-}*/
-
 
 <WAITING_FOR_PARAMETER_NAME>{
   {LINE_COMMENT}              { return LINE_COMMENT; }

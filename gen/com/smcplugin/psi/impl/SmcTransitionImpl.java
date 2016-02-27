@@ -48,6 +48,18 @@ public class SmcTransitionImpl extends ASTWrapperPsiElement implements SmcTransi
 
   @Override
   @Nullable
+  public SmcPopTransition getPopTransition() {
+    return findChildByClass(SmcPopTransition.class);
+  }
+
+  @Override
+  @Nullable
+  public SmcPushTransition getPushTransition() {
+    return findChildByClass(SmcPushTransition.class);
+  }
+
+  @Override
+  @Nullable
   public SmcTransitionArgs getTransitionArgs() {
     return findChildByClass(SmcTransitionArgs.class);
   }

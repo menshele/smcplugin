@@ -38,6 +38,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == BLOCK_COMMENT) {
       r = block_comment(b, 0);
     }
+    else if (t == CALLBACK_TRANSITION) {
+      r = callback_transition(b, 0);
+    }
     else if (t == CLASS_NAME) {
       r = class_name(b, 0);
     }
@@ -86,11 +89,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == PARAMETERS) {
       r = parameters(b, 0);
     }
-    else if (t == POP_ARGUMENTS) {
-      r = pop_arguments(b, 0);
-    }
     else if (t == POP_TRANSITION) {
       r = pop_transition(b, 0);
+    }
+    else if (t == PUSH_PROXY_STATE) {
+      r = push_proxy_state(b, 0);
+    }
+    else if (t == PUSH_STATE) {
+      r = push_state(b, 0);
     }
     else if (t == PUSH_TRANSITION) {
       r = push_transition(b, 0);
@@ -408,6 +414,38 @@ public class SmcParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "block_comment_1")) return false;
     consumeToken(b, BLOCK_COMMENT_CONTENT);
     return true;
+  }
+
+  /* ********************************************************** */
+  // PARENTHESES_OPEN CALLBACK_TRANSITION_NAME (COMMA arguments)? PARENTHESES_CLOSE
+  public static boolean callback_transition(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition")) return false;
+    if (!nextTokenIs(b, PARENTHESES_OPEN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, PARENTHESES_OPEN, CALLBACK_TRANSITION_NAME);
+    r = r && callback_transition_2(b, l + 1);
+    r = r && consumeToken(b, PARENTHESES_CLOSE);
+    exit_section_(b, m, CALLBACK_TRANSITION, r);
+    return r;
+  }
+
+  // (COMMA arguments)?
+  private static boolean callback_transition_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_2")) return false;
+    callback_transition_2_0(b, l + 1);
+    return true;
+  }
+
+  // COMMA arguments
+  private static boolean callback_transition_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && arguments(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -909,47 +947,33 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment* |
-  //               push_transition |
-  //               pop_transition
+  // comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
   public static boolean next_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "next_state")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<next state>");
     r = next_state_0(b, l + 1);
-    if (!r) r = push_transition(b, l + 1);
-    if (!r) r = pop_transition(b, l + 1);
+    r = r && next_state_1(b, l + 1);
+    r = r && next_state_2(b, l + 1);
     exit_section_(b, l, m, NEXT_STATE, r, false, null);
     return r;
   }
 
-  // comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
+  // comment*
   private static boolean next_state_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "next_state_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = next_state_0_0(b, l + 1);
-    r = r && next_state_0_1(b, l + 1);
-    r = r && next_state_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // comment*
-  private static boolean next_state_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "next_state_0_0")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "next_state_0_0", c)) break;
+      if (!empty_element_parsed_guard_(b, "next_state_0", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // NEXT_STATE_NAME|NIL_KEYWORD
-  private static boolean next_state_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "next_state_0_1")) return false;
+  private static boolean next_state_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "next_state_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, NEXT_STATE_NAME);
@@ -959,12 +983,12 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   // comment*
-  private static boolean next_state_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "next_state_0_2")) return false;
+  private static boolean next_state_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "next_state_2")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "next_state_0_2", c)) break;
+      if (!empty_element_parsed_guard_(b, "next_state_2", c)) break;
       c = current_position_(b);
     }
     return true;
@@ -1122,106 +1146,114 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // POP_ARGUMENT_RAW_CODE |
-  //                  POP_ARGUMENT_RAW_CODE COMMA pop_arguments
-  public static boolean pop_arguments(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "pop_arguments")) return false;
-    if (!nextTokenIs(b, POP_ARGUMENT_RAW_CODE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, POP_ARGUMENT_RAW_CODE);
-    if (!r) r = pop_arguments_1(b, l + 1);
-    exit_section_(b, m, POP_ARGUMENTS, r);
-    return r;
-  }
-
-  // POP_ARGUMENT_RAW_CODE COMMA pop_arguments
-  private static boolean pop_arguments_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "pop_arguments_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, POP_ARGUMENT_RAW_CODE, COMMA);
-    r = r && pop_arguments(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // POP_KEYWORD |
-  //                   POP_KEYWORD PARENTHESES_OPEN WORD? PARENTHESES_CLOSE |
-  //                   POP_KEYWORD PARENTHESES_OPEN WORD COMMA pop_arguments* PARENTHESES_CLOSE
+  // POP_KEYWORD callback_transition?
   public static boolean pop_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition")) return false;
     if (!nextTokenIs(b, POP_KEYWORD)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeToken(b, POP_KEYWORD);
-    if (!r) r = pop_transition_1(b, l + 1);
-    if (!r) r = pop_transition_2(b, l + 1);
-    exit_section_(b, m, POP_TRANSITION, r);
-    return r;
+    p = r; // pin = 1
+    r = r && pop_transition_1(b, l + 1);
+    exit_section_(b, l, m, POP_TRANSITION, r, p, null);
+    return r || p;
   }
 
-  // POP_KEYWORD PARENTHESES_OPEN WORD? PARENTHESES_CLOSE
+  // callback_transition?
   private static boolean pop_transition_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, POP_KEYWORD, PARENTHESES_OPEN);
-    r = r && pop_transition_1_2(b, l + 1);
-    r = r && consumeToken(b, PARENTHESES_CLOSE);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // WORD?
-  private static boolean pop_transition_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "pop_transition_1_2")) return false;
-    consumeToken(b, WORD);
-    return true;
-  }
-
-  // POP_KEYWORD PARENTHESES_OPEN WORD COMMA pop_arguments* PARENTHESES_CLOSE
-  private static boolean pop_transition_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "pop_transition_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, POP_KEYWORD, PARENTHESES_OPEN, WORD, COMMA);
-    r = r && pop_transition_2_4(b, l + 1);
-    r = r && consumeToken(b, PARENTHESES_CLOSE);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // pop_arguments*
-  private static boolean pop_transition_2_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "pop_transition_2_4")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!pop_arguments(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "pop_transition_2_4", c)) break;
-      c = current_position_(b);
-    }
+    callback_transition(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // WORD SLASH_SIGN PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE |
-  //                    NIL_KEYWORD SLASH_SIGN PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE |
-  //                    PUSH_KEYWORD PARENTHESES_OPEN WORD PARENTHESES_CLOSE
+  // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) SLASH_SIGN
+  public static boolean push_proxy_state(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_proxy_state")) return false;
+    if (!nextTokenIs(b, "<push proxy state>", NIL_KEYWORD, PUSH_PROXY_STATE_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<push proxy state>");
+    r = push_proxy_state_0(b, l + 1);
+    r = r && consumeToken(b, SLASH_SIGN);
+    exit_section_(b, l, m, PUSH_PROXY_STATE, r, false, null);
+    return r;
+  }
+
+  // PUSH_PROXY_STATE_NAME|NIL_KEYWORD
+  private static boolean push_proxy_state_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_proxy_state_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PUSH_PROXY_STATE_NAME);
+    if (!r) r = consumeToken(b, NIL_KEYWORD);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (PUSH_MAP_NAME MAP_NAME_STATE_NAME_SEPARATOR)? PUSH_STATE_NAME
+  public static boolean push_state(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_state")) return false;
+    if (!nextTokenIs(b, "<push state>", PUSH_MAP_NAME, PUSH_STATE_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<push state>");
+    r = push_state_0(b, l + 1);
+    r = r && consumeToken(b, PUSH_STATE_NAME);
+    exit_section_(b, l, m, PUSH_STATE, r, false, null);
+    return r;
+  }
+
+  // (PUSH_MAP_NAME MAP_NAME_STATE_NAME_SEPARATOR)?
+  private static boolean push_state_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_state_0")) return false;
+    push_state_0_0(b, l + 1);
+    return true;
+  }
+
+  // PUSH_MAP_NAME MAP_NAME_STATE_NAME_SEPARATOR
+  private static boolean push_state_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_state_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, PUSH_MAP_NAME, MAP_NAME_STATE_NAME_SEPARATOR);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (push_proxy_state)? PUSH_KEYWORD PARENTHESES_OPEN push_state PARENTHESES_CLOSE
   public static boolean push_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_transition")) return false;
-    boolean r;
+    boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, "<push transition>");
-    r = parseTokens(b, 0, WORD, SLASH_SIGN, PUSH_KEYWORD, PARENTHESES_OPEN, WORD, PARENTHESES_CLOSE);
-    if (!r) r = parseTokens(b, 0, NIL_KEYWORD, SLASH_SIGN, PUSH_KEYWORD, PARENTHESES_OPEN, WORD, PARENTHESES_CLOSE);
-    if (!r) r = parseTokens(b, 0, PUSH_KEYWORD, PARENTHESES_OPEN, WORD, PARENTHESES_CLOSE);
-    exit_section_(b, l, m, PUSH_TRANSITION, r, false, null);
+    r = push_transition_0(b, l + 1);
+    r = r && consumeTokens(b, 1, PUSH_KEYWORD, PARENTHESES_OPEN);
+    p = r; // pin = 2
+    r = r && report_error_(b, push_state(b, l + 1));
+    r = p && consumeToken(b, PARENTHESES_CLOSE) && r;
+    exit_section_(b, l, m, PUSH_TRANSITION, r, p, null);
+    return r || p;
+  }
+
+  // (push_proxy_state)?
+  private static boolean push_transition_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_transition_0")) return false;
+    push_transition_0_0(b, l + 1);
+    return true;
+  }
+
+  // (push_proxy_state)
+  private static boolean push_transition_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_transition_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = push_proxy_state(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // START_KEYWORD comment* START_MAP_NAME comment* START_MAP_NAME_STATE_NAME_SEPARATOR comment* START_STATE_NAME
+  // START_KEYWORD comment* START_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR comment* START_STATE_NAME
   public static boolean start_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "start_state")) return false;
     if (!nextTokenIs(b, START_KEYWORD)) return false;
@@ -1231,7 +1263,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     r = r && start_state_1(b, l + 1);
     r = r && consumeToken(b, START_MAP_NAME);
     r = r && start_state_3(b, l + 1);
-    r = r && consumeToken(b, START_MAP_NAME_STATE_NAME_SEPARATOR);
+    r = r && consumeToken(b, MAP_NAME_STATE_NAME_SEPARATOR);
     r = r && start_state_5(b, l + 1);
     r = r && consumeToken(b, START_STATE_NAME);
     exit_section_(b, m, START_STATE, r);
@@ -1452,7 +1484,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* next_state comment* BRACE_OPEN comment* actions comment* BRACE_CLOSE
+  // comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* BRACE_OPEN comment* actions comment* BRACE_CLOSE
   public static boolean transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "transition")) return false;
     boolean r, p;
@@ -1465,7 +1497,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     r = p && report_error_(b, transition_4(b, l + 1)) && r;
     r = p && report_error_(b, transition_5(b, l + 1)) && r;
     r = p && report_error_(b, transition_6(b, l + 1)) && r;
-    r = p && report_error_(b, next_state(b, l + 1)) && r;
+    r = p && report_error_(b, transition_7(b, l + 1)) && r;
     r = p && report_error_(b, transition_8(b, l + 1)) && r;
     r = p && report_error_(b, consumeToken(b, BRACE_OPEN)) && r;
     r = p && report_error_(b, transition_10(b, l + 1)) && r;
@@ -1536,6 +1568,18 @@ public class SmcParser implements PsiParser, LightPsiParser {
       c = current_position_(b);
     }
     return true;
+  }
+
+  // push_transition|pop_transition|next_state
+  private static boolean transition_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "transition_7")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = push_transition(b, l + 1);
+    if (!r) r = pop_transition(b, l + 1);
+    if (!r) r = next_state(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   // comment*

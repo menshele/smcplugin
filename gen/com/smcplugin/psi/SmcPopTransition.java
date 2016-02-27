@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcPopTransition extends PsiElement {
 
-  @NotNull
-  List<SmcPopArguments> getPopArgumentsList();
+  @Nullable
+  SmcCallbackTransition getCallbackTransition();
 
 }

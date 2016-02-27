@@ -11,21 +11,15 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcPopArgumentsImpl extends ASTWrapperPsiElement implements SmcPopArguments {
+public class SmcPushProxyStateImpl extends ASTWrapperPsiElement implements SmcPushProxyState {
 
-  public SmcPopArgumentsImpl(ASTNode node) {
+  public SmcPushProxyStateImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPopArguments(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPushProxyState(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public SmcPopArguments getPopArguments() {
-    return findChildByClass(SmcPopArguments.class);
   }
 
 }

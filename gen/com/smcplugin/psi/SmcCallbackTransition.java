@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcPushTransition extends PsiElement {
+public interface SmcCallbackTransition extends PsiElement {
 
   @Nullable
-  SmcPushProxyState getPushProxyState();
-
-  @Nullable
-  SmcPushState getPushState();
+  SmcArguments getArguments();
 
 }

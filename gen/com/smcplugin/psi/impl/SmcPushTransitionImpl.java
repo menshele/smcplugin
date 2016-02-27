@@ -22,4 +22,16 @@ public class SmcPushTransitionImpl extends ASTWrapperPsiElement implements SmcPu
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public SmcPushProxyState getPushProxyState() {
+    return findChildByClass(SmcPushProxyState.class);
+  }
+
+  @Override
+  @Nullable
+  public SmcPushState getPushState() {
+    return findChildByClass(SmcPushState.class);
+  }
+
 }

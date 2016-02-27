@@ -11,21 +11,15 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcNextStateImpl extends ASTWrapperPsiElement implements SmcNextState {
+public class SmcPushStateImpl extends ASTWrapperPsiElement implements SmcPushState {
 
-  public SmcNextStateImpl(ASTNode node) {
+  public SmcPushStateImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitNextState(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPushState(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
 }

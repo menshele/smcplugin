@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcPopArguments extends PsiElement {
-
-  @Nullable
-  SmcPopArguments getPopArguments();
+public interface SmcPushProxyState extends PsiElement {
 
 }

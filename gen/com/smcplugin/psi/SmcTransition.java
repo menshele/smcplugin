@@ -20,6 +20,12 @@ public interface SmcTransition extends PsiElement {
   SmcNextState getNextState();
 
   @Nullable
+  SmcPopTransition getPopTransition();
+
+  @Nullable
+  SmcPushTransition getPushTransition();
+
+  @Nullable
   SmcTransitionArgs getTransitionArgs();
 
 }

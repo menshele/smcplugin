@@ -10,10 +10,4 @@ public interface SmcNextState extends PsiElement {
   @NotNull
   List<SmcComment> getCommentList();
 
-  @Nullable
-  SmcPopTransition getPopTransition();
-
-  @Nullable
-  SmcPushTransition getPushTransition();
-
 }

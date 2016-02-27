@@ -39,7 +39,7 @@ EOL="\r"|"\n"|"\r\n"
 LINE_WS=[\ \t\f]
 WHITE_SPACE=({LINE_WS}|{EOL})+
 VERBATIM_CODE=(.*|{EOL})*
-GUARD_RAW_CODE=(.*|{EOL})*
+GUARD_RAW_CODE=([^\]] | ]+ [^\n\r\]])*
 WORD=[A-Za-z][A-Za-z0-9_.]*| [A-Za-z][A-Za-z0-9_.]*{EOL}
 WORD_IN_ARGUMENTS=\"(.*)\"
 CONTEXT_CLASS_NAME={WORD}
@@ -51,6 +51,8 @@ DECLARE_STATEMENT={WORD}
 INCLUDE_FILE_NAME={WORD}
 MAP_NAME={WORD}
 STATE_NAME={WORD}
+PUSH_PROXY_STATE_NAME={WORD}
+CALLBACK_TRANSITION_NAME={WORD}
 START_STATE_NAME={WORD}|{WORD}{EOL}
 ACCESS_LEVEL="public"|"protected"|"private"
 IMPORT_STATEMENT=[A-Za-z][A-Za-z0-9_.\*]*| [A-Za-z][A-Za-z0-9_.\*]*{EOL}
@@ -65,7 +67,7 @@ VERBATIM_OPEN="%{"
 VERBATIM_CLOSE="%}"
 VERBATIM_CODE=( [^%] | %+ [^}%] )*
 STATIC_KEYWORD="static"
-START_STATE_SEPARATOR="::"
+MAP_STATE_SEPARATOR="::"
 MAP_SECTION_BOUND="%%"
 ENTRY_KEYWORD="Entry"
 EXIT_KEYWORD="Exit"
@@ -76,8 +78,12 @@ PARENTHESES_CLOSE=")"
 COMMA=","
 SEMICOLON=";"
 COLON=":"
+SLASH_SIGN="/"
 BRACKET_OPEN="["
 BRACKET_CLOSE="]"
+PUSH_PROXY_STATE_NAME={WORD}\/
+PUSH_KEYWORD="push"
+POP_KEYWORD="pop"
 
 CLASS_KEYWORD="%class"
 PACKAGE_KEYWORD="%package"
@@ -118,6 +124,9 @@ MAP_KEYWORD="%map"
 %state WAITING_FOR_NEXT_STATE_NAME
 %state WAITING_FOR_ACTIONS
 %state IN_BLOCK_COMMENT
+%state WAITING_FOR_POP
+%state WAITING_FOR_PUSH
+%state WAITING_FOR_PUSH_STATE_NAME
 
 %%
 <YYINITIAL> {
@@ -231,7 +240,7 @@ MAP_KEYWORD="%map"
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_START_STATE_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
-  {START_STATE_SEPARATOR}     { yybegin(WAITING_FOR_START_STATE_NAME); return START_MAP_NAME_STATE_NAME_SEPARATOR; }
+  {MAP_STATE_SEPARATOR}       { yybegin(WAITING_FOR_START_STATE_NAME); return MAP_NAME_STATE_NAME_SEPARATOR; }
   {START_STATE_NAME}          { yybegin(YYINITIAL); return START_STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
@@ -254,6 +263,7 @@ MAP_KEYWORD="%map"
   {STATE_NAME}                { yybegin(WAITING_FOR_STATE); return STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
+
 <WAITING_FOR_STATE_ENTRY_EXIT>{
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_STATE_ENTRY_EXIT); return com.intellij.psi.TokenType.WHITE_SPACE; }
@@ -279,21 +289,23 @@ MAP_KEYWORD="%map"
   {WHITE_SPACE}               { yybegin(WAITING_FOR_TRANSITIONS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
   {BRACE_CLOSE}               { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
-  {WORD}                      { yybegin(WAITING_FOR_PARAMETERS); return TRANSITION_NAME; }
+  {WORD}                      { yybegin(WAITING_FOR_NEXT_STATE_NAME); return TRANSITION_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
-<WAITING_FOR_PARAMETERS>{
+/*<WAITING_FOR_PARAMETERS>{
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETERS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
-  {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_PARAMETER_NAME);  return PARENTHESES_OPEN; }
+  {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_NEXT_STATE_NAME); return PARENTHESES_OPEN; }
+
+
   {BRACKET_OPEN}              { yybegin(WAITING_FOR_GUARD_RAW_CODE); return BRACKET_OPEN; }
   {BRACE_CLOSE}               { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
   {BRACE_OPEN}                { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
   {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
   {WORD}                      { yybegin(WAITING_FOR_PARAMETERS); return NEXT_STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
-}
+}*/
 
 
 <WAITING_FOR_PARAMETER_NAME>{
@@ -313,22 +325,55 @@ MAP_KEYWORD="%map"
   {WORD}                      { yybegin(WAITING_FOR_PARAMETER_TYPE); return PARAMETER_TYPE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
+
 <WAITING_FOR_NEXT_STATE_NAME>{
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_NEXT_STATE_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_PARAMETER_NAME);  return PARENTHESES_OPEN; }
   {BRACKET_OPEN}              { yybegin(WAITING_FOR_GUARD_RAW_CODE); return BRACKET_OPEN; }
   {BRACKET_CLOSE}             { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE; }
   {BRACE_OPEN}                { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
-  {KEYWORD_NIL}               { yybegin(WAITING_FOR_PARAMETERS); return NIL_KEYWORD; }
-  {WORD}                      { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NEXT_STATE_NAME; }
+  {BRACE_CLOSE}               { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
+  {PUSH_PROXY_STATE_NAME}     { yybegin(WAITING_FOR_PUSH); yypushback(1);}
+  {KEYWORD_NIL}               { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NIL_KEYWORD; }
+  {POP_KEYWORD}               { yybegin(WAITING_FOR_POP); return POP_KEYWORD; }
+  {STATE_NAME}                { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NEXT_STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
+
+<WAITING_FOR_POP>{
+  {WHITE_SPACE}               { yybegin(WAITING_FOR_POP); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_POP); return PARENTHESES_OPEN; }
+  {COMMA}                     { yypushState(WAITING_FOR_ARGUMENTS); return COMMA; }
+  {BRACE_OPEN}                { yybegin(WAITING_FOR_NEXT_STATE_NAME); yypushback(1); }
+  {CALLBACK_TRANSITION_NAME}  { yybegin(WAITING_FOR_POP); return CALLBACK_TRANSITION_NAME; }
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+<WAITING_FOR_PUSH>{
+  {PUSH_KEYWORD}              { yybegin(WAITING_FOR_PUSH); return PUSH_KEYWORD; }
+  {SLASH_SIGN}                { yybegin(WAITING_FOR_PUSH); return SLASH_SIGN; }
+  {KEYWORD_NIL}               { yybegin(WAITING_FOR_PUSH); return NIL_KEYWORD; }
+  {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_PUSH_STATE_NAME); return PARENTHESES_OPEN; }
+  {PUSH_PROXY_STATE_NAME}     { yybegin(WAITING_FOR_PUSH); return PUSH_PROXY_STATE_NAME;}
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+<WAITING_FOR_PUSH_STATE_NAME>{
+  {PARENTHESES_CLOSE}             { yybegin(WAITING_FOR_NEXT_STATE_NAME); return PARENTHESES_CLOSE; }
+  {MAP_STATE_SEPARATOR}           { yybegin(WAITING_FOR_PUSH_STATE_NAME); return MAP_NAME_STATE_NAME_SEPARATOR; }
+  {MAP_NAME}{MAP_STATE_SEPARATOR} { yybegin(WAITING_FOR_PUSH_STATE_NAME); yypushback(1); return PUSH_MAP_NAME;}
+  {STATE_NAME}                    { yybegin(WAITING_FOR_PUSH_STATE_NAME); return PUSH_STATE_NAME;}
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
 //TODO: Need to implement proper Java Code Parsing one day. http://cui.unige.ch/isi/bnf/JAVA/expression.html
 <WAITING_FOR_GUARD_RAW_CODE>{
-  {LINE_COMMENT}              { return LINE_COMMENT; }
-  {WHITE_SPACE}               { yybegin(WAITING_FOR_GUARD_RAW_CODE); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  {GUARD_RAW_CODE}{BRACKET_CLOSE}         { yybegin(WAITING_FOR_NEXT_STATE_NAME);  yypushback(1); return GUARD_RAW_CODE; }
+  {LINE_COMMENT}                       { return LINE_COMMENT; }
+  {WHITE_SPACE}                        { yybegin(WAITING_FOR_GUARD_RAW_CODE); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {BRACKET_CLOSE}                 { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE;}
+  {GUARD_RAW_CODE}                     { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_RAW_CODE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

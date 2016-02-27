@@ -13,6 +13,7 @@ public interface SmcTypes {
   IElementType ACTIONS = new SmcElementType("ACTIONS");
   IElementType ARGUMENTS = new SmcElementType("ARGUMENTS");
   IElementType BLOCK_COMMENT = new SmcElementType("BLOCK_COMMENT");
+  IElementType CALLBACK_TRANSITION = new SmcElementType("CALLBACK_TRANSITION");
   IElementType CLASS_NAME = new SmcElementType("CLASS_NAME");
   IElementType COMMENT = new SmcElementType("COMMENT");
   IElementType DECLARE = new SmcElementType("DECLARE");
@@ -29,8 +30,9 @@ public interface SmcTypes {
   IElementType PACKAGE_NAME = new SmcElementType("PACKAGE_NAME");
   IElementType PARAMETER = new SmcElementType("PARAMETER");
   IElementType PARAMETERS = new SmcElementType("PARAMETERS");
-  IElementType POP_ARGUMENTS = new SmcElementType("POP_ARGUMENTS");
   IElementType POP_TRANSITION = new SmcElementType("POP_TRANSITION");
+  IElementType PUSH_PROXY_STATE = new SmcElementType("PUSH_PROXY_STATE");
+  IElementType PUSH_STATE = new SmcElementType("PUSH_STATE");
   IElementType PUSH_TRANSITION = new SmcElementType("PUSH_TRANSITION");
   IElementType START_STATE = new SmcElementType("START_STATE");
   IElementType STATE = new SmcElementType("STATE");
@@ -52,6 +54,7 @@ public interface SmcTypes {
   IElementType BRACE_OPEN = new SmcTokenType("{");
   IElementType BRACKET_CLOSE = new SmcTokenType("]");
   IElementType BRACKET_OPEN = new SmcTokenType("[");
+  IElementType CALLBACK_TRANSITION_NAME = new SmcTokenType("CALLBACK_TRANSITION_NAME");
   IElementType CLASS_KEYWORD = new SmcTokenType("%class");
   IElementType COLON = new SmcTokenType(":");
   IElementType COMMA = new SmcTokenType(",");
@@ -74,6 +77,7 @@ public interface SmcTypes {
   IElementType LINE_COMMENT = new SmcTokenType("LINE_COMMENT");
   IElementType MAP_KEYWORD = new SmcTokenType("%map");
   IElementType MAP_NAME = new SmcTokenType("MAP_NAME");
+  IElementType MAP_NAME_STATE_NAME_SEPARATOR = new SmcTokenType("MAP_NAME_STATE_NAME_SEPARATOR");
   IElementType MAP_SECTION_BOUND = new SmcTokenType("MAP_SECTION_BOUND");
   IElementType NEXT_STATE_NAME = new SmcTokenType("NEXT_STATE_NAME");
   IElementType NIL_KEYWORD = new SmcTokenType("nil");
@@ -83,14 +87,15 @@ public interface SmcTypes {
   IElementType PARAMETER_TYPE = new SmcTokenType("PARAMETER_TYPE");
   IElementType PARENTHESES_CLOSE = new SmcTokenType(")");
   IElementType PARENTHESES_OPEN = new SmcTokenType("(");
-  IElementType POP_ARGUMENT_RAW_CODE = new SmcTokenType("POP_ARGUMENT_RAW_CODE");
   IElementType POP_KEYWORD = new SmcTokenType("pop");
   IElementType PUSH_KEYWORD = new SmcTokenType("push");
+  IElementType PUSH_MAP_NAME = new SmcTokenType("PUSH_MAP_NAME");
+  IElementType PUSH_PROXY_STATE_NAME = new SmcTokenType("PUSH_PROXY_STATE_NAME");
+  IElementType PUSH_STATE_NAME = new SmcTokenType("PUSH_STATE_NAME");
   IElementType SEMICOLON = new SmcTokenType(";");
   IElementType SLASH_SIGN = new SmcTokenType("/");
   IElementType START_KEYWORD = new SmcTokenType("%start");
   IElementType START_MAP_NAME = new SmcTokenType("START_MAP_NAME");
-  IElementType START_MAP_NAME_STATE_NAME_SEPARATOR = new SmcTokenType("START_MAP_NAME_STATE_NAME_SEPARATOR");
   IElementType START_STATE_NAME = new SmcTokenType("START_STATE_NAME");
   IElementType STATE_NAME = new SmcTokenType("STATE_NAME");
   IElementType STATIC_JAVA_KEYWORD = new SmcTokenType("STATIC_JAVA_KEYWORD");
@@ -99,7 +104,6 @@ public interface SmcTypes {
   IElementType VERBATIM_CLOSE = new SmcTokenType("%}");
   IElementType VERBATIM_CODE = new SmcTokenType("VERBATIM_CODE");
   IElementType VERBATIM_OPEN = new SmcTokenType("%{");
-  IElementType WORD = new SmcTokenType("WORD");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -118,6 +122,9 @@ public interface SmcTypes {
       }
       else if (type == BLOCK_COMMENT) {
         return new SmcBlockCommentImpl(node);
+      }
+      else if (type == CALLBACK_TRANSITION) {
+        return new SmcCallbackTransitionImpl(node);
       }
       else if (type == CLASS_NAME) {
         return new SmcClassNameImpl(node);
@@ -167,11 +174,14 @@ public interface SmcTypes {
       else if (type == PARAMETERS) {
         return new SmcParametersImpl(node);
       }
-      else if (type == POP_ARGUMENTS) {
-        return new SmcPopArgumentsImpl(node);
-      }
       else if (type == POP_TRANSITION) {
         return new SmcPopTransitionImpl(node);
+      }
+      else if (type == PUSH_PROXY_STATE) {
+        return new SmcPushProxyStateImpl(node);
+      }
+      else if (type == PUSH_STATE) {
+        return new SmcPushStateImpl(node);
       }
       else if (type == PUSH_TRANSITION) {
         return new SmcPushTransitionImpl(node);

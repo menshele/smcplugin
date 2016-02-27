@@ -23,9 +23,9 @@ public class SmcPopTransitionImpl extends ASTWrapperPsiElement implements SmcPop
   }
 
   @Override
-  @NotNull
-  public List<SmcPopArguments> getPopArgumentsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcPopArguments.class);
+  @Nullable
+  public SmcCallbackTransition getCallbackTransition() {
+    return findChildByClass(SmcCallbackTransition.class);
   }
 
 }

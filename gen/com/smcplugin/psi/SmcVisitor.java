@@ -27,6 +27,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCallbackTransition(@NotNull SmcCallbackTransition o) {
+    visitPsiElement(o);
+  }
+
   public void visitClassName(@NotNull SmcClassName o) {
     visitPsiElement(o);
   }
@@ -91,11 +95,15 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitPopArguments(@NotNull SmcPopArguments o) {
+  public void visitPopTransition(@NotNull SmcPopTransition o) {
     visitPsiElement(o);
   }
 
-  public void visitPopTransition(@NotNull SmcPopTransition o) {
+  public void visitPushProxyState(@NotNull SmcPushProxyState o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPushState(@NotNull SmcPushState o) {
     visitPsiElement(o);
   }
 

@@ -102,9 +102,11 @@ guard ::= BRACKET_OPEN comment* GUARD_RAW_CODE comment* BRACKET_CLOSE
 //TODO: Need to implement push/pop transitions
 next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
 
-push_transition ::= (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN push_state PARENTHESES_CLOSE {pin=3}
+push_transition ::= (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN (push_state|comment_nil) PARENTHESES_CLOSE {pin=3}
 
-push_proxy_state ::= (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* SLASH_SIGN
+private comment_nil ::= comment* NIL_KEYWORD comment*
+
+push_proxy_state ::= (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
 
 push_state ::= comment* (PUSH_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR)? comment* PUSH_STATE_NAME comment*
 

@@ -10,7 +10,4 @@ public interface SmcPopTransition extends PsiElement {
   @Nullable
   SmcCallbackTransition getCallbackTransition();
 
-  @NotNull
-  List<SmcComment> getCommentList();
-
 }

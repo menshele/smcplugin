@@ -35,6 +35,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SMC_ACTION_NAME = createTextAttributesKey("SMC_ACTION_NAME", DefaultLanguageHighlighterColors.FUNCTION_CALL);
     public static final TextAttributesKey SMC_MAP_NAME = createTextAttributesKey("SMC_MAP_NAME", DefaultLanguageHighlighterColors.CONSTANT);
     public static final TextAttributesKey SMC_START_MAP_NAME = createTextAttributesKey("SMC_START_MAP_NAME", DefaultLanguageHighlighterColors.CONSTANT);
+    public static final TextAttributesKey SMC_MAP_SECTION_BOUND = createTextAttributesKey("SMC_MAP_SECTION_BOUND", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey SMC_STATE_NAME = createTextAttributesKey("SMC_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
     public static final TextAttributesKey SMC_START_STATE_NAME = createTextAttributesKey("SMC_START_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
     public static final TextAttributesKey SMC_LINE_COMMENT = createTextAttributesKey("SMC_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
@@ -42,6 +43,15 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SMC_BLOCK_COMMENT_CONTENT = createTextAttributesKey("SMC_BLOCK_COMMENT_CONTENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey SMC_BLOCK_COMMENT_CLOSE = createTextAttributesKey("SMC_BLOCK_COMMENT_CLOSE", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey SMC_STRING_LITERAL = createTextAttributesKey("SMC_STRING_LITERAL", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey SMC_POP_KEYWORD = createTextAttributesKey("SMC_POP_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey SMC_CALLBACK_TRANSITION_NAME = createTextAttributesKey("SMC_CALLBACK_TRANSITION_NAME", DefaultLanguageHighlighterColors.FUNCTION_CALL);
+    ;
+    public static final TextAttributesKey SMC_PUSH_KEYWORD = createTextAttributesKey("SMC_PUSH_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey SMC_PUSH_PROXY_STATE_NAME = createTextAttributesKey("SMC_PUSH_PROXY_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey SMC_PUSH_STATE_NAME = createTextAttributesKey("SMC_PUSH_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey SMC_PUSH_MAP_NAME = createTextAttributesKey("SMC_PUSH_MAP_NAME", DefaultLanguageHighlighterColors.CONSTANT);
+    public static final TextAttributesKey SMC_MAP_NAME_STATE_NAME_SEPARATOR = createTextAttributesKey("SMC_MAP_NAME_STATE_NAME_SEPARATOR", HighlighterColors.NO_HIGHLIGHTING);
+    public static final TextAttributesKey SMC_PUSH_PROXY_STATE_KEYWORD_SEPARATOR = createTextAttributesKey("PUSH_PROXY_STATE_KEYWORD_SEPARATOR", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey SMC_DEFAULT = createTextAttributesKey("SMC_DEFAULT", HighlighterColors.NO_HIGHLIGHTING);
     public static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SMC_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -52,6 +62,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] SMC_VERBATIM_BRACKETS_KEYS = new TextAttributesKey[]{SMC_VERBATIM_BRACKETS};
     private static final TextAttributesKey[] SMC_VERBATIM_CODE_KEYS = new TextAttributesKey[]{SMC_VERBATIM_CODE};
     private static final TextAttributesKey[] SMS_KEYWORD_KEYS = new TextAttributesKey[]{SMS_KEYWORD};
+    private static final TextAttributesKey[] SMC_MAP_SECTION_BOUND_KEYS = new TextAttributesKey[]{SMC_MAP_SECTION_BOUND};
     private static final TextAttributesKey[] SMC_MAP_NAME_KEYS = new TextAttributesKey[]{SMC_MAP_NAME};
     private static final TextAttributesKey[] SMC_START_MAP_NAME_KEYS = new TextAttributesKey[]{SMC_START_MAP_NAME};
     private static final TextAttributesKey[] SMC_STATE_NAME_KEYS = new TextAttributesKey[]{SMC_STATE_NAME};
@@ -70,8 +81,17 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] SMC_BLOCK_COMMENT_OPEN_KEYS = new TextAttributesKey[]{SMC_BLOCK_COMMENT_OPEN};
     private static final TextAttributesKey[] SMC_BLOCK_COMMENT_CLOSE_KEYS = new TextAttributesKey[]{SMC_BLOCK_COMMENT_CLOSE};
     private static final TextAttributesKey[] SMC_BLOCK_COMMENT_CONTENT_KEYS = new TextAttributesKey[]{SMC_BLOCK_COMMENT_CONTENT};
+
     private static final TextAttributesKey[] SMC_PARAMETER_NAME_KEYS = new TextAttributesKey[]{SMC_PARAMETER_NAME};
     private static final TextAttributesKey[] SMC_PARAMETER_TYPE_KEYS = new TextAttributesKey[]{SMC_PARAMETER_TYPE};
+    private static final TextAttributesKey[] SMC_POP_KEYWORD_KEYS = new TextAttributesKey[]{SMC_POP_KEYWORD};
+    private static final TextAttributesKey[] SMC_PUSH_KEYWORD_KEYS = new TextAttributesKey[]{SMC_PUSH_KEYWORD};
+    private static final TextAttributesKey[] SMC_PUSH_PROXY_STATE_NAME_KEYS = new TextAttributesKey[]{SMC_PUSH_PROXY_STATE_NAME};
+    private static final TextAttributesKey[] SMC_PUSH_STATE_NAME_KEYS = new TextAttributesKey[]{SMC_PUSH_STATE_NAME};
+    private static final TextAttributesKey[] SMC_PUSH_MAP_NAME_KEYS = new TextAttributesKey[]{SMC_PUSH_MAP_NAME};
+    private static final TextAttributesKey[] SMC_MAP_NAME_STATE_NAME_SEPARATOR_KEYS = new TextAttributesKey[]{SMC_MAP_NAME_STATE_NAME_SEPARATOR};
+    private static final TextAttributesKey[] SMC_CALLBACK_TRANSITION_NAME_KEYS = new TextAttributesKey[]{SMC_CALLBACK_TRANSITION_NAME};
+    private static final TextAttributesKey[] SMC_PUSH_PROXY_STATE_KEYWORD_SEPARATOR_KEYS = new TextAttributesKey[]{SMC_PUSH_PROXY_STATE_KEYWORD_SEPARATOR};
 
     @NotNull
     @Override
@@ -105,6 +125,8 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_STATE_NAME_KEYS;
         } else if (START_MAP_NAME.equals(tokenType)) {
             return SMC_START_MAP_NAME_KEYS;
+        } else if (MAP_SECTION_BOUND.equals(tokenType)) {
+            return SMC_MAP_SECTION_BOUND_KEYS;
         } else if (START_STATE_NAME.equals(tokenType)) {
             return SMC_START_STATE_NAME_KEYS;
         } else if (VERBATIM_OPEN.equals(tokenType) || VERBATIM_CLOSE.equals(tokenType)) {
@@ -141,6 +163,22 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_EXIT_KEYWORD_KEYS;
         } else if (STRING_LITERAL.equals(tokenType)) {
             return SMC_STRING_LITERAL_KEYS;
+        } else if (POP_KEYWORD.equals(tokenType)) {
+            return SMC_POP_KEYWORD_KEYS;
+        } else if (PUSH_KEYWORD.equals(tokenType)) {
+            return SMC_PUSH_KEYWORD_KEYS;
+        } else if (PUSH_PROXY_STATE_KEYWORD_SEPARATOR.equals(tokenType)) {
+            return SMC_PUSH_PROXY_STATE_KEYWORD_SEPARATOR_KEYS;
+        } else if (PUSH_PROXY_STATE_NAME.equals(tokenType)) {
+            return SMC_PUSH_PROXY_STATE_NAME_KEYS;
+        } else if (PUSH_MAP_NAME.equals(tokenType)) {
+            return SMC_PUSH_MAP_NAME_KEYS;
+        } else if (PUSH_STATE_NAME.equals(tokenType)) {
+            return SMC_PUSH_STATE_NAME_KEYS;
+        } else if (MAP_NAME_STATE_NAME_SEPARATOR.equals(tokenType)) {
+            return SMC_MAP_NAME_STATE_NAME_SEPARATOR_KEYS;
+        } else if (CALLBACK_TRANSITION_NAME.equals(tokenType)) {
+            return SMC_CALLBACK_TRANSITION_NAME_KEYS;
         } else if (TokenType.BAD_CHARACTER.equals(tokenType)) {
             return BAD_CHARACTER_KEYS;
         } else {

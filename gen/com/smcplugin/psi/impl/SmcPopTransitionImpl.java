@@ -28,10 +28,4 @@ public class SmcPopTransitionImpl extends ASTWrapperPsiElement implements SmcPop
     return findChildByClass(SmcCallbackTransition.class);
   }
 
-  @Override
-  @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
-  }
-
 }

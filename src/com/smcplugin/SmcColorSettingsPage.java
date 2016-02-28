@@ -41,6 +41,13 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Transition Name", SmcSyntaxHighlighter.SMC_TRANSITION_NAME),
             new AttributesDescriptor("Transition Parameter Name", SmcSyntaxHighlighter.SMC_PARAMETER_NAME),
             new AttributesDescriptor("Transition Parameter Type", SmcSyntaxHighlighter.SMC_PARAMETER_TYPE),
+            new AttributesDescriptor("Pop Keyword", SmcSyntaxHighlighter.SMC_POP_KEYWORD),
+            new AttributesDescriptor("Pop Callback Transition Name", SmcSyntaxHighlighter.SMC_CALLBACK_TRANSITION_NAME),
+            new AttributesDescriptor("Push Keyword", SmcSyntaxHighlighter.SMC_PUSH_KEYWORD),
+            new AttributesDescriptor("Push Proxy State Name", SmcSyntaxHighlighter.SMC_PUSH_PROXY_STATE_NAME),
+            new AttributesDescriptor("Push Map Name", SmcSyntaxHighlighter.SMC_PUSH_MAP_NAME),
+            new AttributesDescriptor("Push State Name", SmcSyntaxHighlighter.SMC_PUSH_STATE_NAME),
+            new AttributesDescriptor("Map State Separator", SmcSyntaxHighlighter.SMC_MAP_NAME_STATE_NAME_SEPARATOR),
             new AttributesDescriptor("Other", SmcSyntaxHighlighter.SMC_DEFAULT)
     };
 

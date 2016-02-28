@@ -90,6 +90,7 @@ public interface SmcTypes {
   IElementType POP_KEYWORD = new SmcTokenType("pop");
   IElementType PUSH_KEYWORD = new SmcTokenType("push");
   IElementType PUSH_MAP_NAME = new SmcTokenType("PUSH_MAP_NAME");
+  IElementType PUSH_PROXY_STATE_KEYWORD_SEPARATOR = new SmcTokenType("PUSH_PROXY_STATE_KEYWORD_SEPARATOR");
   IElementType PUSH_PROXY_STATE_NAME = new SmcTokenType("PUSH_PROXY_STATE_NAME");
   IElementType PUSH_STATE_NAME = new SmcTokenType("PUSH_STATE_NAME");
   IElementType SEMICOLON = new SmcTokenType(";");

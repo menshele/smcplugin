@@ -417,72 +417,84 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PARENTHESES_OPEN comment* CALLBACK_TRANSITION_NAME comment* (COMMA comment* arguments)? PARENTHESES_CLOSE
+  // comment*  PARENTHESES_OPEN comment* CALLBACK_TRANSITION_NAME comment* (COMMA comment* arguments)? PARENTHESES_CLOSE
   public static boolean callback_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "callback_transition")) return false;
-    if (!nextTokenIs(b, PARENTHESES_OPEN)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, PARENTHESES_OPEN);
-    r = r && callback_transition_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, "<callback transition>");
+    r = callback_transition_0(b, l + 1);
+    r = r && consumeToken(b, PARENTHESES_OPEN);
+    r = r && callback_transition_2(b, l + 1);
     r = r && consumeToken(b, CALLBACK_TRANSITION_NAME);
-    r = r && callback_transition_3(b, l + 1);
     r = r && callback_transition_4(b, l + 1);
+    r = r && callback_transition_5(b, l + 1);
     r = r && consumeToken(b, PARENTHESES_CLOSE);
-    exit_section_(b, m, CALLBACK_TRANSITION, r);
+    exit_section_(b, l, m, CALLBACK_TRANSITION, r, false, null);
     return r;
   }
 
   // comment*
-  private static boolean callback_transition_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callback_transition_1")) return false;
+  private static boolean callback_transition_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_0")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "callback_transition_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "callback_transition_0", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // comment*
-  private static boolean callback_transition_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callback_transition_3")) return false;
+  private static boolean callback_transition_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_2")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "callback_transition_3", c)) break;
+      if (!empty_element_parsed_guard_(b, "callback_transition_2", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // comment*
+  private static boolean callback_transition_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_4")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "callback_transition_4", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // (COMMA comment* arguments)?
-  private static boolean callback_transition_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callback_transition_4")) return false;
-    callback_transition_4_0(b, l + 1);
+  private static boolean callback_transition_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_5")) return false;
+    callback_transition_5_0(b, l + 1);
     return true;
   }
 
   // COMMA comment* arguments
-  private static boolean callback_transition_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callback_transition_4_0")) return false;
+  private static boolean callback_transition_5_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_5_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
-    r = r && callback_transition_4_0_1(b, l + 1);
+    r = r && callback_transition_5_0_1(b, l + 1);
     r = r && arguments(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // comment*
-  private static boolean callback_transition_4_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callback_transition_4_0_1")) return false;
+  private static boolean callback_transition_5_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_transition_5_0_1")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "callback_transition_4_0_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "callback_transition_5_0_1", c)) break;
       c = current_position_(b);
     }
     return true;
@@ -525,6 +537,43 @@ public class SmcParser implements PsiParser, LightPsiParser {
     if (!r) r = block_comment(b, l + 1);
     exit_section_(b, l, m, COMMENT, r, false, null);
     return r;
+  }
+
+  /* ********************************************************** */
+  // comment* NIL_KEYWORD comment*
+  static boolean comment_nil(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment_nil")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = comment_nil_0(b, l + 1);
+    r = r && consumeToken(b, NIL_KEYWORD);
+    r = r && comment_nil_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // comment*
+  private static boolean comment_nil_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment_nil_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "comment_nil_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // comment*
+  private static boolean comment_nil_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment_nil_2")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "comment_nil_2", c)) break;
+      c = current_position_(b);
+    }
+    return true;
   }
 
   /* ********************************************************** */
@@ -1186,7 +1235,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // POP_KEYWORD comment* callback_transition?
+  // POP_KEYWORD callback_transition?
   public static boolean pop_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition")) return false;
     if (!nextTokenIs(b, POP_KEYWORD)) return false;
@@ -1194,33 +1243,20 @@ public class SmcParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeToken(b, POP_KEYWORD);
     p = r; // pin = 1
-    r = r && report_error_(b, pop_transition_1(b, l + 1));
-    r = p && pop_transition_2(b, l + 1) && r;
+    r = r && pop_transition_1(b, l + 1);
     exit_section_(b, l, m, POP_TRANSITION, r, p, null);
     return r || p;
   }
 
-  // comment*
+  // callback_transition?
   private static boolean pop_transition_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pop_transition_1")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "pop_transition_1", c)) break;
-      c = current_position_(b);
-    }
-    return true;
-  }
-
-  // callback_transition?
-  private static boolean pop_transition_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "pop_transition_2")) return false;
     callback_transition(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* SLASH_SIGN
+  // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
   public static boolean push_proxy_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_proxy_state")) return false;
     if (!nextTokenIs(b, "<push proxy state>", NIL_KEYWORD, PUSH_PROXY_STATE_NAME)) return false;
@@ -1228,7 +1264,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, "<push proxy state>");
     r = push_proxy_state_0(b, l + 1);
     r = r && push_proxy_state_1(b, l + 1);
-    r = r && consumeToken(b, SLASH_SIGN);
+    r = r && consumeToken(b, PUSH_PROXY_STATE_KEYWORD_SEPARATOR);
     exit_section_(b, l, m, PUSH_PROXY_STATE, r, false, null);
     return r;
   }
@@ -1339,7 +1375,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN push_state PARENTHESES_CLOSE
+  // (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN (push_state|comment_nil) PARENTHESES_CLOSE
   public static boolean push_transition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_transition")) return false;
     boolean r, p;
@@ -1350,7 +1386,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     p = r; // pin = 3
     r = r && report_error_(b, push_transition_3(b, l + 1));
     r = p && report_error_(b, consumeToken(b, PARENTHESES_OPEN)) && r;
-    r = p && report_error_(b, push_state(b, l + 1)) && r;
+    r = p && report_error_(b, push_transition_5(b, l + 1)) && r;
     r = p && consumeToken(b, PARENTHESES_CLOSE) && r;
     exit_section_(b, l, m, PUSH_TRANSITION, r, p, null);
     return r || p;
@@ -1395,6 +1431,17 @@ public class SmcParser implements PsiParser, LightPsiParser {
       c = current_position_(b);
     }
     return true;
+  }
+
+  // push_state|comment_nil
+  private static boolean push_transition_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_transition_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = push_state(b, l + 1);
+    if (!r) r = comment_nil(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */

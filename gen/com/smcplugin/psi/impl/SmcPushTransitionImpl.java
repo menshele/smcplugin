@@ -23,6 +23,12 @@ public class SmcPushTransitionImpl extends ASTWrapperPsiElement implements SmcPu
   }
 
   @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  @Override
   @Nullable
   public SmcPushProxyState getPushProxyState() {
     return findChildByClass(SmcPushProxyState.class);

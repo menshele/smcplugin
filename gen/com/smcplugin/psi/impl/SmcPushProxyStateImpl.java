@@ -22,4 +22,10 @@ public class SmcPushProxyStateImpl extends ASTWrapperPsiElement implements SmcPu
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

@@ -51,7 +51,6 @@ DECLARE_STATEMENT={WORD}
 INCLUDE_FILE_NAME={WORD}
 MAP_NAME={WORD}
 STATE_NAME={WORD}
-PUSH_PROXY_STATE_NAME={WORD}
 CALLBACK_TRANSITION_NAME={WORD}
 START_STATE_NAME={WORD}|{WORD}{EOL}
 ACCESS_LEVEL="public"|"protected"|"private"
@@ -81,7 +80,7 @@ COLON=":"
 SLASH_SIGN="/"
 BRACKET_OPEN="["
 BRACKET_CLOSE="]"
-PUSH_PROXY_STATE_NAME={WORD}\/
+PUSH_PROXY_STATE_START={WORD}{SLASH_SIGN}
 PUSH_KEYWORD="push"
 POP_KEYWORD="pop"
 
@@ -320,16 +319,20 @@ MAP_KEYWORD="%map"
   {BRACKET_CLOSE}             { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE; }
   {BRACE_OPEN}                { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
   {BRACE_CLOSE}               { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
-  {PUSH_PROXY_STATE_NAME}     { yybegin(WAITING_FOR_PUSH); yypushback(1);}
+  {PUSH_PROXY_STATE_START}    { yybegin(WAITING_FOR_PUSH); yypushback(1); return PUSH_PROXY_STATE_NAME; }
   {KEYWORD_NIL}               { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NIL_KEYWORD; }
   {POP_KEYWORD}               { yybegin(WAITING_FOR_POP); return POP_KEYWORD; }
+  {PUSH_KEYWORD}               { yybegin(WAITING_FOR_PUSH); return PUSH_KEYWORD; }
   {STATE_NAME}                { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NEXT_STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 
 <WAITING_FOR_POP>{
+  {LINE_COMMENT}              { return LINE_COMMENT; }
+  {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
   {WHITE_SPACE}               { yybegin(WAITING_FOR_POP); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_POP); return PARENTHESES_OPEN; }
+  {PARENTHESES_CLOSE}         { yybegin(WAITING_FOR_POP); return PARENTHESES_CLOSE; }
   {COMMA}                     { yypushState(WAITING_FOR_ARGUMENTS); return COMMA; }
   {BRACE_OPEN}                { yybegin(WAITING_FOR_NEXT_STATE_NAME); yypushback(1); }
   {CALLBACK_TRANSITION_NAME}  { yybegin(WAITING_FOR_POP); return CALLBACK_TRANSITION_NAME; }
@@ -337,18 +340,23 @@ MAP_KEYWORD="%map"
 }
 
 <WAITING_FOR_PUSH>{
+  {LINE_COMMENT}              { return LINE_COMMENT; }
+  {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {WHITE_SPACE}               { yybegin(WAITING_FOR_PUSH); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {PUSH_KEYWORD}              { yybegin(WAITING_FOR_PUSH); return PUSH_KEYWORD; }
   {SLASH_SIGN}                { yybegin(WAITING_FOR_PUSH); return SLASH_SIGN; }
   {KEYWORD_NIL}               { yybegin(WAITING_FOR_PUSH); return NIL_KEYWORD; }
   {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_PUSH_STATE_NAME); return PARENTHESES_OPEN; }
-  {PUSH_PROXY_STATE_NAME}     { yybegin(WAITING_FOR_PUSH); return PUSH_PROXY_STATE_NAME;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 
 <WAITING_FOR_PUSH_STATE_NAME>{
+  {LINE_COMMENT}                  { return LINE_COMMENT; }
+  {BLOCK_COMMENT_OPEN}            { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {WHITE_SPACE}                   { yybegin(WAITING_FOR_PUSH_STATE_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {PARENTHESES_CLOSE}             { yybegin(WAITING_FOR_NEXT_STATE_NAME); return PARENTHESES_CLOSE; }
   {MAP_STATE_SEPARATOR}           { yybegin(WAITING_FOR_PUSH_STATE_NAME); return MAP_NAME_STATE_NAME_SEPARATOR; }
-  {MAP_NAME}{MAP_STATE_SEPARATOR} { yybegin(WAITING_FOR_PUSH_STATE_NAME); yypushback(1); return PUSH_MAP_NAME;}
+  {MAP_NAME}{MAP_STATE_SEPARATOR} { yybegin(WAITING_FOR_PUSH_STATE_NAME); yypushback(2); return PUSH_MAP_NAME;}
   {STATE_NAME}                    { yybegin(WAITING_FOR_PUSH_STATE_NAME); return PUSH_STATE_NAME;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }

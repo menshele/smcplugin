@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcPushState extends PsiElement {
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
 }

@@ -1,4 +1,4 @@
-package com.smcplugin;
+package com.smcplugin.highlight;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;

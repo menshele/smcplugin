@@ -1,4 +1,4 @@
-package com.smcplugin;
+package com.smcplugin.highlight;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
+import com.smcplugin.SmcLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
@@ -106,8 +107,6 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_ACTION_NAME_KEYS;
         } else if (MAP_NAME.equals(tokenType)) {
             return SMC_MAP_NAME_KEYS;
-        } else if (STATE_NAME.equals(tokenType) || NEXT_STATE_NAME.equals(tokenType)) {
-            return SMC_STATE_NAME_KEYS;
         } else if (START_MAP_NAME.equals(tokenType)) {
             return SMC_START_MAP_NAME_KEYS;
         } else if (MAP_SECTION_BOUND.equals(tokenType)) {
@@ -162,12 +161,9 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_MAP_NAME_STATE_NAME_SEPARATOR_KEYS;
         } else if (CALLBACK_TRANSITION_NAME.equals(tokenType)) {
             return SMC_CALLBACK_TRANSITION_NAME_KEYS;
-        } else if (TokenType.BAD_CHARACTER.equals(tokenType)) {
-            return BAD_CHARACTER_KEYS;
-        } else if (COLON.equals(tokenType) ||
-                SEMICOLON.equals(tokenType)) {
-            return SMC_SEMICOLON_KEYS;
-        } else if (TRANSITION_NAME.equals(tokenType) ||
+        } else if (STATE_NAME.equals(tokenType) || NEXT_STATE_NAME.equals(tokenType)) {
+            return SMC_STATE_NAME_KEYS;
+        }  else if (TRANSITION_NAME.equals(tokenType) ||
                 CALLBACK_TRANSITION_NAME.equals(tokenType)) {
             return SMC_TRANSITION_NAME_KEYS;
         } else if (ACCESS_KEYWORD.equals(tokenType) ||
@@ -184,7 +180,9 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
                 NIL_KEYWORD.equals(tokenType) ||
                 PACKAGE_KEYWORD.equals(tokenType)) {
             return SMS_KEYWORD_KEYS;
-        } else {
+        } else if (TokenType.BAD_CHARACTER.equals(tokenType)) {
+            return BAD_CHARACTER_KEYS;
+        }  else {
             return SMC_DEFAULT_KEYS;
         }
     }

@@ -365,7 +365,7 @@ MAP_KEYWORD="%map"
 <WAITING_FOR_GUARD_RAW_CODE>{
   {LINE_COMMENT}                       { return LINE_COMMENT; }
   {WHITE_SPACE}                        { yybegin(WAITING_FOR_GUARD_RAW_CODE); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  {BRACKET_CLOSE}                 { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE;}
+  {BRACKET_CLOSE}                      { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE;}
   {GUARD_RAW_CODE}                     { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_RAW_CODE; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }

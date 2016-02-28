@@ -48,6 +48,7 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Push Map Name", SmcSyntaxHighlighter.SMC_PUSH_MAP_NAME),
             new AttributesDescriptor("Push State Name", SmcSyntaxHighlighter.SMC_PUSH_STATE_NAME),
             new AttributesDescriptor("Map State Separator", SmcSyntaxHighlighter.SMC_MAP_NAME_STATE_NAME_SEPARATOR),
+            new AttributesDescriptor("Map Section Bound", SmcSyntaxHighlighter.SMC_MAP_SECTION_BOUND),
             new AttributesDescriptor("Other", SmcSyntaxHighlighter.SMC_DEFAULT)
     };
 
@@ -67,35 +68,105 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         return "%{\n" +
-                "    some.row.code.Here();\n" +
+                "asda;\n" +
+                "as;asdjlaksd\n" +
+                "asdasd\n" +
                 "%}\n" +
-                "%class ClassName\n" +
-                "//Line Comment\n" +
-                "/*\n" +
-                "Multiline Comment\n" +
-                "*/\n" +
-                "%package com.example.package\n" +
-                "%start MainMap::Locked\n" +
-                "%map\n" +
-                "MainMap\n" +
-                "%%\n" +
-                "Locked\n" +
-                "Entry {\n" +
-                "   print(param, \"Entry\");\n" +
-                "}\n" +
-                "{\n" +
                 "\n" +
-                " coin ( arggs : asd , arg: test )\n" +
-                " [ some guard here ]\n" +
+                "%package sdfd\n" +
+                "//asdas\n" +
+                "\n" +
+                "%class adtest\n" +
+                "%import static sdajasdl.*\n" +
+                "%import com.db.Class\n" +
+                "%package turnstile\n" +
+                "%fsmfile turnstile\n" +
+                "%fsmclass turnstile\n" +
+                "%access private \n" +
+                "%header asd\n" +
+                "//\n" +
+                "/*asldkjasld*/\n" +
+                "%declare asdsd\n" +
+                "%include asdas\n" +
+                "%start  MainMap/* asda*/::/**/State\n" +
+                "%map MainMap\n" +
+                "%%\n" +
+                "//\n" +
+                " Locked\n" +
+                "Entry {\n" +
+                "asd(\n" +
+                "//\n" +
+                "tst, \";sadlfsdk \\t\\f sdf@\\\"' \\' ;\");\n" +
+                "asd(te);\n" +
+                "}\n" +
+                "Exit {\n" +
+                "   asd(te, \"asdasd\\r\");\n" +
+                "}/*asdasd*/\n" +
+                "{\n" +
+                " coin (  arggs  : asd , arg: sfsd )\n" +
+                " [  asd() && test [] ]\n" +
                 " Unlocked {\n" +
-                "    unlock();\n" +
+                "    unlock(  sdf , \"sdf\\\" asldas \\t\\'\" );\n" +
                 " }\n" +
+                "\n" +
+                " coin2 (  arggs  : asd , arg: sfsd )\n" +
+                "  [  asd() && test []] ]\n" +
+                "  Unlocked {\n" +
+                "     unlock(  sdf , \"sdf\\\" asldas \\t\\'\" );\n" +
+                "  }\n" +
+                "\n" +
+                "  coin1 (  arggs  : asd , arg: sfsd )\n" +
+                "  Unlocked {\n" +
+                "       unlock(  sdf , \"sdf\\\" asldas \\t\\'\" );\n" +
+                "  }\n" +
+                "\n" +
+                "  coin3\n" +
+                "   [  asd() && test []] ]\n" +
+                "   Unlocked {\n" +
+                "      unlock(  sdf , \"sdf\\\" asldas \\t\\'\" );\n" +
+                "   }\n" +
+                "\n" +
+                "  coin3\n" +
+                "  Unlocked {\n" +
+                "       unlock(  sdf , \"sdf\\\" asldas \\t\\'\" );\n" +
+                "    }\n" +
+                "\n" +
                 " pass nil { alarm(); }\n" +
+                "\n" +
+                " test pop ( pass, wqe) {\n" +
+                "    test();\n" +
+                "    test();\n" +
+                " }\n" +
+                "\n" +
+                "\n" +
+                "  test pop {\n" +
+                "     test(asad);\n" +
+                "     test();\n" +
+                "  }\n" +
+                "\n" +
+                "    test pop(lkj) {\n" +
+                "       test(asad);\n" +
+                "       test();\n" +
+                "    }\n" +
+                "\n" +
+                "  test push1\n" +
+                "  {\n" +
+                "\n" +
+                "  }\n" +
+                "\n" +
+                "  test Unlocked/push(sdas::werwr){\n" +
+                "    asdasd ( asd ) ;\n" +
+                "  }\n" +
+                "  test Unlocked/ push ( klj ) {asdasd(asd);}\n" +
+                "  test push (sdas::werwr){asdasd(asd);}\n" +
+                "  test  /**/push (werwr){asdasd(asd);}\n" +
+                "  test push (werwr){asdasd();}\n" +
+                "  test  /**/push  /**/( /**/nil /**/) /**/{ /**/asdasd();}\n" +
                 "}\n" +
                 "Unlocked\n" +
                 "{\n" +
-                " pass Locked { lock(); }\n" +
-                " coin nil { thankyou(); }\n" +
+                " lock Locked { lock(); }\n" +
+                " coin nil { thankyou();}\n" +
                 "}\n" +
                 "%%";
     }

@@ -44,7 +44,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SMC_BLOCK_COMMENT_CLOSE = createTextAttributesKey("SMC_BLOCK_COMMENT_CLOSE", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey SMC_STRING_LITERAL = createTextAttributesKey("SMC_STRING_LITERAL", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey SMC_POP_KEYWORD = createTextAttributesKey("SMC_POP_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey SMC_CALLBACK_TRANSITION_NAME = createTextAttributesKey("SMC_CALLBACK_TRANSITION_NAME", DefaultLanguageHighlighterColors.FUNCTION_CALL);
+    public static final TextAttributesKey SMC_CALLBACK_TRANSITION_NAME = createTextAttributesKey("SMC_CALLBACK_TRANSITION_NAME", DefaultLanguageHighlighterColors.STATIC_FIELD);
     ;
     public static final TextAttributesKey SMC_PUSH_KEYWORD = createTextAttributesKey("SMC_PUSH_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey SMC_PUSH_PROXY_STATE_NAME = createTextAttributesKey("SMC_PUSH_PROXY_STATE_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
@@ -102,22 +102,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-        if (ACCESS_KEYWORD.equals(tokenType) ||
-                CLASS_KEYWORD.equals(tokenType) ||
-                FSM_CLASS_KEYWORD.equals(tokenType) ||
-                FSM_FILE_KEYWORD.equals(tokenType) ||
-                HEADER_KEYWORD.equals(tokenType) ||
-                IMPORT_KEYWORD.equals(tokenType) ||
-                DECLARE_KEYWORD.equals(tokenType) ||
-                INCLUDE_KEYWORD.equals(tokenType) ||
-                START_KEYWORD.equals(tokenType) ||
-                MAP_KEYWORD.equals(tokenType) ||
-                NIL_KEYWORD.equals(tokenType) ||
-                PACKAGE_KEYWORD.equals(tokenType)) {
-            return SMS_KEYWORD_KEYS;
-        } else if (TRANSITION_NAME.equals(tokenType)) {
-            return SMC_TRANSITION_NAME_KEYS;
-        } else if (ACTION_NAME.equals(tokenType)) {
+        if (ACTION_NAME.equals(tokenType)) {
             return SMC_ACTION_NAME_KEYS;
         } else if (MAP_NAME.equals(tokenType)) {
             return SMC_MAP_NAME_KEYS;
@@ -155,8 +140,6 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_PARAMETER_TYPE_KEYS;
         } else if (COMMA.equals(tokenType)) {
             return SMC_COMMA_KEYS;
-        } else if (COLON.equals(tokenType) || SEMICOLON.equals(tokenType)) {
-            return SMC_SEMICOLON_KEYS;
         } else if (ENTRY_KEYWORD.equals(tokenType)) {
             return SMC_ENTRY_KEYWORD_KEYS;
         } else if (EXIT_KEYWORD.equals(tokenType)) {
@@ -181,6 +164,26 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_CALLBACK_TRANSITION_NAME_KEYS;
         } else if (TokenType.BAD_CHARACTER.equals(tokenType)) {
             return BAD_CHARACTER_KEYS;
+        } else if (COLON.equals(tokenType) ||
+                SEMICOLON.equals(tokenType)) {
+            return SMC_SEMICOLON_KEYS;
+        } else if (TRANSITION_NAME.equals(tokenType) ||
+                CALLBACK_TRANSITION_NAME.equals(tokenType)) {
+            return SMC_TRANSITION_NAME_KEYS;
+        } else if (ACCESS_KEYWORD.equals(tokenType) ||
+                CLASS_KEYWORD.equals(tokenType) ||
+                FSM_CLASS_KEYWORD.equals(tokenType) ||
+                FSM_FILE_KEYWORD.equals(tokenType) ||
+                HEADER_KEYWORD.equals(tokenType) ||
+                IMPORT_KEYWORD.equals(tokenType) ||
+                DECLARE_KEYWORD.equals(tokenType) ||
+                INCLUDE_KEYWORD.equals(tokenType) ||
+                START_KEYWORD.equals(tokenType) ||
+                MAP_KEYWORD.equals(tokenType) ||
+                MAP_SECTION_BOUND.equals(tokenType) ||
+                NIL_KEYWORD.equals(tokenType) ||
+                PACKAGE_KEYWORD.equals(tokenType)) {
+            return SMS_KEYWORD_KEYS;
         } else {
             return SMC_DEFAULT_KEYS;
         }

@@ -27,8 +27,8 @@ import static com.smcplugin.psi.SmcPsiUtil.hasElementType;
  * Created by lemen on 29.02.2016.
  */
 public class SmcBlock implements ASTBlock {
-    private static final TokenSet SMC_OPEN_BRACES = TokenSet.create(BRACKET_OPEN, BRACE_OPEN,PARENTHESES_OPEN,VERBATIM_OPEN, MAP_SECTION_BOUND);
-    private static final TokenSet SMC_CLOSE_BRACES = TokenSet.create(BRACKET_CLOSE, BRACE_CLOSE,PARENTHESES_CLOSE,VERBATIM_CLOSE, MAP_SECTION_BOUND);
+    private static final TokenSet SMC_OPEN_BRACES = TokenSet.create(BRACKET_OPEN, BRACE_OPEN,PARENTHESES_OPEN,VERBATIM_OPEN);
+    private static final TokenSet SMC_CLOSE_BRACES = TokenSet.create(BRACKET_CLOSE, BRACE_CLOSE,PARENTHESES_CLOSE,VERBATIM_CLOSE);
     private static final TokenSet SMC_ALL_BRACES = TokenSet.orSet(SMC_OPEN_BRACES, SMC_CLOSE_BRACES);
 
     private final SmcBlock myParent;

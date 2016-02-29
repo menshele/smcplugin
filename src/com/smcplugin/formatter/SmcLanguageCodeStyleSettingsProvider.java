@@ -1,8 +1,9 @@
-package com.smcplugin;
+package com.smcplugin.formatter;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
+import com.smcplugin.SmcLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**

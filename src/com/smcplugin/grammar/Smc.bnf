@@ -114,7 +114,7 @@ pop_transition ::= POP_KEYWORD callback_transition? {pin=1}
 
 callback_transition ::= comment*  PARENTHESES_OPEN comment* CALLBACK_TRANSITION_NAME comment* (COMMA comment* arguments)? PARENTHESES_CLOSE
 
-actions ::= action comment* actions| comment* action?
+actions ::= (action comment*)*
 
 action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1}
 

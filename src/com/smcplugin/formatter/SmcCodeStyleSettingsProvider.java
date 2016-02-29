@@ -1,4 +1,4 @@
-package com.smcplugin;
+package com.smcplugin.formatter;
 
 import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
@@ -7,12 +7,13 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsProvider;
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
+import com.smcplugin.SmcLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * scmplugin
- * Created by lemen on 30.01.2016.
+ * Created by lemen on 29.02.2016.
  */
 public class SmcCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
     @Override

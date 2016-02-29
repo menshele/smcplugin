@@ -222,25 +222,27 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // action comment* actions| comment* action?
+  // (action comment*)*
   public static boolean actions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "actions")) return false;
-    boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<actions>");
-    r = actions_0(b, l + 1);
-    if (!r) r = actions_1(b, l + 1);
-    exit_section_(b, l, m, ACTIONS, r, false, null);
-    return r;
+    int c = current_position_(b);
+    while (true) {
+      if (!actions_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "actions", c)) break;
+      c = current_position_(b);
+    }
+    exit_section_(b, l, m, ACTIONS, true, false, null);
+    return true;
   }
 
-  // action comment* actions
+  // action comment*
   private static boolean actions_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "actions_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = action(b, l + 1);
     r = r && actions_0_1(b, l + 1);
-    r = r && actions(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -254,36 +256,6 @@ public class SmcParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "actions_0_1", c)) break;
       c = current_position_(b);
     }
-    return true;
-  }
-
-  // comment* action?
-  private static boolean actions_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "actions_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = actions_1_0(b, l + 1);
-    r = r && actions_1_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // comment*
-  private static boolean actions_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "actions_1_0")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "actions_1_0", c)) break;
-      c = current_position_(b);
-    }
-    return true;
-  }
-
-  // action?
-  private static boolean actions_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "actions_1_1")) return false;
-    action(b, l + 1);
     return true;
   }
 

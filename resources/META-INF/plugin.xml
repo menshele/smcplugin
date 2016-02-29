@@ -31,7 +31,11 @@
         <lang.syntaxHighlighterFactory key="smc" implementationClass="com.smcplugin.highlight.SmcSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="com.smcplugin.SmcColorSettingsPage"/>
         <lang.commenter language="smc" implementationClass="com.smcplugin.SmcCommenter"/>
-        <!--       <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
+        <lang.formatter language="smc" implementationClass="com.smcplugin.formatter.SmcFormattingModelBuilder"/>
+        <codeStyleSettingsProvider implementation="com.smcplugin.formatter.SmcCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="com.smcplugin.formatter.SmcLanguageCodeStyleSettingsProvider"/>
+        <!--
+            <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
             <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
             <psi.referenceContributor implementation="com.smcplugin.SmcReferenceContributor"/>
@@ -40,10 +44,7 @@
             <lang.foldingBuilder language="JAVA" implementationClass="com.smcplugin.SmcFoldingBuilder"/>
             <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
             <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>
-        &lt;!&ndash;    <lang.formatter language="smc" implementationClass="com.smcplugin.SmcFormattingModelBuilder"/>&ndash;&gt;
-            <codeStyleSettingsProvider implementation="com.smcplugin.SmcCodeStyleSettingsProvider"/>
-            <langCodeStyleSettingsProvider implementation="com.smcplugin.SmcLanguageCodeStyleSettingsProvider"/>
-            <lang.commenter language="smc" implementationClass="com.smcplugin.SmcCommenter"/>-->
+-->
     </extensions>
 
     <actions>

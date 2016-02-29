@@ -23,15 +23,9 @@ public class SmcActionsImpl extends ASTWrapperPsiElement implements SmcActions {
   }
 
   @Override
-  @Nullable
-  public SmcAction getAction() {
-    return findChildByClass(SmcAction.class);
-  }
-
-  @Override
-  @Nullable
-  public SmcActions getActions() {
-    return findChildByClass(SmcActions.class);
+  @NotNull
+  public List<SmcAction> getActionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcAction.class);
   }
 
   @Override

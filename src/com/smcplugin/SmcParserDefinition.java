@@ -21,11 +21,14 @@ import org.jetbrains.annotations.NotNull;
  * scmplugin
  * Created by lemen on 30.01.2016.
  */
-public class SmcParserDefinition implements ParserDefinition{
+public class SmcParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
+    public static final TokenSet LITERALS = TokenSet.create(SmcTypes.STRING_LITERAL);
     public static final TokenSet COMMENTS = TokenSet.create(SmcTypes.LINE_COMMENT, SmcTypes.BLOCK_COMMENT);
+    public static final TokenSet CONTAINERS = TokenSet.create(SmcTypes.STATES, SmcTypes.TRANSITIONS,
+            SmcTypes.ENTRY, SmcTypes.EXIT, SmcTypes.ACTIONS);
 
-    public static final IFileElementType FILE = new IFileElementType(Language.<SmcLanguage>findInstance(SmcLanguage.class));
+    public static final IFileElementType FILE = new IFileElementType(Language.findInstance(SmcLanguage.class));
 
     @NotNull
     @Override
@@ -45,7 +48,7 @@ public class SmcParserDefinition implements ParserDefinition{
 
     @NotNull
     public TokenSet getStringLiteralElements() {
-        return TokenSet.EMPTY;
+        return LITERALS;
     }
 
     @NotNull

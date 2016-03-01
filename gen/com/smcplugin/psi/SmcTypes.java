@@ -27,6 +27,7 @@ public interface SmcTypes {
   IElementType INCLUDE_FILE = new SmcElementType("INCLUDE_FILE");
   IElementType MAP = new SmcElementType("MAP");
   IElementType NEXT_STATE = new SmcElementType("NEXT_STATE");
+  IElementType ON_STATE = new SmcElementType("ON_STATE");
   IElementType PACKAGE_NAME = new SmcElementType("PACKAGE_NAME");
   IElementType PARAMETER = new SmcElementType("PARAMETER");
   IElementType PARAMETERS = new SmcElementType("PARAMETERS");
@@ -165,6 +166,9 @@ public interface SmcTypes {
       }
       else if (type == NEXT_STATE) {
         return new SmcNextStateImpl(node);
+      }
+      else if (type == ON_STATE) {
+        return new SmcOnStateImpl(node);
       }
       else if (type == PACKAGE_NAME) {
         return new SmcPackageNameImpl(node);

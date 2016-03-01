@@ -62,16 +62,11 @@ public class SmcBlock implements ASTBlock {
 
         mySpacingBuilder = SmcFormattingModelBuilder.createSpacingBuilder(settings);
 
-        if (myPsiElement instanceof SmcState) {
-            myChildWrap = Wrap.createWrap(getCustomSettings().STATE_WRAPPING, true);
-        }
-        else if (myPsiElement instanceof SmcTransition) {
+        if (myPsiElement instanceof SmcTransition) {
             myChildWrap = Wrap.createWrap(getCustomSettings().TRANSITION_WRAPPING, true);
         }
-        else if(myPsiElement instanceof SmcEntry ||
-                myPsiElement instanceof SmcExit ||
+        else if(
                 myPsiElement instanceof SmcTransitions ||
-                myPsiElement instanceof SmcStates||
                 myPsiElement instanceof SmcActions){
             myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.WRAP_ALWAYS, true);
         }else{
@@ -113,11 +108,9 @@ public class SmcBlock implements ASTBlock {
 
         final SmcCodeStyleSettings customSettings = getCustomSettings();
         if (hasElementType(myNode, SmcParserDefinition.CONTAINERS)) {
-            if (!hasElementType(childNode, SMC_ALL_BRACES)) {
                 assert myChildWrap != null;
                 wrap = myChildWrap;
                 indent = Indent.getNormalIndent();
-            }
         }
         // Handle properties alignment
         else if (hasElementType(myNode, ARGUMENTS) ) {

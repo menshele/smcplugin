@@ -80,6 +80,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == NEXT_STATE) {
       r = next_state(b, 0);
     }
+    else if (t == ON_STATE) {
+      r = on_state(b, 0);
+    }
     else if (t == PACKAGE_NAME) {
       r = package_name(b, 0);
     }
@@ -1056,6 +1059,59 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // (entry exit)|(exit entry)|((entry|exit)?)
+  public static boolean on_state(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "on_state")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<on state>");
+    r = on_state_0(b, l + 1);
+    if (!r) r = on_state_1(b, l + 1);
+    if (!r) r = on_state_2(b, l + 1);
+    exit_section_(b, l, m, ON_STATE, r, false, null);
+    return r;
+  }
+
+  // entry exit
+  private static boolean on_state_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "on_state_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = entry(b, l + 1);
+    r = r && exit(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // exit entry
+  private static boolean on_state_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "on_state_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = exit(b, l + 1);
+    r = r && entry(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (entry|exit)?
+  private static boolean on_state_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "on_state_2")) return false;
+    on_state_2_0(b, l + 1);
+    return true;
+  }
+
+  // entry|exit
+  private static boolean on_state_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "on_state_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = entry(b, l + 1);
+    if (!r) r = exit(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // PACKAGE_KEYWORD comment* PACKAGE_STATEMENT
   public static boolean package_name(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "package_name")) return false;
@@ -1471,128 +1527,88 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STATE_NAME comment* ((entry exit)|(exit entry)|((entry|exit)?))? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE
+  // comment * STATE_NAME comment* on_state? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE
   public static boolean state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "state")) return false;
-    if (!nextTokenIs(b, STATE_NAME)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, null);
-    r = consumeToken(b, STATE_NAME);
-    p = r; // pin = 1
-    r = r && report_error_(b, state_1(b, l + 1));
-    r = p && report_error_(b, state_2(b, l + 1)) && r;
+    Marker m = enter_section_(b, l, _NONE_, "<state>");
+    r = state_0(b, l + 1);
+    r = r && consumeToken(b, STATE_NAME);
+    p = r; // pin = 2
+    r = r && report_error_(b, state_2(b, l + 1));
     r = p && report_error_(b, state_3(b, l + 1)) && r;
+    r = p && report_error_(b, state_4(b, l + 1)) && r;
     r = p && report_error_(b, consumeToken(b, BRACE_OPEN)) && r;
-    r = p && report_error_(b, state_5(b, l + 1)) && r;
+    r = p && report_error_(b, state_6(b, l + 1)) && r;
     r = p && report_error_(b, transitions(b, l + 1)) && r;
-    r = p && report_error_(b, state_7(b, l + 1)) && r;
+    r = p && report_error_(b, state_8(b, l + 1)) && r;
     r = p && consumeToken(b, BRACE_CLOSE) && r;
     exit_section_(b, l, m, STATE, r, p, null);
     return r || p;
   }
 
-  // comment*
-  private static boolean state_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_1")) return false;
+  // comment *
+  private static boolean state_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_0")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "state_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "state_0", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
-  // ((entry exit)|(exit entry)|((entry|exit)?))?
+  // comment*
   private static boolean state_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "state_2")) return false;
-    state_2_0(b, l + 1);
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "state_2", c)) break;
+      c = current_position_(b);
+    }
     return true;
   }
 
-  // (entry exit)|(exit entry)|((entry|exit)?)
-  private static boolean state_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = state_2_0_0(b, l + 1);
-    if (!r) r = state_2_0_1(b, l + 1);
-    if (!r) r = state_2_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // entry exit
-  private static boolean state_2_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_2_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = entry(b, l + 1);
-    r = r && exit(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // exit entry
-  private static boolean state_2_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_2_0_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = exit(b, l + 1);
-    r = r && entry(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (entry|exit)?
-  private static boolean state_2_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_2_0_2")) return false;
-    state_2_0_2_0(b, l + 1);
-    return true;
-  }
-
-  // entry|exit
-  private static boolean state_2_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_2_0_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = entry(b, l + 1);
-    if (!r) r = exit(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // comment*
+  // on_state?
   private static boolean state_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "state_3")) return false;
+    on_state(b, l + 1);
+    return true;
+  }
+
+  // comment*
+  private static boolean state_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_4")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "state_3", c)) break;
+      if (!empty_element_parsed_guard_(b, "state_4", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // comment*
-  private static boolean state_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_5")) return false;
+  private static boolean state_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_6")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "state_5", c)) break;
+      if (!empty_element_parsed_guard_(b, "state_6", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // comment*
-  private static boolean state_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "state_7")) return false;
+  private static boolean state_8(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "state_8")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "state_7", c)) break;
+      if (!empty_element_parsed_guard_(b, "state_8", c)) break;
       c = current_position_(b);
     }
     return true;

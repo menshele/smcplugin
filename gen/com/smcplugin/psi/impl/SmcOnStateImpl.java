@@ -11,33 +11,27 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcStateImpl extends ASTWrapperPsiElement implements SmcState {
+public class SmcOnStateImpl extends ASTWrapperPsiElement implements SmcOnState {
 
-  public SmcStateImpl(ASTNode node) {
+  public SmcOnStateImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitState(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitOnState(this);
     else super.accept(visitor);
   }
 
   @Override
-  @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  @Nullable
+  public SmcEntry getEntry() {
+    return findChildByClass(SmcEntry.class);
   }
 
   @Override
   @Nullable
-  public SmcOnState getOnState() {
-    return findChildByClass(SmcOnState.class);
-  }
-
-  @Override
-  @Nullable
-  public SmcTransitions getTransitions() {
-    return findChildByClass(SmcTransitions.class);
+  public SmcExit getExit() {
+    return findChildByClass(SmcExit.class);
   }
 
 }

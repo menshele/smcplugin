@@ -5,15 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcState extends PsiElement {
-
-  @NotNull
-  List<SmcComment> getCommentList();
+public interface SmcOnState extends PsiElement {
 
   @Nullable
-  SmcOnState getOnState();
+  SmcEntry getEntry();
 
   @Nullable
-  SmcTransitions getTransitions();
+  SmcExit getExit();
 
 }

@@ -83,6 +83,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitOnState(@NotNull SmcOnState o) {
+    visitPsiElement(o);
+  }
+
   public void visitPackageName(@NotNull SmcPackageName o) {
     visitPsiElement(o);
   }

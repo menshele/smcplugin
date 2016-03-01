@@ -81,7 +81,9 @@ map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states
 
 states ::= comment* state* comment*
 
-state ::=STATE_NAME comment* ((entry exit)|(exit entry)|((entry|exit)?))? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE {pin=1}
+state ::= comment * STATE_NAME comment* on_state? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE {pin=2}
+
+on_state ::= (entry exit)|(exit entry)|((entry|exit)?)
 
 transitions ::= comment* transition* comment*
 

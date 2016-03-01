@@ -4,7 +4,9 @@ import com.intellij.psi.tree.IElementType;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.smcplugin.util.SmcStringUtils;
 import static com.smcplugin.psi.SmcTypes.*;
+import static com.smcplugin.util.SmcStringUtils.*;
 
 %%
 
@@ -21,7 +23,7 @@ import static com.smcplugin.psi.SmcTypes.*;
   public void yypopState() {
     yybegin(stack.pop());
   }
-  private static final Pattern JAVA_LITERAL_PATTERN = Pattern.compile("\"(?:\\\\[\\\\'\"tnbfru01234567]|[^\\\\\"])*?\"");
+
   public IElementType validateJavaString(CharSequence match) {
     Matcher matcher = JAVA_LITERAL_PATTERN.matcher(match);
     return matcher.matches()? STRING_LITERAL: com.intellij.psi.TokenType.BAD_CHARACTER;
@@ -50,6 +52,7 @@ HEADER_FILE_NAME={WORD}
 DECLARE_STATEMENT={WORD}
 INCLUDE_FILE_NAME={WORD}
 MAP_NAME={WORD}
+MAP_NAME_AND_SEPARATOR={MAP_NAME}{WHITE_SPACE}*{MAP_STATE_SEPARATOR}
 STATE_NAME={WORD}
 CALLBACK_TRANSITION_NAME={WORD}
 START_STATE_NAME={WORD}|{WORD}{EOL}
@@ -126,6 +129,7 @@ MAP_KEYWORD="%map"
 %state WAITING_FOR_POP
 %state WAITING_FOR_PUSH
 %state WAITING_FOR_PUSH_STATE_NAME
+%state WAITING_FOR_PUSH_MAP_NAME
 
 %%
 <YYINITIAL> {
@@ -356,9 +360,17 @@ MAP_KEYWORD="%map"
   {WHITE_SPACE}                   { yybegin(WAITING_FOR_PUSH_STATE_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {PARENTHESES_CLOSE}             { yybegin(WAITING_FOR_NEXT_STATE_NAME); return PARENTHESES_CLOSE; }
   {NIL_KEYWORD}                   { yybegin(WAITING_FOR_PUSH_STATE_NAME); return NIL_KEYWORD; }
-  {MAP_STATE_SEPARATOR}           { yybegin(WAITING_FOR_PUSH_STATE_NAME); return MAP_NAME_STATE_NAME_SEPARATOR; }
-  {MAP_NAME}{MAP_STATE_SEPARATOR} { yybegin(WAITING_FOR_PUSH_STATE_NAME); yypushback(2); return PUSH_MAP_NAME;}
+  {MAP_NAME_AND_SEPARATOR}        { yybegin(WAITING_FOR_PUSH_MAP_NAME); yypushback(yylength()); }
   {STATE_NAME}                    { yybegin(WAITING_FOR_PUSH_STATE_NAME); return PUSH_STATE_NAME;}
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+<WAITING_FOR_PUSH_MAP_NAME>{
+  {LINE_COMMENT}                  { return LINE_COMMENT; }
+  {BLOCK_COMMENT_OPEN}            { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {WHITE_SPACE}                   { yybegin(WAITING_FOR_PUSH_MAP_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {MAP_STATE_SEPARATOR}           { yybegin(WAITING_FOR_PUSH_STATE_NAME); return MAP_NAME_STATE_NAME_SEPARATOR; }
+  {MAP_NAME}                      { yybegin(WAITING_FOR_PUSH_MAP_NAME); return PUSH_MAP_NAME;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

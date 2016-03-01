@@ -101,7 +101,6 @@ parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE
 
 guard ::= BRACKET_OPEN comment* GUARD_RAW_CODE comment* BRACKET_CLOSE
 
-//TODO: Need to implement push/pop transitions
 next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
 
 push_transition ::= (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN (push_state|comment_nil) PARENTHESES_CLOSE {pin=3}

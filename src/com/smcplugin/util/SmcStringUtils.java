@@ -30,8 +30,4 @@ public class SmcStringUtils {
     public static int indexOfWhiteSpaceChar(final CharSequence seq) {
         return indexOf(seq, WHITESPACE_CHAR_PATTERN);
     }
-
-    public static void main(String[] args) {
-        System.out.println(SmcStringUtils.indexOf("test ","\\s"));
-    }
 }

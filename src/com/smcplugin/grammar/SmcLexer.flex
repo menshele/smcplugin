@@ -82,7 +82,8 @@ COLON=":"
 SLASH_SIGN="/"
 BRACKET_OPEN="["
 BRACKET_CLOSE="]"
-PUSH_PROXY_STATE_START={WORD}{SLASH_SIGN}
+PUSH_PROXY_STATE_START={WORD}({WHITE_SPACE}*){SLASH_SIGN}({WHITE_SPACE}*){PUSH_KEYWORD}
+PUSH_PROXY_STATE={WORD}
 PUSH_KEYWORD="push"
 POP_KEYWORD="pop"
 
@@ -130,6 +131,7 @@ MAP_KEYWORD="%map"
 %state WAITING_FOR_PUSH
 %state WAITING_FOR_PUSH_STATE_NAME
 %state WAITING_FOR_PUSH_MAP_NAME
+%state WAITING_FOR_PROXY_STATE
 
 %%
 <YYINITIAL> {
@@ -323,10 +325,10 @@ MAP_KEYWORD="%map"
   {BRACKET_CLOSE}             { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE; }
   {BRACE_OPEN}                { yybegin(WAITING_FOR_ACTIONS); return BRACE_OPEN; }
   {BRACE_CLOSE}               { yybegin(WAITING_FOR_STATE); return BRACE_CLOSE; }
-  {PUSH_PROXY_STATE_START}    { yybegin(WAITING_FOR_PUSH); yypushback(1); return PUSH_PROXY_STATE_NAME; }
+  {PUSH_PROXY_STATE_START}    { yybegin(WAITING_FOR_PROXY_STATE); yypushback(yylength());  }
   {NIL_KEYWORD}               { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NIL_KEYWORD; }
   {POP_KEYWORD}               { yybegin(WAITING_FOR_POP); return POP_KEYWORD; }
-  {PUSH_KEYWORD}               { yybegin(WAITING_FOR_PUSH); return PUSH_KEYWORD; }
+  {PUSH_KEYWORD}              { yybegin(WAITING_FOR_PUSH); yypushback(yylength()); }
   {STATE_NAME}                { yybegin(WAITING_FOR_NEXT_STATE_NAME); return NEXT_STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
@@ -351,6 +353,14 @@ MAP_KEYWORD="%map"
   {SLASH_SIGN}                { yybegin(WAITING_FOR_PUSH); return PUSH_PROXY_STATE_KEYWORD_SEPARATOR; }
   {NIL_KEYWORD}               { yybegin(WAITING_FOR_PUSH); return NIL_KEYWORD; }
   {PARENTHESES_OPEN}          { yybegin(WAITING_FOR_PUSH_STATE_NAME); return PARENTHESES_OPEN; }
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+<WAITING_FOR_PROXY_STATE>{
+  {LINE_COMMENT}              { return LINE_COMMENT; }
+  {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {WHITE_SPACE}               { yybegin(WAITING_FOR_PROXY_STATE); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {PUSH_PROXY_STATE}          { yybegin(WAITING_FOR_PUSH); return PUSH_PROXY_STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

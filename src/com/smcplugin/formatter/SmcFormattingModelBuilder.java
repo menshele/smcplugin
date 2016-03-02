@@ -63,6 +63,7 @@ public class SmcFormattingModelBuilder implements FormattingModelBuilder {
                 .before(PUSH_TRANSITION).spaces(1)
                 .before(TRANSITION_ARGS).spaces(1)
                 .before(SmcTypes.PUSH_PROXY_STATE_KEYWORD_SEPARATOR).spaces(0)
+                .before(SmcTypes.ON_STATE).spaces(1)
                 .after(PUSH_PROXY_STATE).spaces(0)
                 ;
     }

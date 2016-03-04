@@ -29,7 +29,6 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
     }
     public boolean SPACE_BEFORE_LEFT_BRACE = true;
 
-    public boolean SPACE_BEFORE_KEYWORD = true;
     public boolean SPACE_AFTER_KEYWORD = true;
     public boolean SPACE_WITHIN_PARENTHESES = false;
 

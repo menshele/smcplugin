@@ -18,9 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.smcplugin.psi.SmcTypes.*;
-import static com.smcplugin.formatter.SmcCodeStyleSettings.ALIGN_PROPERTY_ON_COLON;
 import static com.smcplugin.psi.SmcPsiUtil.hasElementType;
+import static com.smcplugin.psi.SmcTypes.*;
 
 /**
  * scmplugin
@@ -28,8 +27,6 @@ import static com.smcplugin.psi.SmcPsiUtil.hasElementType;
  */
 public class SmcBlock implements ASTBlock {
     private static final TokenSet SMC_OPEN_BRACES = TokenSet.create(BRACKET_OPEN, BRACE_OPEN,PARENTHESES_OPEN,VERBATIM_OPEN);
-    private static final TokenSet SMC_CLOSE_BRACES = TokenSet.create(BRACKET_CLOSE, BRACE_CLOSE,PARENTHESES_CLOSE,VERBATIM_CLOSE);
-    private static final TokenSet SMC_ALL_BRACES = TokenSet.orSet(SMC_OPEN_BRACES, SMC_CLOSE_BRACES);
 
     private final SmcBlock myParent;
 
@@ -114,7 +111,7 @@ public class SmcBlock implements ASTBlock {
         }
         // Handle properties alignment
         else if (hasElementType(myNode, ARGUMENTS) ) {
-            if (hasElementType(childNode, COLON) && customSettings.PROPERTY_ALIGNMENT == ALIGN_PROPERTY_ON_COLON) {
+            if (hasElementType(childNode, COLON)) {
                 alignment = myParent.myPropertyValueAlignment;
             }
         }

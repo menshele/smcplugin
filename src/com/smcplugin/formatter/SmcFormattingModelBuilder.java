@@ -22,6 +22,8 @@ import static com.smcplugin.psi.SmcTypes.*;
  */
 public class SmcFormattingModelBuilder implements FormattingModelBuilder {
     private static final Logger logger = Logger.getInstance(SmcFormattingModelBuilder.class);
+    public static final int REQUIRED_SPACE_AFTER_BEGIN_LINE_KEYWORD = 1;
+    public static final int OBLIGATORY_SPACE = 1;
 
     @NotNull
     @Override
@@ -41,30 +43,30 @@ public class SmcFormattingModelBuilder implements FormattingModelBuilder {
         final SmcCodeStyleSettings smcSettings = settings.getCustomSettings(SmcCodeStyleSettings.class);
         final CommonCodeStyleSettings commonSettings = settings.getCommonSettings(SmcLanguage.INSTANCE);
 
-        final int spacesBeforeComma = smcSettings.SPACE_BEFORE_COMMA ? 1 : 0;
-        final int spacesBeforeColon = smcSettings.SPACE_BEFORE_COLON ? 1 : 0;
-        final int spacesAfterColon = smcSettings.SPACE_AFTER_COLON ? 1 : 0;
-
         return new SpacingBuilder(settings, SmcLanguage.INSTANCE)
-                .before(COLON).spacing(spacesBeforeColon, spacesBeforeColon, 0, false, 0)
-                .after(COLON).spacing(spacesAfterColon, spacesAfterColon, 0, false, 0)
-                .withinPair(BRACE_OPEN, BRACE_CLOSE).spaceIf(commonSettings.SPACE_WITHIN_BRACKETS, true)
+                .before(COLON).spaceIf(commonSettings.SPACE_BEFORE_COLON)
+                .after(COLON).spaceIf(commonSettings.SPACE_AFTER_COLON)
+                .withinPair(BRACKET_OPEN, BRACKET_CLOSE).spaceIf(commonSettings.SPACE_WITHIN_BRACKETS, true)
                 .withinPair(BRACE_OPEN, BRACE_CLOSE).spaceIf(commonSettings.SPACE_WITHIN_BRACES, true)
-                .before(COMMA).spacing(spacesBeforeComma, spacesBeforeComma, 0, false, 0)
+                .withinPair(PARENTHESES_OPEN, PARENTHESES_CLOSE).spaceIf(smcSettings.SPACE_WITHIN_PARENTHESES)
+                .before(COMMA).spaceIf(commonSettings.SPACE_BEFORE_COMMA)
+                .before(SEMICOLON).spaceIf(commonSettings.SPACE_BEFORE_SEMICOLON)
+                .after(SEMICOLON).spaceIf(commonSettings.SPACE_AFTER_SEMICOLON)
                 .after(COMMA).spaceIf(commonSettings.SPACE_AFTER_COMMA)
-                .before(BRACE_OPEN).spacing(1, 1, 0, true, 0)
-                .before(PARENTHESES_OPEN).none().after(PARENTHESES_OPEN).none()
-                .before(PARENTHESES_CLOSE).none().after(PARENTHESES_CLOSE).none()
-                .around(MAP_NAME_STATE_NAME_SEPARATOR).spaces(0)
-                .after(SmcParserDefinition.KEYWORDS).spaces(1)
+                .before(BRACE_OPEN).spaceIf(smcSettings.SPACE_BEFORE_LEFT_BRACE)
+                .before(PARENTHESES_OPEN).spaceIf(smcSettings.SPACE_BEFORE_PARENTHESES_OPEN)
+                .around(MAP_NAME_STATE_NAME_SEPARATOR).spaceIf(smcSettings.SPACE_AROUND_MAP_STATE_SEPARATOR)
+                .after(SmcParserDefinition.BEGIN_LINE_KEYWORDS).spaces(REQUIRED_SPACE_AFTER_BEGIN_LINE_KEYWORD)
+                .after(SmcParserDefinition.KEYWORDS).spaceIf(smcSettings.SPACE_AFTER_KEYWORD)
                 .after(STATE).blankLines(1)
                 .before(TRANSITION).blankLines(1)
-                .before(POP_TRANSITION).spaces(1)
-                .before(PUSH_TRANSITION).spaces(1)
-                .before(TRANSITION_ARGS).spaces(1)
-                .before(SmcTypes.PUSH_PROXY_STATE_KEYWORD_SEPARATOR).spaces(0)
-                .before(SmcTypes.ON_STATE).spaces(1)
-                .after(PUSH_PROXY_STATE).spaces(0)
+                .before(POP_TRANSITION).spaces(OBLIGATORY_SPACE)
+                .before(PUSH_TRANSITION).spaces(OBLIGATORY_SPACE)
+                .before(TRANSITION_ARGS).spaceIf(smcSettings.SPACE_BEFORE_PARENTHESES_OPEN)
+                .around(SmcTypes.PUSH_PROXY_STATE_KEYWORD_SEPARATOR).spaceIf(smcSettings.PUSH_PROXY_STATE_KEYWORD_SEPARATOR)
+                .before(SmcTypes.ON_STATE).spaces(OBLIGATORY_SPACE)
+                .before(SmcTypes.NEXT_STATE).spaces(OBLIGATORY_SPACE)
+                .after(PUSH_PROXY_STATE).spaceIf(smcSettings.PUSH_PROXY_STATE_KEYWORD_SEPARATOR)
                 ;
     }
 }

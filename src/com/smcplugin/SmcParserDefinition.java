@@ -44,6 +44,20 @@ public class SmcParserDefinition implements ParserDefinition {
             SmcTypes.POP_KEYWORD,
             SmcTypes.PUSH_KEYWORD
             );
+    public static final TokenSet BEGIN_LINE_KEYWORDS = TokenSet.create(
+            SmcTypes.ACCESS_KEYWORD,
+            SmcTypes.CLASS_KEYWORD,
+            SmcTypes.DECLARE_KEYWORD,
+            SmcTypes.FSM_CLASS_KEYWORD,
+            SmcTypes.HEADER_KEYWORD,
+            SmcTypes.FSM_FILE_KEYWORD,
+            SmcTypes.MAP_KEYWORD,
+            SmcTypes.IMPORT_KEYWORD,
+            SmcTypes.INCLUDE_KEYWORD,
+            SmcTypes.STATIC_JAVA_KEYWORD,
+            SmcTypes.START_KEYWORD,
+            SmcTypes.PACKAGE_KEYWORD
+            );
     public static final TokenSet CONTAINERS = TokenSet.create(SmcTypes.ON_STATE, SmcTypes.TRANSITIONS, SmcTypes.ACTIONS);
 
     public static final IFileElementType FILE = new IFileElementType(Language.findInstance(SmcLanguage.class));

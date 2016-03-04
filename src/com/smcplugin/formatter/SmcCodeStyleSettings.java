@@ -20,7 +20,6 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
 
     public enum SmcOptions {
         SPACE_BEFORE_LEFT_BRACE,
-        SPACE_BEFORE_KEYWORD,
         SPACE_AFTER_KEYWORD,
         SPACE_WITHIN_PARENTHESES,
         SPACE_BEFORE_PARENTHESES_OPEN,

@@ -58,15 +58,18 @@ public class SmcFormattingModelBuilder implements FormattingModelBuilder {
                 .around(MAP_NAME_STATE_NAME_SEPARATOR).spaceIf(smcSettings.SPACE_AROUND_MAP_STATE_SEPARATOR)
                 .after(SmcParserDefinition.BEGIN_LINE_KEYWORDS).spaces(REQUIRED_SPACE_AFTER_BEGIN_LINE_KEYWORD)
                 .after(SmcParserDefinition.KEYWORDS).spaceIf(smcSettings.SPACE_AFTER_KEYWORD)
-                .after(STATE).blankLines(1)
-                .before(TRANSITION).blankLines(1)
+                .around(MAP).blankLines(smcSettings.BLANK_LINES_AROUND_MAP)
+                .around(STATE).blankLines(smcSettings.BLANK_LINES_AROUND_STATE)
+                .around(TRANSITION).blankLines(smcSettings.BLANK_LINES_AROUND_TRANSITION)
+                .around(ENTRY).blankLines(smcSettings.BLANK_LINES_AROUND_ENTRY)
+                .around(EXIT).blankLines(smcSettings.BLANK_LINES_AROUND_EXIT)
                 .before(POP_TRANSITION).spaces(OBLIGATORY_SPACE)
                 .before(PUSH_TRANSITION).spaces(OBLIGATORY_SPACE)
                 .before(TRANSITION_ARGS).spaceIf(smcSettings.SPACE_BEFORE_PARENTHESES_OPEN)
-                .around(SmcTypes.PUSH_PROXY_STATE_KEYWORD_SEPARATOR).spaceIf(smcSettings.PUSH_PROXY_STATE_KEYWORD_SEPARATOR)
+                .around(SmcTypes.PUSH_PROXY_STATE_KEYWORD_SEPARATOR).spaceIf(smcSettings.SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR)
                 .before(SmcTypes.ON_STATE).spaces(OBLIGATORY_SPACE)
                 .before(SmcTypes.NEXT_STATE).spaces(OBLIGATORY_SPACE)
-                .after(PUSH_PROXY_STATE).spaceIf(smcSettings.PUSH_PROXY_STATE_KEYWORD_SEPARATOR)
+                .after(PUSH_PROXY_STATE).spaceIf(smcSettings.SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR)
                 ;
     }
 }

@@ -1284,7 +1284,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
+  // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR
   public static boolean push_proxy_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_proxy_state")) return false;
     if (!nextTokenIs(b, "<push proxy state>", NIL_KEYWORD, PUSH_PROXY_STATE_NAME)) return false;

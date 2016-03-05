@@ -8,7 +8,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.ContainerUtil;
 import com.smcplugin.SmcLanguage;
 import com.smcplugin.SmcParserDefinition;
@@ -26,8 +25,9 @@ import static com.smcplugin.psi.SmcTypes.*;
  * Created by lemen on 29.02.2016.
  */
 public class SmcBlock implements ASTBlock {
-    private static final TokenSet SMC_OPEN_BRACES = TokenSet.create(BRACKET_OPEN, BRACE_OPEN,PARENTHESES_OPEN,VERBATIM_OPEN);
 
+    public static final String LBRACE = "{";
+    public static final String RBRACE = "}";
     private final SmcBlock myParent;
 
     private final ASTNode myNode;
@@ -44,30 +44,52 @@ public class SmcBlock implements ASTBlock {
     private final Wrap myChildWrap;
 
     public SmcBlock(@Nullable SmcBlock parent,
-                     @NotNull ASTNode node,
-                     @NotNull CodeStyleSettings settings,
-                     @Nullable Alignment alignment,
-                     @NotNull Indent indent,
-                     @Nullable Wrap wrap) {
+                    @NotNull ASTNode node,
+                    @NotNull CodeStyleSettings settings,
+                    @Nullable Alignment alignment,
+                    @NotNull Indent indent,
+                    @Nullable Wrap wrap) {
         myParent = parent;
         myNode = node;
         myPsiElement = node.getPsi();
         myAlignment = alignment;
         myIndent = indent;
-        myWrap = wrap;
         mySettings = settings;
 
         mySpacingBuilder = SmcFormattingModelBuilder.createSpacingBuilder(settings);
 
         if (myPsiElement instanceof SmcTransition) {
-            myChildWrap = Wrap.createWrap(getCustomSettings().TRANSITION_WRAPPING, true);
-        }
-        else if(
-                myPsiElement instanceof SmcTransitions ||
-                myPsiElement instanceof SmcActions){
-            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.WRAP_ALWAYS, true);
-        }else{
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_TRANSITION, true);
             myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcActions) {
+            myWrap = myChildWrap = Wrap.createWrap(getCustomSettings().WRAP_ACTIONS, true);
+        } else if (myPsiElement instanceof SmcState) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_STATE, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcNextState) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_NEXT_STATE, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcPushTransition) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_PUSH_TRANSITION, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcPopTransition) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_POP_TRANSITION, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcEntry) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_ENTRY, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcExit) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_EXIT, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcGuard) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_GUARD, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else if (myPsiElement instanceof SmcTransitionArgs) {
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_TRANSITION_ARGS, true);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+        } else {
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+            myWrap = wrap;
         }
 
         myPropertyValueAlignment = myPsiElement instanceof SmcState ? Alignment.createAlignment(true) : null;
@@ -105,12 +127,12 @@ public class SmcBlock implements ASTBlock {
 
         final SmcCodeStyleSettings customSettings = getCustomSettings();
         if (hasElementType(myNode, SmcParserDefinition.CONTAINERS)) {
-                assert myChildWrap != null;
-                wrap = myChildWrap;
-                indent = Indent.getNormalIndent();
+            assert myChildWrap != null;
+            wrap = myChildWrap;
+            indent = Indent.getNormalIndent();
         }
         // Handle properties alignment
-        else if (hasElementType(myNode, ARGUMENTS) ) {
+        else if (hasElementType(myNode, ARGUMENTS)) {
             if (hasElementType(childNode, COLON)) {
                 alignment = myParent.myPropertyValueAlignment;
             }
@@ -146,12 +168,8 @@ public class SmcBlock implements ASTBlock {
     @Override
     public ChildAttributes getChildAttributes(int newChildIndex) {
         if (hasElementType(myNode, SmcParserDefinition.CONTAINERS)) {
-            // WEB-13675: For some reason including alignment in child attributes causes
-            // indents to consist solely of spaces when both USE_TABS and SMART_TAB
-            // options are enabled.
             return new ChildAttributes(Indent.getNormalIndent(), null);
-        }
-        else if (myNode.getPsi() instanceof PsiFile) {
+        } else if (myNode.getPsi() instanceof PsiFile) {
             return new ChildAttributes(Indent.getNoneIndent(), null);
         }
         // Will use continuation indent for cases like { "foo"<caret>  }
@@ -163,8 +181,7 @@ public class SmcBlock implements ASTBlock {
         final ASTNode lastChildNode = myNode.getLastChildNode();
         if (hasElementType(myNode, STATES)) {
             return lastChildNode != null && lastChildNode.getElementType() != BRACE_OPEN;
-        }
-        else if (hasElementType(myNode, TRANSITIONS)) {
+        } else if (hasElementType(myNode, TRANSITIONS)) {
             return lastChildNode != null && lastChildNode.getElementType() != BRACE_OPEN;
         }
         return false;

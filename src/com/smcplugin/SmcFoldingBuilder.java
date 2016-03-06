@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class SmcFoldingBuilder extends FoldingBuilderEx {
 
-    public static final String MAP_FORMAT_PATTERN = " {0}";
+    public static final String MAP_FORMAT_PATTERN = " {0} ";
 
     @NotNull
     @Override
@@ -43,7 +43,7 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
                     new FoldingDescriptor(map.getNode(),
                     new TextRange(map.getTextRange().getStartOffset() +
                             map.getFirstChild().getText().length(),
-                            map.getTextRange().getEndOffset() - map.getLastChild().getText().length() - 1),
+                            map.getTextRange().getEndOffset() - map.getLastChild().getText().length()),
                             group) {
                 @Nullable
                 @Override

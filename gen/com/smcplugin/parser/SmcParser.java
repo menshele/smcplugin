@@ -396,7 +396,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // GUARD_BRACKET_OPEN (GUARD_NOT_BRACKET|bracket_expression)? GUARD_BRACKET_CLOSE
+  // GUARD_BRACKET_OPEN (GUARD_NOT_BRACKET|bracket_expression)* GUARD_BRACKET_CLOSE
   static boolean bracket_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bracket_expression")) return false;
     if (!nextTokenIs(b, GUARD_BRACKET_OPEN)) return false;
@@ -410,10 +410,15 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // (GUARD_NOT_BRACKET|bracket_expression)?
+  // (GUARD_NOT_BRACKET|bracket_expression)*
   private static boolean bracket_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bracket_expression_1")) return false;
-    bracket_expression_1_0(b, l + 1);
+    int c = current_position_(b);
+    while (true) {
+      if (!bracket_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "bracket_expression_1", c)) break;
+      c = current_position_(b);
+    }
     return true;
   }
 

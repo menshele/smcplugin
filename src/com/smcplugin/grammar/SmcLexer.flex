@@ -124,7 +124,7 @@ MAP_KEYWORD="%map"
 %state WAITING_FOR_PARAMETER_TYPE
 %state WAITING_FOR_PARAMETER_NAME
 %state WAITING_FOR_GUARD_RAW_CODE
-%state WAITING_FOR_GUARD_RAW_CODE_END
+%state INSIDE_GUARD_BRACKET
 %state WAITING_FOR_NEXT_STATE_NAME
 %state WAITING_FOR_ACTIONS
 %state IN_BLOCK_COMMENT
@@ -388,18 +388,17 @@ MAP_KEYWORD="%map"
 //TODO: Need to implement proper Java Code Parsing one day. http://cui.unige.ch/isi/bnf/JAVA/expression.html
 <WAITING_FOR_GUARD_RAW_CODE>{
   {WHITE_SPACE}                   { yybegin(WAITING_FOR_GUARD_RAW_CODE); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  {BRACKET_OPEN}                  { yybegin(WAITING_FOR_GUARD_RAW_CODE_END); return GUARD_BRACKET_OPEN;}
+  {BRACKET_OPEN}                  { yypushState(INSIDE_GUARD_BRACKET); return GUARD_BRACKET_OPEN;}
   {BRACKET_CLOSE}                 { yybegin(WAITING_FOR_NEXT_STATE_NAME); return BRACKET_CLOSE;}
-  {NOT_BRACKET}{BRACKET_CLOSE}    { yybegin(WAITING_FOR_NEXT_STATE_NAME); yypushback(1); return GUARD_NOT_BRACKET; }
   {NOT_BRACKET}                   { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_NOT_BRACKET; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 
-<WAITING_FOR_GUARD_RAW_CODE_END>{
-  {WHITE_SPACE}                   { yybegin(WAITING_FOR_GUARD_RAW_CODE_END); return com.intellij.psi.TokenType.WHITE_SPACE; }
-  {BRACKET_OPEN}                  { yybegin(WAITING_FOR_GUARD_RAW_CODE); yypushback (1); return GUARD_BRACKET_OPEN;}
-  {BRACKET_CLOSE}                 { yybegin(WAITING_FOR_GUARD_RAW_CODE); return GUARD_BRACKET_CLOSE;}
-  {NOT_BRACKET}                   { yybegin(WAITING_FOR_GUARD_RAW_CODE_END); return GUARD_NOT_BRACKET; }
+<INSIDE_GUARD_BRACKET>{
+  {WHITE_SPACE}                   { yybegin(INSIDE_GUARD_BRACKET); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {BRACKET_OPEN}                  { yypushState(INSIDE_GUARD_BRACKET); return GUARD_BRACKET_OPEN;}
+  {BRACKET_CLOSE}                 { yypopState(); return GUARD_BRACKET_CLOSE;}
+  {NOT_BRACKET}                   { yybegin(INSIDE_GUARD_BRACKET); return GUARD_NOT_BRACKET; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

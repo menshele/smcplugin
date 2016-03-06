@@ -43,7 +43,7 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
                     new FoldingDescriptor(map.getNode(),
                     new TextRange(map.getTextRange().getStartOffset() +
                             map.getFirstChild().getText().length(),
-                            map.getTextRange().getEndOffset() - map.getLastChild().getText().length()),
+                            map.getTextRange().getEndOffset() - map.getLastChild().getText().length() - 1),
                             group) {
                 @Nullable
                 @Override

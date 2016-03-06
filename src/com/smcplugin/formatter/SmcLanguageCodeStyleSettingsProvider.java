@@ -1,7 +1,6 @@
 package com.smcplugin.formatter;
 
 import com.intellij.lang.Language;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import com.smcplugin.SmcLanguage;
@@ -22,8 +21,10 @@ public class SmcLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
     public static final String SPACE_WITHIN_PARENTHESES_LABEL = "Space within parentheses";
     public static final String SPACE_BEFORE_PARENTHESES_LABEL = "Space before parentheses";
     public static final String SPACE_AROUND_MAP_STATE_SEPARATOR_LABEL = "Space around map-state (\"::\") separator";
-    public static final String PUSH_PROXY_STATE_KEYWORD_SEPARATOR_LABEL = "Space around push-proxy-state (\"/\") separator";
-    private static final String SPACE_BEFORE_TRANSITION_ARGS_LABEL = "Space before transition arguments";
+    public static final String SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR_LABEL = "Space around push-proxy-state (\"/\") separator";
+    private static final String SPACE_BEFORE_TRANSITION_ARGS_LABEL = "Space before \"Transition arguments\"";
+    private static final String SPACE_BEFORE_ACTIONS_BLOCK_LABEL = "Space before \"Actions\" block";
+    private static final String SPACE_AFTER_ENTRY_EXIT_KEYWORDS_LABEL = "Space after \"Entry/Exit\" keywords";
 
     @NotNull
     @Override
@@ -50,8 +51,10 @@ public class SmcLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_WITHIN_PARENTHESES), SPACE_WITHIN_PARENTHESES_LABEL, CodeStyleSettingsCustomizable.SPACES_WITHIN);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_PARENTHESES_OPEN), SPACE_BEFORE_PARENTHESES_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_TRANSITION_ARGS), SPACE_BEFORE_TRANSITION_ARGS_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
+            consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_ACTIONS_BLOCK), SPACE_BEFORE_ACTIONS_BLOCK_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AROUND_MAP_STATE_SEPARATOR), SPACE_AROUND_MAP_STATE_SEPARATOR_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
-            consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR), PUSH_PROXY_STATE_KEYWORD_SEPARATOR_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
+            consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR), SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
+            consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AFTER_ENTRY_EXIT_KEYWORDS), SPACE_AFTER_ENTRY_EXIT_KEYWORDS_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
 
         } else if (settingsType == SettingsType.BLANK_LINES_SETTINGS) {
 

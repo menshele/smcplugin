@@ -16,14 +16,14 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
         super(SmcLanguage.INSTANCE.getID(), container);
     }
 
-
-
     public enum SmcOptions {
         SPACE_BEFORE_LEFT_BRACE,
         SPACE_AFTER_KEYWORD,
         SPACE_WITHIN_PARENTHESES,
         SPACE_BEFORE_PARENTHESES_OPEN,
         SPACE_BEFORE_TRANSITION_ARGS,
+        SPACE_AFTER_ENTRY_EXIT_KEYWORDS,
+        SPACE_BEFORE_ACTIONS_BLOCK,
         SPACE_AROUND_MAP_STATE_SEPARATOR,
         SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR,
 
@@ -43,8 +43,15 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
         WRAP_POP_TRANSITION,
         WRAP_TRANSITION_ARGS,
         WRAP_GUARD;
+
     }
-    public boolean SPACE_BEFORE_TRANSITION_ARGS;
+
+
+    public boolean SPACE_BEFORE_TRANSITION_ARGS = true;
+
+    public boolean SPACE_AFTER_ENTRY_EXIT_KEYWORDS = true;
+
+    public boolean SPACE_BEFORE_ACTIONS_BLOCK = true;
 
     public boolean SPACE_BEFORE_LEFT_BRACE = true;
 

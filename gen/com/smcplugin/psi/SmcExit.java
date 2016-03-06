@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface SmcExit extends PsiElement {
 
   @Nullable
-  SmcActions getActions();
+  SmcActionsBlock getActionsBlock();
 
   @NotNull
   List<SmcComment> getCommentList();

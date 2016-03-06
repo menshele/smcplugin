@@ -19,6 +19,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitActionsBlock(@NotNull SmcActionsBlock o) {
+    visitPsiElement(o);
+  }
+
   public void visitArguments(@NotNull SmcArguments o) {
     visitPsiElement(o);
   }
@@ -124,7 +128,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitState(@NotNull SmcState o) {
-    visitPsiElement(o);
+    visitStateElement(o);
   }
 
   public void visitStates(@NotNull SmcStates o) {
@@ -132,7 +136,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitTransition(@NotNull SmcTransition o) {
-    visitPsiElement(o);
+    visitTransitionElement(o);
   }
 
   public void visitTransitionArgs(@NotNull SmcTransitionArgs o) {
@@ -148,6 +152,14 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitMapElement(@NotNull SmcMapElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStateElement(@NotNull SmcStateElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTransitionElement(@NotNull SmcTransitionElement o) {
     visitPsiElement(o);
   }
 

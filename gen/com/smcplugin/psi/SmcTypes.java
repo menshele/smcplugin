@@ -11,6 +11,7 @@ public interface SmcTypes {
   IElementType ACCESS = new SmcElementType("ACCESS");
   IElementType ACTION = new SmcElementType("ACTION");
   IElementType ACTIONS = new SmcElementType("ACTIONS");
+  IElementType ACTIONS_BLOCK = new SmcElementType("ACTIONS_BLOCK");
   IElementType ARGUMENTS = new SmcElementType("ARGUMENTS");
   IElementType BLOCK_COMMENT = new SmcElementType("BLOCK_COMMENT");
   IElementType CALLBACK_TRANSITION = new SmcElementType("CALLBACK_TRANSITION");
@@ -121,6 +122,9 @@ public interface SmcTypes {
       }
       else if (type == ACTIONS) {
         return new SmcActionsImpl(node);
+      }
+      else if (type == ACTIONS_BLOCK) {
+        return new SmcActionsBlockImpl(node);
       }
       else if (type == ARGUMENTS) {
         return new SmcArgumentsImpl(node);

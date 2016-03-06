@@ -5,10 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcTransition extends PsiElement {
+public interface SmcTransition extends SmcTransitionElement {
 
   @Nullable
-  SmcActions getActions();
+  SmcActionsBlock getActionsBlock();
 
   @NotNull
   List<SmcComment> getCommentList();
@@ -27,5 +27,11 @@ public interface SmcTransition extends PsiElement {
 
   @Nullable
   SmcTransitionArgs getTransitionArgs();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

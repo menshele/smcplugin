@@ -265,7 +265,7 @@ MAP_KEYWORD="%map"
   {ENTRY_KEYWORD}             { yybegin(WAITING_FOR_STATE_ENTRY_EXIT); return ENTRY_KEYWORD; }
   {EXIT_KEYWORD}              { yybegin(WAITING_FOR_STATE_ENTRY_EXIT); return EXIT_KEYWORD; }
   {BRACE_OPEN}                { yybegin(WAITING_FOR_TRANSITIONS); return BRACE_OPEN; }
-  {MAP_SECTION_BOUND}         { yybegin(WAITING_FOR_MAP); return MAP_SECTION_BOUND; }
+  {MAP_SECTION_BOUND}         { yybegin(YYINITIAL); return MAP_SECTION_BOUND; }
   {STATE_NAME}                { yybegin(WAITING_FOR_STATE); return STATE_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }

@@ -24,8 +24,8 @@ public class SmcEntryImpl extends ASTWrapperPsiElement implements SmcEntry {
 
   @Override
   @Nullable
-  public SmcActions getActions() {
-    return findChildByClass(SmcActions.class);
+  public SmcActionsBlock getActionsBlock() {
+    return findChildByClass(SmcActionsBlock.class);
   }
 
   @Override

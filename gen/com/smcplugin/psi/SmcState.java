@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcState extends PsiElement {
+public interface SmcState extends SmcStateElement {
 
   @NotNull
   List<SmcComment> getCommentList();
@@ -15,5 +15,11 @@ public interface SmcState extends PsiElement {
 
   @Nullable
   SmcTransitions getTransitions();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

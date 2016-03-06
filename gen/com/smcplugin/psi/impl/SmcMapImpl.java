@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 
-public class SmcMapImpl extends SmcMapElementImpl implements SmcMap {
+public class SmcMapImpl extends SmcNamedElementImpl implements SmcMap {
 
   public SmcMapImpl(ASTNode node) {
     super(node);

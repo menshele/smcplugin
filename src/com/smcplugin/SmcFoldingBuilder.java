@@ -5,13 +5,13 @@ import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.FoldingGroup;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.smcplugin.psi.SmcMap;
-import com.smcplugin.psi.SmcPsiUtil;
-import com.smcplugin.psi.SmcTypes;
+import com.smcplugin.psi.SmcNamedElement;
+import com.smcplugin.psi.SmcState;
+import com.smcplugin.psi.SmcTransition;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -28,54 +29,54 @@ import java.util.List;
  */
 public class SmcFoldingBuilder extends FoldingBuilderEx {
 
-    public static final String MAP_FORMAT_PATTERN = " {0} ";
+    public static final String SIMPLE_FOLD_FORMAT_PATTERN = " {0} ";
+    public static final String SIMPLE_GROUP_FORMAT_PATTERN = "{0}_{1}";
 
     @NotNull
     @Override
     public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
-        FoldingGroup group = FoldingGroup.newGroup(SmcLanguage.INSTANCE.getID());
+
 
         List<FoldingDescriptor> descriptors = new ArrayList<>();
+
+        buildSimpleNamedFolding(root, descriptors, SmcMap.class);
         Collection<SmcMap> maps = PsiTreeUtil.findChildrenOfType(root, SmcMap.class);
-        for (final SmcMap map : maps) {
-            Project project = map.getProject();
+        for (SmcMap map : maps) {
+            List<SmcState> smcStates = map.getStates() == null ? Collections.emptyList() : map.getStates().getStateList();
+            buildNamedFoldingForElements(descriptors, smcStates);
+            for(SmcState state: smcStates){
+                List<SmcTransition> smcTransitions = state.getTransitions() == null ? Collections.emptyList() : state.getTransitions().getTransitionList();
+                buildNamedFoldingForElements(descriptors, smcTransitions);
+            }
+        }
+
+        return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
+    }
+
+    private <T extends SmcNamedElement> void buildSimpleNamedFolding(@NotNull PsiElement root, List<FoldingDescriptor> descriptors, Class<T> aClass) {
+
+        Collection<T> namedElements = PsiTreeUtil.findChildrenOfType(root, aClass);
+        buildNamedFoldingForElements(descriptors, namedElements);
+    }
+
+    private <T extends SmcNamedElement> void buildNamedFoldingForElements(List<FoldingDescriptor> descriptors, Collection<T> namedElements) {
+        for (final T namedElement : namedElements) {
             descriptors.add(
-                    new FoldingDescriptor(map.getNode(),
-                    new TextRange(map.getTextRange().getStartOffset() +
-                            map.getFirstChild().getText().length(),
-                            map.getTextRange().getEndOffset() - map.getLastChild().getText().length()),
-                            group) {
-                @Nullable
-                @Override
-                public String getPlaceholderText() {
-                    // IMPORTANT: keys can come with no values, so a test for null is needed
-                    // IMPORTANT: Convert embedded \n to backslash n, so that the string will look like it has LF embedded in it and embedded " to escaped "
-                    String mapName = map.getName() == null ? "" : StringEscapeUtils.escapeJava(map.getName());
-                    return MessageFormat.format(MAP_FORMAT_PATTERN, mapName);
-                }
-            });
-           /* if (value != null && value.startsWith(SMC_PREFIX)) {
-                Project project = literalExpression.getProject();
-                String key = value.substring(SMC_PREFIX_LENGTH);
-                final List<SmcTransition> properties = SmcUtil.findTransitions(project, key);
-                if (properties.size() == 1) {
-                    descriptors.add(new FoldingDescriptor(literalExpression.getNode(),
-                            new TextRange(literalExpression.getTextRange().getStartOffset() + 1,
-                                    literalExpression.getTextRange().getEndOffset() - 1), group) {
+                    new FoldingDescriptor(namedElement.getNode(),
+                            new TextRange(namedElement.getTextRange().getStartOffset() +
+                                    namedElement.getFirstChild().getText().length(),
+                                    namedElement.getTextRange().getEndOffset()),
+                            FoldingGroup.newGroup(MessageFormat.format(SIMPLE_GROUP_FORMAT_PATTERN, namedElements.getClass(), namedElement.getName()))) {
                         @Nullable
                         @Override
                         public String getPlaceholderText() {
                             // IMPORTANT: keys can come with no values, so a test for null is needed
                             // IMPORTANT: Convert embedded \n to backslash n, so that the string will look like it has LF embedded in it and embedded " to escaped "
-                            String valueOf = properties.get(0).getName();
-                            return valueOf == null ? "" : valueOf.replaceAll("\n","\\n").replaceAll("\"","\\\\\"");
+                            String mapName = namedElement.getName() == null ? "" : StringEscapeUtils.escapeJava(namedElement.getName());
+                            return MessageFormat.format(SIMPLE_FOLD_FORMAT_PATTERN, mapName);
                         }
                     });
-                }
-            }*/
         }
-
-        return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
     }
 
     @Nullable

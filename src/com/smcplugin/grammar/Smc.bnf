@@ -78,22 +78,22 @@ declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 
 access ::= ACCESS_KEYWORD comment* ACCESS_LEVEL
 
-map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=2 mixin="com.smcplugin.psi.impl.SmcMapElementImpl"
+map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl"
                                                                                                              implements="com.smcplugin.psi.SmcMapElement" methods=[getName setName getNameIdentifier]}
 
 states ::= comment* state* comment*
 
-state ::= comment * STATE_NAME comment* on_state? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE {pin=2}
+state ::= comment * STATE_NAME comment* on_state? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcStateElement" methods=[getName setName getNameIdentifier]}
 
 on_state ::= (entry exit)|(exit entry)|((entry|exit)?)
 
 transitions ::= comment* transition* comment*
 
-transition ::= comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* BRACE_OPEN comment* actions comment* BRACE_CLOSE {pin=2}
+transition ::= comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcTransitionElement" methods=[getName setName getNameIdentifier]}
 
-entry ::= comment* ENTRY_KEYWORD comment* BRACE_OPEN comment*  actions comment* BRACE_CLOSE {pin=2}
+entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2}
 
-exit ::= comment* EXIT_KEYWORD comment* BRACE_OPEN comment* actions comment* BRACE_CLOSE {pin=2}
+exit ::= comment* EXIT_KEYWORD comment* actions_block {pin=2}
 
 transition_args ::=PARENTHESES_OPEN comment* parameters comment* PARENTHESES_CLOSE {pin=1}
 
@@ -121,7 +121,9 @@ pop_transition ::= POP_KEYWORD callback_transition? {pin=1}
 
 callback_transition ::= comment*  PARENTHESES_OPEN comment* CALLBACK_TRANSITION_NAME comment* (COMMA comment* arguments)? PARENTHESES_CLOSE
 
-actions ::= (action comment*)*
+actions_block ::= BRACE_OPEN actions BRACE_CLOSE
+
+actions ::= (comment* action comment*)*
 
 action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1}
 

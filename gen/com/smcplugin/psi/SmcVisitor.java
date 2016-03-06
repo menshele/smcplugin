@@ -80,7 +80,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitMap(@NotNull SmcMap o) {
-    visitPsiElement(o);
+    visitMapElement(o);
   }
 
   public void visitNextState(@NotNull SmcNextState o) {
@@ -144,6 +144,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitVerbatimCodeSection(@NotNull SmcVerbatimCodeSection o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMapElement(@NotNull SmcMapElement o) {
     visitPsiElement(o);
   }
 

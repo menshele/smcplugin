@@ -78,7 +78,8 @@ declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 
 access ::= ACCESS_KEYWORD comment* ACCESS_LEVEL
 
-map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=2}
+map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=2 mixin="com.smcplugin.psi.impl.SmcMapElementImpl"
+                                                                                                             implements="com.smcplugin.psi.SmcMapElement" methods=[getName setName getNameIdentifier]}
 
 states ::= comment* state* comment*
 

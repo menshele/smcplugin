@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcMapImpl extends ASTWrapperPsiElement implements SmcMap {
+public class SmcMapImpl extends SmcMapElementImpl implements SmcMap {
 
   public SmcMapImpl(ASTNode node) {
     super(node);
@@ -32,6 +31,18 @@ public class SmcMapImpl extends ASTWrapperPsiElement implements SmcMap {
   @Nullable
   public SmcStates getStates() {
     return findChildByClass(SmcStates.class);
+  }
+
+  public String getName() {
+    return SmcPsiImplUtil.getName(this);
+  }
+
+  public PsiElement setName(String newName) {
+    return SmcPsiImplUtil.setName(this, newName);
+  }
+
+  public PsiElement getNameIdentifier() {
+    return SmcPsiImplUtil.getNameIdentifier(this);
   }
 
 }

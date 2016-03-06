@@ -34,6 +34,7 @@
         <lang.formatter language="smc" implementationClass="com.smcplugin.formatter.SmcFormattingModelBuilder"/>
         <codeStyleSettingsProvider implementation="com.smcplugin.formatter.SmcCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="com.smcplugin.formatter.SmcLanguageCodeStyleSettingsProvider"/>
+        <lang.foldingBuilder language="smc" implementationClass="com.smcplugin.SmcFoldingBuilder"/>
         <!--
             <annotator language="JAVA" implementationClass="com.smcplugin.SmcAnnotator"/>
             <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>

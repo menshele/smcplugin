@@ -38,7 +38,7 @@ public class SmcPsiImplUtil {
     }
 
     public static String getName(SmcTransition element) {
-        return getStringName(element, SmcTypes.STATE_NAME);
+        return getStringName(element, SmcTypes.TRANSITION_NAME);
     }
 
     public static PsiElement setName(SmcTransition element, String newName) {

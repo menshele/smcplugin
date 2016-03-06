@@ -43,10 +43,10 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
         Collection<SmcMap> maps = PsiTreeUtil.findChildrenOfType(root, SmcMap.class);
         for (SmcMap map : maps) {
             List<SmcState> smcStates = map.getStates() == null ? Collections.emptyList() : map.getStates().getStateList();
-            buildNamedFoldingForElements(descriptors, smcStates);
-            for(SmcState state: smcStates){
+            buildNamedFoldingForElements(descriptors, smcStates, true,false, false);
+            for (SmcState state : smcStates) {
                 List<SmcTransition> smcTransitions = state.getTransitions() == null ? Collections.emptyList() : state.getTransitions().getTransitionList();
-                buildNamedFoldingForElements(descriptors, smcTransitions);
+                buildNamedFoldingForElements(descriptors, smcTransitions, true, false,false);
             }
         }
 
@@ -56,24 +56,32 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
     private <T extends SmcNamedElement> void buildSimpleNamedFolding(@NotNull PsiElement root, List<FoldingDescriptor> descriptors, Class<T> aClass) {
 
         Collection<T> namedElements = PsiTreeUtil.findChildrenOfType(root, aClass);
-        buildNamedFoldingForElements(descriptors, namedElements);
+        buildNamedFoldingForElements(descriptors, namedElements, true, false, true);
     }
 
-    private <T extends SmcNamedElement> void buildNamedFoldingForElements(List<FoldingDescriptor> descriptors, Collection<T> namedElements) {
+    private <T extends SmcNamedElement> void buildNamedFoldingForElements(List<FoldingDescriptor> descriptors,
+                                                                          Collection<T> namedElements,
+                                                                          boolean includeFirstElement,
+                                                                          boolean includeLastElement,
+                                                                          boolean showNameWhenCollapsed) {
         for (final T namedElement : namedElements) {
+            int firstChildLength = includeFirstElement ? namedElement.getFirstChild().getText().length() : 0;
+            int lastChildLength = includeLastElement ? namedElement.getLastChild().getText().length() : 0;
             descriptors.add(
                     new FoldingDescriptor(namedElement.getNode(),
-                            new TextRange(namedElement.getTextRange().getStartOffset() +
-                                    namedElement.getFirstChild().getText().length(),
-                                    namedElement.getTextRange().getEndOffset()),
+                            new TextRange(namedElement.getTextRange().getStartOffset() + firstChildLength,
+                                    namedElement.getTextRange().getEndOffset() - lastChildLength),
                             FoldingGroup.newGroup(MessageFormat.format(SIMPLE_GROUP_FORMAT_PATTERN, namedElements.getClass(), namedElement.getName()))) {
                         @Nullable
                         @Override
                         public String getPlaceholderText() {
                             // IMPORTANT: keys can come with no values, so a test for null is needed
                             // IMPORTANT: Convert embedded \n to backslash n, so that the string will look like it has LF embedded in it and embedded " to escaped "
-                            String mapName = namedElement.getName() == null ? "" : StringEscapeUtils.escapeJava(namedElement.getName());
-                            return MessageFormat.format(SIMPLE_FOLD_FORMAT_PATTERN, mapName);
+                            if (showNameWhenCollapsed) {
+                                String name = namedElement.getName() == null ? "" : StringEscapeUtils.escapeJava(namedElement.getName());
+                                return MessageFormat.format(SIMPLE_FOLD_FORMAT_PATTERN, name);
+                            }
+                            return null;
                         }
                     });
         }

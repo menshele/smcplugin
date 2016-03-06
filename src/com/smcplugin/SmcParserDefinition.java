@@ -25,7 +25,7 @@ public class SmcParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet LITERALS = TokenSet.create(SmcTypes.STRING_LITERAL);
     public static final TokenSet COMMENTS = TokenSet.create(SmcTypes.LINE_COMMENT, SmcTypes.BLOCK_COMMENT);
-    public static final TokenSet KEYWORDS = TokenSet.create(
+    public static final TokenSet IN_CODE_KEYWORDS = TokenSet.create(
             SmcTypes.ACCESS_KEYWORD,
             SmcTypes.CLASS_KEYWORD,
             SmcTypes.DECLARE_KEYWORD,

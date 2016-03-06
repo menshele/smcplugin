@@ -57,7 +57,7 @@ public class SmcFormattingModelBuilder implements FormattingModelBuilder {
                 .before(PARENTHESES_OPEN).spaceIf(smcSettings.SPACE_BEFORE_PARENTHESES_OPEN)
                 .around(MAP_NAME_STATE_NAME_SEPARATOR).spaceIf(smcSettings.SPACE_AROUND_MAP_STATE_SEPARATOR)
                 .after(SmcParserDefinition.BEGIN_LINE_KEYWORDS).spaces(REQUIRED_SPACE_AFTER_BEGIN_LINE_KEYWORD)
-                .after(SmcParserDefinition.KEYWORDS).spaceIf(smcSettings.SPACE_AFTER_KEYWORD)
+                .after(SmcParserDefinition.IN_CODE_KEYWORDS).spaceIf(smcSettings.SPACE_AFTER_KEYWORD)
                 .around(MAP).blankLines(smcSettings.BLANK_LINES_AROUND_MAP)
                 .around(STATE).blankLines(smcSettings.BLANK_LINES_AROUND_STATE)
                 .around(TRANSITION).blankLines(smcSettings.BLANK_LINES_AROUND_TRANSITION)

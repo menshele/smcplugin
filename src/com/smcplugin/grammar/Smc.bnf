@@ -1,6 +1,7 @@
 {
   parserClass="com.smcplugin.parser.SmcParser"
 
+  parserImports=["static com.smcplugin.psi.impl.SmcPsiImplUtil.*"]
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="Smc"
@@ -99,7 +100,11 @@ parameters ::= parameter comment* COMMA comment* parameters |comment* parameter
 
 parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE
 
-guard ::= BRACKET_OPEN comment* GUARD_RAW_CODE comment* BRACKET_CLOSE
+guard ::= BRACKET_OPEN comment*  guard_raw_code? comment* BRACKET_CLOSE
+
+guard_raw_code::= (GUARD_NOT_BRACKET|bracket_expression)*
+
+private bracket_expression::=  GUARD_BRACKET_OPEN (GUARD_NOT_BRACKET|bracket_expression)? GUARD_BRACKET_CLOSE {pin=1}
 
 next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
 

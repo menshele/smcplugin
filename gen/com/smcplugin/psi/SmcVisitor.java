@@ -63,6 +63,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitGuardRawCode(@NotNull SmcGuardRawCode o) {
+    visitPsiElement(o);
+  }
+
   public void visitHeaderFile(@NotNull SmcHeaderFile o) {
     visitPsiElement(o);
   }

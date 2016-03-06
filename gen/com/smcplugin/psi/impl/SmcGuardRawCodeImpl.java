@@ -11,27 +11,15 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcGuardImpl extends ASTWrapperPsiElement implements SmcGuard {
+public class SmcGuardRawCodeImpl extends ASTWrapperPsiElement implements SmcGuardRawCode {
 
-  public SmcGuardImpl(ASTNode node) {
+  public SmcGuardRawCodeImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitGuard(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitGuardRawCode(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
-  }
-
-  @Override
-  @Nullable
-  public SmcGuardRawCode getGuardRawCode() {
-    return findChildByClass(SmcGuardRawCode.class);
   }
 
 }

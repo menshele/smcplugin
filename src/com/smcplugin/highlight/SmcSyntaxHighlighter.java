@@ -1,5 +1,6 @@
 package com.smcplugin.highlight;
 
+import com.google.common.collect.Sets;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -10,6 +11,10 @@ import com.intellij.psi.tree.IElementType;
 import com.smcplugin.SmcLexerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 import static com.smcplugin.psi.SmcTypes.*;
 
@@ -18,6 +23,8 @@ import static com.smcplugin.psi.SmcTypes.*;
  * Created by lemen on 30.01.2016.
  */
 public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
+
+    private Set<IElementType> GUARD_TOKENS = Collections.unmodifiableSet(Sets.newHashSet(GUARD_NOT_BRACKET, GUARD_BRACKET_OPEN, GUARD_BRACKET_CLOSE));
 
     public static final TextAttributesKey SMC_BRACES = createTextAttributesKey("SMC_BRACES", DefaultLanguageHighlighterColors.BRACES);
     public static final TextAttributesKey SMS_KEYWORD = createTextAttributesKey("SMS_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
@@ -131,7 +138,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_BLOCK_COMMENT_CONTENT_KEYS;
         } else if (BLOCK_COMMENT_CLOSE.equals(tokenType)) {
             return SMC_BLOCK_COMMENT_CLOSE_KEYS;
-        } else if (GUARD_RAW_CODE.equals(tokenType)) {
+        } else if (GUARD_TOKENS.contains(tokenType)) {
             return SMC_GUARD_RAW_CODE_KEYS;
         } else if (PARAMETER_NAME.equals(tokenType)) {
             return SMC_PARAMETER_NAME_KEYS;
@@ -139,6 +146,8 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
             return SMC_PARAMETER_TYPE_KEYS;
         } else if (COMMA.equals(tokenType)) {
             return SMC_COMMA_KEYS;
+        } else if (SEMICOLON.equals(tokenType)) {
+            return SMC_SEMICOLON_KEYS;
         } else if (ENTRY_KEYWORD.equals(tokenType)) {
             return SMC_ENTRY_KEYWORD_KEYS;
         } else if (EXIT_KEYWORD.equals(tokenType)) {

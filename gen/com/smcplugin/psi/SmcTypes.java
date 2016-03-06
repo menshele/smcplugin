@@ -22,6 +22,7 @@ public interface SmcTypes {
   IElementType FSM_CLASS = new SmcElementType("FSM_CLASS");
   IElementType FSM_FILE = new SmcElementType("FSM_FILE");
   IElementType GUARD = new SmcElementType("GUARD");
+  IElementType GUARD_RAW_CODE = new SmcElementType("GUARD_RAW_CODE");
   IElementType HEADER_FILE = new SmcElementType("HEADER_FILE");
   IElementType IMPORT_CLASS = new SmcElementType("IMPORT_CLASS");
   IElementType INCLUDE_FILE = new SmcElementType("INCLUDE_FILE");
@@ -68,7 +69,9 @@ public interface SmcTypes {
   IElementType FSM_CLASS_NAME = new SmcTokenType("FSM_CLASS_NAME");
   IElementType FSM_FILE_KEYWORD = new SmcTokenType("%fsmfile");
   IElementType FSM_FILE_NAME = new SmcTokenType("FSM_FILE_NAME");
-  IElementType GUARD_RAW_CODE = new SmcTokenType("GUARD_RAW_CODE");
+  IElementType GUARD_BRACKET_CLOSE = new SmcTokenType("GUARD_BRACKET_CLOSE");
+  IElementType GUARD_BRACKET_OPEN = new SmcTokenType("GUARD_BRACKET_OPEN");
+  IElementType GUARD_NOT_BRACKET = new SmcTokenType("GUARD_NOT_BRACKET");
   IElementType HEADER_FILE_NAME = new SmcTokenType("HEADER_FILE_NAME");
   IElementType HEADER_KEYWORD = new SmcTokenType("%header");
   IElementType IMPORT_CLASS_STATEMENT = new SmcTokenType("IMPORT_CLASS_STATEMENT");
@@ -91,7 +94,7 @@ public interface SmcTypes {
   IElementType POP_KEYWORD = new SmcTokenType("pop");
   IElementType PUSH_KEYWORD = new SmcTokenType("push");
   IElementType PUSH_MAP_NAME = new SmcTokenType("PUSH_MAP_NAME");
-  IElementType PUSH_PROXY_STATE_KEYWORD_SEPARATOR = new SmcTokenType("SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR");
+  IElementType PUSH_PROXY_STATE_KEYWORD_SEPARATOR = new SmcTokenType("PUSH_PROXY_STATE_KEYWORD_SEPARATOR");
   IElementType PUSH_PROXY_STATE_NAME = new SmcTokenType("PUSH_PROXY_STATE_NAME");
   IElementType PUSH_STATE_NAME = new SmcTokenType("PUSH_STATE_NAME");
   IElementType SEMICOLON = new SmcTokenType(";");
@@ -151,6 +154,9 @@ public interface SmcTypes {
       }
       else if (type == GUARD) {
         return new SmcGuardImpl(node);
+      }
+      else if (type == GUARD_RAW_CODE) {
+        return new SmcGuardRawCodeImpl(node);
       }
       else if (type == HEADER_FILE) {
         return new SmcHeaderFileImpl(node);

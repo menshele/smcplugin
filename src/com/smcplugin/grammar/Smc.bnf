@@ -91,9 +91,9 @@ transitions ::= comment* transition* comment*
 
 transition ::= comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcTransitionElement" methods=[getName setName getNameIdentifier]}
 
-entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2}
+entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" }
 
-exit ::= comment* EXIT_KEYWORD comment* actions_block {pin=2}
+exit ::= comment* EXIT_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" }
 
 transition_args ::=PARENTHESES_OPEN comment* parameters comment* PARENTHESES_CLOSE {pin=1}
 

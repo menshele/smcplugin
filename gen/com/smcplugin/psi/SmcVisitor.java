@@ -48,11 +48,11 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitEntry(@NotNull SmcEntry o) {
-    visitPsiElement(o);
+    visitOnStateNestedElement(o);
   }
 
   public void visitExit(@NotNull SmcExit o) {
-    visitPsiElement(o);
+    visitOnStateNestedElement(o);
   }
 
   public void visitFsmClass(@NotNull SmcFsmClass o) {
@@ -152,6 +152,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitMapElement(@NotNull SmcMapElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOnStateNestedElement(@NotNull SmcOnStateNestedElement o) {
     visitPsiElement(o);
   }
 

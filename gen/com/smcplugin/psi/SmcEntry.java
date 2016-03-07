@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcEntry extends PsiElement {
+public interface SmcEntry extends SmcOnStateNestedElement {
 
   @Nullable
   SmcActionsBlock getActionsBlock();

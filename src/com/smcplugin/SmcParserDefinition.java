@@ -49,6 +49,9 @@ public class SmcParserDefinition implements ParserDefinition {
             SmcTypes.START_KEYWORD,
             SmcTypes.PACKAGE_KEYWORD
             );
+
+    public static final TokenSet KEYWORDS = TokenSet.orSet(BEGIN_LINE_KEYWORDS,IN_CODE_KEYWORDS);
+
     public static final TokenSet CONTAINERS = TokenSet.create(SmcTypes.ON_STATE, SmcTypes.TRANSITIONS, SmcTypes.ACTIONS);
 
     public static final IFileElementType FILE = new IFileElementType(Language.findInstance(SmcLanguage.class));

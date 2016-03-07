@@ -9,10 +9,10 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.smcplugin.SmcLexerAdapter;
+import com.smcplugin.SmcParserDefinition;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
@@ -175,19 +175,7 @@ public class SmcSyntaxHighlighter extends SyntaxHighlighterBase {
         }  else if (TRANSITION_NAME.equals(tokenType) ||
                 CALLBACK_TRANSITION_NAME.equals(tokenType)) {
             return SMC_TRANSITION_NAME_KEYS;
-        } else if (ACCESS_KEYWORD.equals(tokenType) ||
-                CLASS_KEYWORD.equals(tokenType) ||
-                FSM_CLASS_KEYWORD.equals(tokenType) ||
-                FSM_FILE_KEYWORD.equals(tokenType) ||
-                HEADER_KEYWORD.equals(tokenType) ||
-                IMPORT_KEYWORD.equals(tokenType) ||
-                DECLARE_KEYWORD.equals(tokenType) ||
-                INCLUDE_KEYWORD.equals(tokenType) ||
-                START_KEYWORD.equals(tokenType) ||
-                MAP_KEYWORD.equals(tokenType) ||
-                MAP_SECTION_BOUND.equals(tokenType) ||
-                NIL_KEYWORD.equals(tokenType) ||
-                PACKAGE_KEYWORD.equals(tokenType)) {
+        } else if (SmcParserDefinition.KEYWORDS.contains(tokenType)) {
             return SMS_KEYWORD_KEYS;
         } else if (TokenType.BAD_CHARACTER.equals(tokenType)) {
             return BAD_CHARACTER_KEYS;

@@ -48,7 +48,7 @@ public interface SmcTypes {
 
   IElementType ACCESS_KEYWORD = new SmcTokenType("%access");
   IElementType ACCESS_LEVEL = new SmcTokenType("ACCESS_LEVEL");
-  IElementType ACTION_NAME = new SmcTokenType("ACTION_NAME");
+  IElementType ACTION_NAME = new SmcTokenType("method name");
   IElementType ARGUMENT_STATEMENT = new SmcTokenType("ARGUMENT_STATEMENT");
   IElementType ASSIGN_OP = new SmcTokenType("=");
   IElementType BLOCK_COMMENT_CLOSE = new SmcTokenType("BLOCK_COMMENT_CLOSE");

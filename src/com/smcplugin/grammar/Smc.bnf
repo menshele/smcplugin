@@ -46,6 +46,8 @@
       ASSIGN_OP="="
       NIL_KEYWORD="nil"
       SLASH_SIGN="/"
+
+      ACTION_NAME="\"Method Name\""
      ]
 }
 

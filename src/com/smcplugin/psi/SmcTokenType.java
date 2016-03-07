@@ -16,6 +16,6 @@ public class SmcTokenType extends IElementType {
 
     @Override
     public String toString() {
-        return "SmcTokenType." + super.toString();
+        return /*"SmcTokenType." + */super.toString();
     }
 }

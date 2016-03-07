@@ -35,8 +35,8 @@ public class SmcStateImpl extends SmcNamedElementImpl implements SmcState {
 
   @Override
   @Nullable
-  public SmcTransitions getTransitions() {
-    return findChildByClass(SmcTransitions.class);
+  public SmcTransitionsBlock getTransitionsBlock() {
+    return findChildByClass(SmcTransitionsBlock.class);
   }
 
   public String getName() {

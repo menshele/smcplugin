@@ -14,7 +14,7 @@ public interface SmcState extends SmcStateElement {
   SmcOnState getOnState();
 
   @Nullable
-  SmcTransitions getTransitions();
+  SmcTransitionsBlock getTransitionsBlock();
 
   String getName();
 

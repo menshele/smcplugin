@@ -27,8 +27,6 @@ import java.util.List;
 public class SmcFoldingBuilder extends FoldingBuilderEx {
 
     private static final String SIMPLE_FOLD_FORMAT_PATTERN = " {0} ";
-    private static final String SIMPLE_NAMED_GROUP_FORMAT_PATTERN = "{0}_{1}";
-    private static final String SIMPLE_GROUP_FORMAT_PATTERN = "{0}";
 
     @NotNull
     @Override
@@ -45,14 +43,15 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
             for (SmcState state : smcStates) {
                 SmcOnState onState = state.getOnState();
                 if (onState != null) {
-                    buildActionsFoldingForOnstate(descriptors, onState.getEntry());
-                    buildActionsFoldingForOnstate(descriptors, onState.getExit());
+                    buildActionsFoldingForOnState(descriptors, onState.getEntry());
+                    buildActionsFoldingForOnState(descriptors, onState.getExit());
                 }
-
-                List<SmcTransition> smcTransitions = state.getTransitions() == null ? Collections.emptyList() : state.getTransitions().getTransitionList();
+                SmcTransitionsBlock transitionsBlock = state.getTransitionsBlock();
+                buildFoldingForBlock(descriptors, transitionsBlock, "transitions");
+                List<SmcTransition> smcTransitions = transitionsBlock == null ? Collections.emptyList() : transitionsBlock.getTransitions().getTransitionList();
                 buildNamedFoldingForElements(descriptors, smcTransitions, true, false, false);
                 for (SmcTransition transition : smcTransitions) {
-                    buildFoldingForActionsBlock(descriptors, transition.getActionsBlock());
+                    buildFoldingForBlock(descriptors, transition.getActionsBlock(), "actions");
                 }
             }
         }
@@ -60,15 +59,15 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
         return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
     }
 
-    private <T extends SmcOnStateNestedElement> void buildActionsFoldingForOnstate(List<FoldingDescriptor> descriptors, T onStateNested) {
+    private <T extends SmcOnStateNestedElement> void buildActionsFoldingForOnState(List<FoldingDescriptor> descriptors, T onStateNested) {
         if (onStateNested != null && onStateNested.getActionsBlock() != null) {
-            buildFoldingForActionsBlock(descriptors, onStateNested.getActionsBlock());
+            buildFoldingForBlock(descriptors, onStateNested.getActionsBlock(), null);
         }
     }
 
-    private static void buildFoldingForActionsBlock(List<FoldingDescriptor> descriptors, SmcActionsBlock actionsBlock) {
-        if (actionsBlock != null) {
-            FoldingDescriptor simpleFoldingDescriptor = createSimpleFoldingDescriptor(actionsBlock, false, false);
+    private static void buildFoldingForBlock(List<FoldingDescriptor> descriptors, PsiElement blockElement, String name) {
+        if (blockElement != null) {
+            FoldingDescriptor simpleFoldingDescriptor = createNamedFoldingDescriptor(blockElement, true, true, name);
             if (simpleFoldingDescriptor != null) {
                 descriptors.add(simpleFoldingDescriptor);
             }
@@ -87,19 +86,21 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
                                                                                  boolean includeLastElement,
                                                                                  final boolean showNameWhenCollapsed) {
         for (final T namedElement : namedElements) {
-            FoldingDescriptor namedFoldingDescriptor = createNamedFoldingDescriptor(namedElement, includeFirstElement, includeLastElement, showNameWhenCollapsed);
-            descriptors.add(namedFoldingDescriptor);
+            FoldingDescriptor namedFoldingDescriptor = createNamedFoldingDescriptor(namedElement, includeFirstElement, includeLastElement, getStringName(showNameWhenCollapsed, namedElement));
+            if (namedFoldingDescriptor != null) {
+                descriptors.add(namedFoldingDescriptor);
+            }
         }
     }
 
-    @NotNull
-    private static <T extends SmcNamedElement> FoldingDescriptor createNamedFoldingDescriptor(final T namedElement, boolean includeFirstElement, boolean includeLastElement, final boolean showNameWhenCollapsed) {
+    @Nullable
+    private static <T extends PsiElement> FoldingDescriptor createNamedFoldingDescriptor(final T namedElement, boolean includeFirstElement, boolean includeLastElement, final String stringName) {
         final int firstChildLength = includeFirstElement ? namedElement.getFirstChild().getText().length() : 0;
         final int lastChildLength = includeLastElement ? namedElement.getLastChild().getText().length() : 0;
-        return new NamedFoldingDescriptor(namedElement.getNode(),
-                new TextRange(namedElement.getTextRange().getStartOffset() + firstChildLength,
-                        namedElement.getTextRange().getEndOffset() - lastChildLength), null, getStringName(showNameWhenCollapsed, namedElement)) {
-        };
+        TextRange range = new TextRange(namedElement.getTextRange().getStartOffset() + firstChildLength,
+                namedElement.getTextRange().getEndOffset() - lastChildLength);
+
+        return range.getLength() > 0 ? new NamedFoldingDescriptor(namedElement.getNode(), range, null, stringName != null ? stringName : "...") : null;
     }
 
     @NotNull
@@ -111,15 +112,6 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
             return MessageFormat.format(SIMPLE_FOLD_FORMAT_PATTERN, name);
         }
         return "...";
-    }
-
-    @Nullable
-    private static <T extends PsiElement> FoldingDescriptor createSimpleFoldingDescriptor(final T element, boolean includeFirstElement, boolean includeLastElement) {
-        final int firstChildLength = includeFirstElement ? element.getFirstChild().getText().length() : 0;
-        final int lastChildLength = includeLastElement ? element.getLastChild().getText().length() : 0;
-        TextRange range = new TextRange(element.getTextRange().getStartOffset() + firstChildLength, element.getTextRange().getEndOffset() - lastChildLength);
-
-        return range.getLength() > 0 ? new FoldingDescriptor(element.getNode(), range) : null;
     }
 
 

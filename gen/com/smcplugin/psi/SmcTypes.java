@@ -42,6 +42,7 @@ public interface SmcTypes {
   IElementType STATES = new SmcElementType("STATES");
   IElementType TRANSITION = new SmcElementType("TRANSITION");
   IElementType TRANSITIONS = new SmcElementType("TRANSITIONS");
+  IElementType TRANSITIONS_BLOCK = new SmcElementType("TRANSITIONS_BLOCK");
   IElementType TRANSITION_ARGS = new SmcElementType("TRANSITION_ARGS");
   IElementType VERBATIM_CODE_SECTION = new SmcElementType("VERBATIM_CODE_SECTION");
 
@@ -215,6 +216,9 @@ public interface SmcTypes {
       }
       else if (type == TRANSITIONS) {
         return new SmcTransitionsImpl(node);
+      }
+      else if (type == TRANSITIONS_BLOCK) {
+        return new SmcTransitionsBlockImpl(node);
       }
       else if (type == TRANSITION_ARGS) {
         return new SmcTransitionArgsImpl(node);

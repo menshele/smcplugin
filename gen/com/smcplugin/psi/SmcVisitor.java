@@ -147,6 +147,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTransitionsBlock(@NotNull SmcTransitionsBlock o) {
+    visitPsiElement(o);
+  }
+
   public void visitVerbatimCodeSection(@NotNull SmcVerbatimCodeSection o) {
     visitPsiElement(o);
   }

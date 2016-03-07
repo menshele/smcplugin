@@ -83,9 +83,11 @@ map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states
 
 states ::= comment* state* comment*
 
-state ::= comment * STATE_NAME comment* on_state? comment* BRACE_OPEN comment* transitions comment* BRACE_CLOSE {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcStateElement" methods=[getName setName getNameIdentifier]}
+state ::= comment * STATE_NAME comment* on_state? comment* transitions_block comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcStateElement" methods=[getName setName getNameIdentifier]}
 
 on_state ::= (entry exit)|(exit entry)|((entry|exit)?)
+
+transitions_block ::= BRACE_OPEN comment* transitions comment* BRACE_CLOSE
 
 transitions ::= comment* transition* comment*
 

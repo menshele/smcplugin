@@ -15,13 +15,14 @@ public interface SmcTypes {
   IElementType ARGUMENTS = new SmcElementType("ARGUMENTS");
   IElementType BLOCK_COMMENT = new SmcElementType("BLOCK_COMMENT");
   IElementType CALLBACK_TRANSITION = new SmcElementType("CALLBACK_TRANSITION");
-  IElementType CLASS_NAME = new SmcElementType("CLASS_NAME");
   IElementType COMMENT = new SmcElementType("COMMENT");
+  IElementType CONTEXT_CLASS = new SmcElementType("CONTEXT_CLASS");
   IElementType DECLARE = new SmcElementType("DECLARE");
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
   IElementType FSM_CLASS = new SmcElementType("FSM_CLASS");
   IElementType FSM_FILE = new SmcElementType("FSM_FILE");
+  IElementType FSM_PACKAGE = new SmcElementType("FSM_PACKAGE");
   IElementType GUARD = new SmcElementType("GUARD");
   IElementType GUARD_RAW_CODE = new SmcElementType("GUARD_RAW_CODE");
   IElementType HEADER_FILE = new SmcElementType("HEADER_FILE");
@@ -30,7 +31,6 @@ public interface SmcTypes {
   IElementType MAP = new SmcElementType("MAP");
   IElementType NEXT_STATE = new SmcElementType("NEXT_STATE");
   IElementType ON_STATE = new SmcElementType("ON_STATE");
-  IElementType PACKAGE_NAME = new SmcElementType("PACKAGE_NAME");
   IElementType PARAMETER = new SmcElementType("PARAMETER");
   IElementType PARAMETERS = new SmcElementType("PARAMETERS");
   IElementType POP_TRANSITION = new SmcElementType("POP_TRANSITION");
@@ -134,11 +134,11 @@ public interface SmcTypes {
       else if (type == CALLBACK_TRANSITION) {
         return new SmcCallbackTransitionImpl(node);
       }
-      else if (type == CLASS_NAME) {
-        return new SmcClassNameImpl(node);
-      }
       else if (type == COMMENT) {
         return new SmcCommentImpl(node);
+      }
+      else if (type == CONTEXT_CLASS) {
+        return new SmcContextClassImpl(node);
       }
       else if (type == DECLARE) {
         return new SmcDeclareImpl(node);
@@ -154,6 +154,9 @@ public interface SmcTypes {
       }
       else if (type == FSM_FILE) {
         return new SmcFsmFileImpl(node);
+      }
+      else if (type == FSM_PACKAGE) {
+        return new SmcFsmPackageImpl(node);
       }
       else if (type == GUARD) {
         return new SmcGuardImpl(node);
@@ -178,9 +181,6 @@ public interface SmcTypes {
       }
       else if (type == ON_STATE) {
         return new SmcOnStateImpl(node);
-      }
-      else if (type == PACKAGE_NAME) {
-        return new SmcPackageNameImpl(node);
       }
       else if (type == PARAMETER) {
         return new SmcParameterImpl(node);

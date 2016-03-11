@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcClassName extends PsiElement {
+public interface SmcContextClass extends PsiElement {
 
   @NotNull
   List<SmcComment> getCommentList();

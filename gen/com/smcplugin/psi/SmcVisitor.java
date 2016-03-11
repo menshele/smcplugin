@@ -35,11 +35,11 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitClassName(@NotNull SmcClassName o) {
+  public void visitComment(@NotNull SmcComment o) {
     visitPsiElement(o);
   }
 
-  public void visitComment(@NotNull SmcComment o) {
+  public void visitContextClass(@NotNull SmcContextClass o) {
     visitPsiElement(o);
   }
 
@@ -60,6 +60,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitFsmFile(@NotNull SmcFsmFile o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFsmPackage(@NotNull SmcFsmPackage o) {
     visitPsiElement(o);
   }
 
@@ -92,10 +96,6 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitOnState(@NotNull SmcOnState o) {
-    visitPsiElement(o);
-  }
-
-  public void visitPackageName(@NotNull SmcPackageName o) {
     visitPsiElement(o);
   }
 

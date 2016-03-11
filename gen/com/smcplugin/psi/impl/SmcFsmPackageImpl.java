@@ -11,14 +11,14 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcPackageNameImpl extends ASTWrapperPsiElement implements SmcPackageName {
+public class SmcFsmPackageImpl extends ASTWrapperPsiElement implements SmcFsmPackage {
 
-  public SmcPackageNameImpl(ASTNode node) {
+  public SmcFsmPackageImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPackageName(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitFsmPackage(this);
     else super.accept(visitor);
   }
 

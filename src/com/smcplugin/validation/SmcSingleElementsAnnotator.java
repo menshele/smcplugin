@@ -20,16 +20,16 @@ import java.util.Collection;
  */
 public class SmcSingleElementsAnnotator implements Annotator {
 
-    public static final String DUPLICATE_PATTERN = "Duplicate {0} declaration";
-    public static final String REQUIRED_PATTERN = "{0} declaration required";
+    private static final String DUPLICATE_PATTERN = "Duplicate {0} declaration";
+    private static final String REQUIRED_PATTERN = "{0} declaration required";
 
     private final TypeDescriptor[] validateClasses = new TypeDescriptor[]{
-            new TypeDescriptor(SmcFsmFile.class, SmcTypes.FSM_FILE),
-            new TypeDescriptor(SmcFsmPackage.class, SmcTypes.FSM_PACKAGE),
-            new TypeDescriptor(SmcFsmClass.class, SmcTypes.FSM_CLASS),
-            new TypeDescriptor(SmcContextClass.class, SmcTypes.CONTEXT_CLASS),
-            new TypeDescriptor(SmcStartState.class, SmcTypes.START_STATE),
-            new TypeDescriptor(SmcVerbatimCodeSection.class, SmcTypes.VERBATIM_CODE_SECTION)
+            new TypeDescriptor<>(SmcFsmFile.class, SmcTypes.FSM_FILE),
+            new TypeDescriptor<>(SmcFsmPackage.class, SmcTypes.FSM_PACKAGE),
+            new TypeDescriptor<>(SmcFsmClass.class, SmcTypes.FSM_CLASS),
+            new TypeDescriptor<>(SmcContextClass.class, SmcTypes.CONTEXT_CLASS),
+            new TypeDescriptor<>(SmcStartState.class, SmcTypes.START_STATE),
+            new TypeDescriptor<>(SmcVerbatimCodeSection.class, SmcTypes.VERBATIM_CODE_SECTION)
     };
 
     @Override
@@ -56,8 +56,6 @@ public class SmcSingleElementsAnnotator implements Annotator {
                         holder.createErrorAnnotation(TextRange.EMPTY_RANGE, getElementRequiredMessage(descriptor.getTypeType()));
                     }
                 }
-
-
             }
         }
     }
@@ -76,7 +74,7 @@ public class SmcSingleElementsAnnotator implements Annotator {
     }
 
     @NotNull
-    protected String getAnnotatedTypeDisplayName(IElementType element){
+    protected String getAnnotatedTypeDisplayName(IElementType element) {
         return SmcStringUtils.toDisplayString(element.toString());
     }
 

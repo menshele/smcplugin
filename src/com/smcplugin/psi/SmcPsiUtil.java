@@ -1,12 +1,13 @@
 package com.smcplugin.psi;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import static com.smcplugin.SmcParserDefinition.COMMENTS;
+import java.util.Collection;
 
 /**
  * scmplugin
@@ -14,33 +15,25 @@ import static com.smcplugin.SmcParserDefinition.COMMENTS;
  */
 public class SmcPsiUtil {
 
-    @NotNull
-    public static PsiElement findFurthestSiblingOfSameType(@NotNull PsiElement anchor, boolean after) {
-        ASTNode node = anchor.getNode();
-        // Compare by node type to distinguish between different types of comments
-        final IElementType expectedType = node.getElementType();
-        ASTNode lastSeen = node;
-        while (node != null) {
-            final IElementType elementType = node.getElementType();
-            if (elementType == expectedType) {
-                lastSeen = node;
-            }
-            else if (elementType == TokenType.WHITE_SPACE) {
-                if (expectedType == SmcTypes.LINE_COMMENT && node.getText().indexOf('\n', 1) != -1) {
-                    break;
+
+    public static <T extends SmcNamedElement> boolean isNotSingleNamedElement(@NotNull PsiElement root, @NotNull Class<T> namedElement, @NotNull String name) {
+        Collection<T> childrenOfType = PsiTreeUtil.findChildrenOfType(root, namedElement);
+        boolean found = false;
+        for (T child : childrenOfType) {
+            if (name.equals(child.getName())) {
+                if (found) {
+                    return true;
+                } else {
+                    found = true;
                 }
             }
-            else if (!COMMENTS.contains(elementType) || COMMENTS.contains(expectedType)) {
-                break;
-            }
-            node = after ? node.getTreeNext() : node.getTreePrev();
         }
-        return lastSeen.getPsi();
+        return false;
     }
 
     /**
      * Check that element type of the given AST node belongs to the token set.
-     * <p/>
+     * <p>
      * It slightly less verbose than {@code set.contains(node.getElementType())} and overloaded methods with the same name
      * allow check ASTNode/PsiElement against both concrete element types and token sets in uniform way.
      */

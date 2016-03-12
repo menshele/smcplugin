@@ -7,25 +7,25 @@ import com.intellij.psi.tree.IElementType;
  * scmplugin
  * Created by lemen on 10.03.2016.
  */
-public class TypeDescriptor {
-    private Class typeClass;
+public class TypeDescriptor<T> {
+    private Class<? extends T> typeClass;
     private IElementType typeType;
     private boolean isRequired;
 
 
-    public TypeDescriptor(Class typeClass, IElementType typeType, boolean isRequired) {
+    public TypeDescriptor(Class<? extends T> typeClass, IElementType typeType, boolean isRequired) {
         this.typeClass = typeClass;
         this.typeType = typeType;
         this.isRequired = isRequired;
     }
 
-    public TypeDescriptor(Class typeClass, IElementType typeType) {
+    public TypeDescriptor(Class<? extends T> typeClass, IElementType typeType) {
         this.typeClass = typeClass;
         this.typeType = typeType;
         this.isRequired = true;
     }
 
-    public Class getTypeClass() {
+    public Class<? extends T> getTypeClass() {
         return typeClass;
     }
 

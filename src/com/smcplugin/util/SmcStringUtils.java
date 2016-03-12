@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class SmcStringUtils {
 
-    public static final String ANGLE_BRACKETS = "<{0}>";
+    private static final String ANGLE_BRACKETS = "<{0}>";
 
     public static final Pattern JAVA_LITERAL_PATTERN
             = Pattern.compile("\"(?:\\\\[\\\\'\"tnbfru01234567]|[^\\\\\"])*?\"");

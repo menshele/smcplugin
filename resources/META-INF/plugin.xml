@@ -38,6 +38,7 @@
         <lang.braceMatcher language="smc" implementationClass="com.smcplugin.highlight.SmcPairedBraceMatcher"/>
 <!--        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcContextClassAnnotator"/>-->
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleElementsAnnotator"/>
+        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleMapNameAnnotator"/>
         <!--
             <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>

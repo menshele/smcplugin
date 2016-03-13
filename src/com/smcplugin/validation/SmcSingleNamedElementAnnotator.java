@@ -14,7 +14,7 @@ import java.text.MessageFormat;
  * scmplugin
  * Created by lemen on 10.03.2016.
  */
-public class SmcSingleMapNameAnnotator implements Annotator {
+public class SmcSingleNamedElementAnnotator implements Annotator {
     private static final String DUPLICATE_NAMED_MESSAGE = "Duplicate {0} named \"{1}\"";
     private final TypeDescriptor[] validateClasses = new TypeDescriptor[]{
             new TypeDescriptor<SmcNamedElement>(SmcMap.class, SmcTypes.MAP),

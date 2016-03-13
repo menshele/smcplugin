@@ -1,8 +1,17 @@
 package com.smcplugin.reference;
 
-/**
- * scmplugin
- * Created by lemen on 12.03.2016.
- */
-public class SmcStateReference {
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
+import com.smcplugin.psi.SmcMap;
+import com.smcplugin.psi.SmcState;
+
+public class SmcStateReference extends AbstractNamedLocalReference<SmcMap, SmcState> {
+
+    protected SmcStateReference(PsiElement element, TextRange rangeInElement) {
+        super(SmcMap.class, SmcState.class, element, rangeInElement);
+    }
+
+    public SmcStateReference(PsiElement element) {
+        super(SmcMap.class, SmcState.class, element);
+    }
 }

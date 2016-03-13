@@ -73,7 +73,7 @@
       GUARD_BRACKET_OPEN="inner ["
       GUARD_BRACKET_CLOSE="inner ]"
       GUARD_NOT_BRACKET="<any char except '[' or ']' >"
-      NEXT_STATE_NAME="<naxt state name>"
+      NEXT_STATE_NAME="<next state name>"
       PUSH_PROXY_STATE_NAME="<proxy state name>"
       PUSH_PROXY_STATE_KEYWORD_SEPARATOR="/"
       PUSH_MAP_NAME="<push map name>"
@@ -144,7 +144,8 @@ guard_raw_code::= (GUARD_NOT_BRACKET|bracket_expression)*
 
 private bracket_expression::=  GUARD_BRACKET_OPEN (GUARD_NOT_BRACKET|bracket_expression)* GUARD_BRACKET_CLOSE {pin=1}
 
-next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
+next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment* {pin=2 methods=[getName getReference getReferences]}
+
 
 push_transition ::= (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN (push_state|comment_nil) PARENTHESES_CLOSE {pin=3}
 

@@ -1116,13 +1116,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
   // comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment*
   public static boolean next_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "next_state")) return false;
-    boolean r;
+    boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, "<next state>");
     r = next_state_0(b, l + 1);
     r = r && next_state_1(b, l + 1);
+    p = r; // pin = 2
     r = r && next_state_2(b, l + 1);
-    exit_section_(b, l, m, NEXT_STATE, r, false, null);
-    return r;
+    exit_section_(b, l, m, NEXT_STATE, r, p, null);
+    return r || p;
   }
 
   // comment*

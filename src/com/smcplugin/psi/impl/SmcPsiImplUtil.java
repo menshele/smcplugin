@@ -2,6 +2,8 @@ package com.smcplugin.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.psi.tree.IElementType;
 import com.smcplugin.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -45,8 +47,22 @@ public class SmcPsiImplUtil {
         return setStringName(element, newName, SmcTypes.TRANSITION_NAME);
     }
 
+    public static String getName(SmcNextState element) {
+        return getStringName(element, SmcTypes.NEXT_STATE_NAME);
+    }
+
     public static PsiElement getNameIdentifier(SmcTransition element) {
         return geNamedNameIdentifier(element, SmcTypes.TRANSITION_NAME);
+    }
+
+    @NotNull
+    public static PsiReference[] getReferences(SmcNextState element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element);
+    }
+
+    public static PsiReference getReference(SmcNextState element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
+                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
     }
 
     @Nullable
@@ -60,7 +76,7 @@ public class SmcPsiImplUtil {
     }
 
     @Nullable
-    private static String getStringName(SmcNamedElement element, IElementType nameToken) {
+    private static String getStringName(PsiElement element, IElementType nameToken) {
         ASTNode keyNode = element.getNode().findChildByType(nameToken);
         if (keyNode != null) {
             // IMPORTANT: Convert embedded escaped spaces to simple spaces

@@ -84,7 +84,7 @@ public interface SmcTypes {
   IElementType MAP_NAME = new SmcTokenType("<map name>");
   IElementType MAP_NAME_STATE_NAME_SEPARATOR = new SmcTokenType("::");
   IElementType MAP_SECTION_BOUND = new SmcTokenType("%%");
-  IElementType NEXT_STATE_NAME = new SmcTokenType("<naxt state name>");
+  IElementType NEXT_STATE_NAME = new SmcTokenType("<next state name>");
   IElementType NIL_KEYWORD = new SmcTokenType("nil");
   IElementType PACKAGE_KEYWORD = new SmcTokenType("%package");
   IElementType PACKAGE_STATEMENT = new SmcTokenType("<package: like com.foo.bar>");

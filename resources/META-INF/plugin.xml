@@ -36,13 +36,14 @@
         <langCodeStyleSettingsProvider implementation="com.smcplugin.formatter.SmcLanguageCodeStyleSettingsProvider"/>
         <lang.foldingBuilder language="smc" implementationClass="com.smcplugin.SmcFoldingBuilder"/>
         <lang.braceMatcher language="smc" implementationClass="com.smcplugin.highlight.SmcPairedBraceMatcher"/>
-<!--        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcContextClassAnnotator"/>-->
+
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleElementsAnnotator"/>
-        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleMapNameAnnotator"/>
+        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleNamedElementAnnotator"/>
+        <psi.referenceContributor language="smc" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
+        <psi.referenceContributor language="JAVA" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
+        <codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/>
         <!--
-            <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.SmcLineMarkerProvider"/>
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
-            <psi.referenceContributor implementation="com.smcplugin.SmcReferenceContributor"/>
             <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.SmcRefactoringSupportProvider"/>
             <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.SmcFindUsagesProvider"/>
             <lang.foldingBuilder language="JAVA" implementationClass="com.smcplugin.SmcFoldingBuilder"/>

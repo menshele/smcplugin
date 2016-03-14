@@ -2,6 +2,7 @@ package com.smcplugin.psi;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
@@ -97,16 +98,52 @@ public class SmcPsiUtil {
 
     public static SmcState findStateByNameWithinCurrentMap(@NotNull PsiElement psiElement, String name) {
         SmcMap map = PsiTreeUtil.getParentOfType(psiElement, SmcMap.class);
-        return map != null && map.getStates() != null? findNamedElementByTypeAndName(map.getStates(), SmcState.class, name) : null;
+        return map != null && map.getStates() != null ? findNamedElementByTypeAndName(map.getStates(), SmcState.class, name) : null;
     }
 
-    public static <T extends PsiElement, K extends PsiNamedElement> List<K> getNamedElementsByTypeWithinSameType(PsiElement myElement, Class<T> enclosingType, Class<K> enclosedType,  String name) {
+    @NotNull
+    public static <T extends PsiElement, K extends PsiNamedElement> List<K> getNamedElementsByTypeWithinParentType(PsiElement myElement, Class<T> enclosingType, Class<K> enclosedType, String name) {
         T parentOfType = PsiTreeUtil.getParentOfType(myElement, enclosingType);
         return SmcPsiUtil.findNamedElementsByType(parentOfType, enclosedType, name);
     }
-    public static <T extends PsiElement, K extends PsiElement> Collection<K> getElementsByTypeWithinSameType(PsiElement myElement, Class<T> enclosingType, Class<K> enclosedType) {
+
+    @NotNull
+    public static <T extends PsiElement, K extends PsiElement> Collection<K> getElementsByTypeWithinParentType(PsiElement myElement, Class<T> enclosingType, Class<K> enclosedType) {
         T parentOfType = PsiTreeUtil.getParentOfType(myElement, enclosingType);
         return PsiTreeUtil.findChildrenOfType(parentOfType, enclosedType);
+    }
+
+    @NotNull
+    public static <T extends PsiNamedElement, K extends PsiNamedElement> Collection<K> getElementsByTypeAndNameWithinNamedType(@NotNull PsiElement myElement,
+                                                                                                                     @NotNull Class<T> enclosingType,
+                                                                                                                     @NotNull String enclosingName,
+                                                                                                                     @NotNull Class<K> enclosedType,
+                                                                                                                     @NotNull String enclosedName) {
+        Collection<K> results = new ArrayList<>();
+        List<T> namedElementsByType = SmcPsiUtil.findNamedElementsByType(myElement.getContainingFile(), enclosingType, enclosingName);
+        for (T enclosing: namedElementsByType){
+            results.addAll(SmcPsiUtil.findNamedElementsByType(enclosing, enclosedType, enclosedName));
+        }
+        return results;
+    }
+
+    @NotNull
+    public static <T extends PsiNamedElement, K extends PsiNamedElement> Collection<K> getAllElementsByTypeWithinNamedType(@NotNull PsiElement myElement,
+                                                                                                                               @NotNull Class<T> enclosingType,
+                                                                                                                               String enclosingName,
+                                                                                                                               @NotNull Class<K> enclosedType) {
+        if(StringUtil.isEmpty(enclosingName)) {return PsiTreeUtil.findChildrenOfType(myElement.getContainingFile(), enclosedType);}
+        Collection<K> results = new ArrayList<>();
+        List<T> namedElementsByType = SmcPsiUtil.findNamedElementsByType(myElement.getContainingFile(), enclosingType, enclosingName);
+        for (T enclosing: namedElementsByType){
+            results.addAll(PsiTreeUtil.findChildrenOfType(enclosing, enclosedType));
+        }
+        return results;
+    }
+
+    public static <T extends PsiElement, K extends PsiNamedElement> boolean hasNamedElementsByTypeWithinParentType(PsiElement myElement, Class<T> enclosingType, Class<K> enclosedType, String name) {
+        T parentOfType = PsiTreeUtil.getParentOfType(myElement, enclosingType);
+        return !SmcPsiUtil.findNamedElementsByType(parentOfType, enclosedType, name).isEmpty();
     }
 
     private static <T extends SmcNamedElement> T findNamedElementByTypeAndName(PsiElement parentElement, Class<T> smcNamedElement, String name) {

@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class SmcStartStateImpl extends ASTWrapperPsiElement implements SmcStartState {
 
@@ -26,6 +27,26 @@ public class SmcStartStateImpl extends ASTWrapperPsiElement implements SmcStartS
   @NotNull
   public List<SmcComment> getCommentList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  public String getMapName() {
+    return SmcPsiImplUtil.getMapName(this);
+  }
+
+  public PsiElement getMapNamePsiElement() {
+    return SmcPsiImplUtil.getMapNamePsiElement(this);
+  }
+
+  public String getStateName() {
+    return SmcPsiImplUtil.getStateName(this);
+  }
+
+  public PsiElement getStateNamePsiElement() {
+    return SmcPsiImplUtil.getStateNamePsiElement(this);
+  }
+
+  public PsiReference getReference() {
+    return SmcPsiImplUtil.getReference(this);
   }
 
 }

@@ -24,7 +24,7 @@ public class SmcPsiImplUtil {
     }
 
     public static PsiElement getNameIdentifier(SmcMap element) {
-        return geNamedNameIdentifier(element, SmcTypes.MAP_NAME);
+        return gePsiByToken(element, SmcTypes.MAP_NAME);
     }
 
     public static String getName(SmcState element) {
@@ -36,7 +36,7 @@ public class SmcPsiImplUtil {
     }
 
     public static PsiElement getNameIdentifier(SmcState element) {
-        return geNamedNameIdentifier(element, SmcTypes.STATE_NAME);
+        return gePsiByToken(element, SmcTypes.STATE_NAME);
     }
 
     public static String getName(SmcTransition element) {
@@ -51,8 +51,24 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.NEXT_STATE_NAME);
     }
 
+    public static String getMapName(SmcStartState element) {
+        return getStringName(element, SmcTypes.START_MAP_NAME);
+    }
+
+    public static String getStateName(SmcStartState element) {
+        return getStringName(element, SmcTypes.START_STATE_NAME);
+    }
+
+    public static PsiElement getMapNamePsiElement(SmcStartState element) {
+        return gePsiByToken(element, SmcTypes.START_MAP_NAME);
+    }
+
+    public static PsiElement getStateNamePsiElement(SmcStartState element) {
+        return gePsiByToken(element, SmcTypes.START_STATE_NAME);
+    }
+
     public static PsiElement getNameIdentifier(SmcTransition element) {
-        return geNamedNameIdentifier(element, SmcTypes.TRANSITION_NAME);
+        return gePsiByToken(element, SmcTypes.TRANSITION_NAME);
     }
 
     @NotNull
@@ -65,8 +81,13 @@ public class SmcPsiImplUtil {
                 ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
     }
 
+    public static PsiReference getReference(SmcStartState element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
+                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
+    }
+
     @Nullable
-    private static PsiElement geNamedNameIdentifier(SmcNamedElement element, IElementType nameToken) {
+    private static PsiElement gePsiByToken(PsiElement element, IElementType nameToken) {
         ASTNode keyNode = element.getNode().findChildByType(nameToken);
         if (keyNode != null) {
             return keyNode.getPsi();

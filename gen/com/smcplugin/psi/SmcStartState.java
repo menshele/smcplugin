@@ -4,10 +4,21 @@ package com.smcplugin.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 
-public interface SmcStartState extends PsiElement {
+public interface SmcStartState extends SmcStateFullName {
 
   @NotNull
   List<SmcComment> getCommentList();
+
+  String getMapName();
+
+  PsiElement getMapNamePsiElement();
+
+  String getStateName();
+
+  PsiElement getStateNamePsiElement();
+
+  PsiReference getReference();
 
 }

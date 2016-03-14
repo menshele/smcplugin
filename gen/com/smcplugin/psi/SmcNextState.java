@@ -6,7 +6,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
-public interface SmcNextState extends PsiElement {
+public interface SmcNextState extends SmcCustomNamed {
 
   @NotNull
   List<SmcComment> getCommentList();

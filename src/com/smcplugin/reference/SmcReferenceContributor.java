@@ -5,6 +5,7 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import com.smcplugin.psi.SmcNextState;
+import com.smcplugin.psi.SmcStartState;
 import org.jetbrains.annotations.NotNull;
 
 public class SmcReferenceContributor extends PsiReferenceContributor {
@@ -18,6 +19,21 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         SmcNextState nextState = (SmcNextState) element;
                         if (nextState.getName() != null) {
                             return new PsiReference[]{new SmcStateReference(element)};
+                        }
+                        return new PsiReference[0];
+                    }
+                });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcStartState.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcStartState startState = (SmcStartState) element;
+                        if (startState.getMapName() != null && startState.getStateName() != null) {
+                            PsiElement stateNamePsiElement = ((SmcStartState) element).getStateNamePsiElement();
+                            PsiElement mapNamePsiElement = ((SmcStartState) element).getMapNamePsiElement();
+                            TextRange textRange = new TextRange(mapNamePsiElement.getStartOffsetInParent(), stateNamePsiElement.getStartOffsetInParent() + stateNamePsiElement.getTextLength());
+                            return new PsiReference[]{new SmcGlobalStateReference(element, startState.getMapName(), startState.getStateName(), textRange)};
                         }
                         return new PsiReference[0];
                     }

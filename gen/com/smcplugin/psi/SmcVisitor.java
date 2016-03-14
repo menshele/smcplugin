@@ -92,7 +92,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitNextState(@NotNull SmcNextState o) {
-    visitPsiElement(o);
+    visitCustomNamed(o);
   }
 
   public void visitOnState(@NotNull SmcOnState o) {
@@ -124,7 +124,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitStartState(@NotNull SmcStartState o) {
-    visitPsiElement(o);
+    visitStateFullName(o);
   }
 
   public void visitState(@NotNull SmcState o) {
@@ -155,6 +155,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCustomNamed(@NotNull SmcCustomNamed o) {
+    visitPsiElement(o);
+  }
+
   public void visitMapElement(@NotNull SmcMapElement o) {
     visitPsiElement(o);
   }
@@ -164,6 +168,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitStateElement(@NotNull SmcStateElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStateFullName(@NotNull SmcStateFullName o) {
     visitPsiElement(o);
   }
 

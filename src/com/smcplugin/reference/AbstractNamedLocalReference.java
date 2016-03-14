@@ -54,7 +54,7 @@ public abstract class AbstractNamedLocalReference<ENCLOSING_TYPE extends PsiElem
     public Object[] getVariants() {
         List<LookupElement> variants = new ArrayList<>();
 
-        Collection<ENCLOSED_TYPE> enclosedTypes = SmcPsiUtil.getElementsByTypeWithinSameType(myElement, enclosingTypeClass, enclosedTypeClass);
+        Collection<ENCLOSED_TYPE> enclosedTypes = SmcPsiUtil.getElementsByTypeWithinParentType(myElement, enclosingTypeClass, enclosedTypeClass);
         for (final ENCLOSED_TYPE enclosed : enclosedTypes) {
             if (!StringUtil.isEmpty(enclosed.getName())) {
                 variants.add(LookupElementBuilder.create(enclosed).
@@ -70,7 +70,7 @@ public abstract class AbstractNamedLocalReference<ENCLOSING_TYPE extends PsiElem
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         List<ResolveResult> results = new ArrayList<ResolveResult>();
-        Collection<ENCLOSED_TYPE> findNamedElementsByName = SmcPsiUtil.getNamedElementsByTypeWithinSameType(myElement, enclosingTypeClass, enclosedTypeClass, name);
+        Collection<ENCLOSED_TYPE> findNamedElementsByName = SmcPsiUtil.getNamedElementsByTypeWithinParentType(myElement, enclosingTypeClass, enclosedTypeClass, name);
         for (ENCLOSED_TYPE enclosed : findNamedElementsByName) {
             results.add(new PsiElementResolveResult(enclosed));
         }

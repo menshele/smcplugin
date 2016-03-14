@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.smcplugin.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,23 +53,35 @@ public class SmcPsiImplUtil {
     }
 
     public static String getMapName(SmcStartState element) {
-        return getStringName(element, SmcTypes.START_MAP_NAME);
+        SmcStartMapNameElement map = PsiTreeUtil.findChildOfType(element, SmcStartMapNameElement.class);
+        return map != null? getStringName(map, SmcTypes.START_MAP_NAME):null;
     }
 
     public static String getStateName(SmcStartState element) {
-        return getStringName(element, SmcTypes.START_STATE_NAME);
-    }
-
-    public static PsiElement getMapNamePsiElement(SmcStartState element) {
-        return gePsiByToken(element, SmcTypes.START_MAP_NAME);
-    }
-
-    public static PsiElement getStateNamePsiElement(SmcStartState element) {
-        return gePsiByToken(element, SmcTypes.START_STATE_NAME);
+        SmcStartStateNameElement state = PsiTreeUtil.findChildOfType(element, SmcStartStateNameElement.class);
+        return state != null? getStringName(state, SmcTypes.START_STATE_NAME):null;
     }
 
     public static PsiElement getNameIdentifier(SmcTransition element) {
         return gePsiByToken(element, SmcTypes.TRANSITION_NAME);
+    }
+
+    public static String getName(SmcStartMapNameElement element) {
+        return getStringName(element, SmcTypes.START_MAP_NAME);
+    }
+
+    public static String getName(SmcStartStateNameElement element) {
+        return getStringName(element, SmcTypes.START_STATE_NAME);
+    }
+
+    public static PsiReference getReference(SmcStartStateNameElement element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
+                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
+    }
+
+    public static PsiReference getReference(SmcStartMapNameElement element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
+                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
     }
 
     @NotNull

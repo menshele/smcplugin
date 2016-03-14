@@ -26,7 +26,7 @@ import java.util.List;
  * Created by lemen on 29.02.2016.
  */
 public class SmcPsiUtil {
-    public static List<SmcMap> findMap(Project project, String key) {
+    public static List<SmcMap> findMap(Project project, String name) {
         List<SmcMap> result = null;
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
                 GlobalSearchScope.allScope(project));
@@ -36,7 +36,7 @@ public class SmcPsiUtil {
                 SmcMap[] properties = PsiTreeUtil.getChildrenOfType(simpleFile, SmcMap.class);
                 if (properties != null) {
                     for (SmcMap property : properties) {
-                        if (key.equals(property.getName())) {
+                        if (name.equals(property.getName())) {
                             if (result == null) {
                                 result = new ArrayList<SmcMap>();
                             }

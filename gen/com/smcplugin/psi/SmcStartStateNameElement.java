@@ -6,20 +6,12 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
-public interface SmcStartState extends SmcStateFullName {
+public interface SmcStartStateNameElement extends SmcCustomNamed {
 
   @NotNull
   List<SmcComment> getCommentList();
 
-  @NotNull
-  SmcStartMapNameElement getStartMapNameElement();
-
-  @NotNull
-  SmcStartStateNameElement getStartStateNameElement();
-
-  String getMapName();
-
-  String getStateName();
+  String getName();
 
   PsiReference getReference();
 

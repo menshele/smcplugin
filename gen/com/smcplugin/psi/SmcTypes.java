@@ -37,7 +37,9 @@ public interface SmcTypes {
   IElementType PUSH_PROXY_STATE = new SmcElementType("PUSH_PROXY_STATE");
   IElementType PUSH_STATE = new SmcElementType("PUSH_STATE");
   IElementType PUSH_TRANSITION = new SmcElementType("PUSH_TRANSITION");
+  IElementType START_MAP_NAME_ELEMENT = new SmcElementType("START_MAP_NAME_ELEMENT");
   IElementType START_STATE = new SmcElementType("START_STATE");
+  IElementType START_STATE_NAME_ELEMENT = new SmcElementType("START_STATE_NAME_ELEMENT");
   IElementType STATE = new SmcElementType("STATE");
   IElementType STATES = new SmcElementType("STATES");
   IElementType TRANSITION = new SmcElementType("TRANSITION");
@@ -200,8 +202,14 @@ public interface SmcTypes {
       else if (type == PUSH_TRANSITION) {
         return new SmcPushTransitionImpl(node);
       }
+      else if (type == START_MAP_NAME_ELEMENT) {
+        return new SmcStartMapNameElementImpl(node);
+      }
       else if (type == START_STATE) {
         return new SmcStartStateImpl(node);
+      }
+      else if (type == START_STATE_NAME_ELEMENT) {
+        return new SmcStartStateNameElementImpl(node);
       }
       else if (type == STATE) {
         return new SmcStateImpl(node);

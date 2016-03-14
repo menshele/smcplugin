@@ -33,14 +33,14 @@ public class SmcCustomNamedElementExistsAnnotator implements Annotator {
             if (typeClass.isInstance(element)) {
                 SmcCustomNamed smcCustomNamed = (SmcCustomNamed) element;
                 if (smcCustomNamed.getName() != null && !SmcPsiUtil.hasNamedElementsByTypeWithinParentType(element, SmcMap.class, SmcState.class, smcCustomNamed.getName())) {
-                    holder.createErrorAnnotation(element, getDuplicateElementDeclarationMessage(SmcTypes.STATE, smcCustomNamed.getName()));
+                    holder.createErrorAnnotation(element, getNoElementDeclarationFoundMessage(SmcTypes.STATE, smcCustomNamed.getName()));
                 }
             }
         }
     }
 
     @NotNull
-    protected String getDuplicateElementDeclarationMessage(IElementType element, String name) {
+    protected String getNoElementDeclarationFoundMessage(IElementType element, String name) {
         return MessageFormat.format(DECLARATION_NOT_FOUND, getAnnotatedTypeDisplayName(element), name);
     }
 

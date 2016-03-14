@@ -111,8 +111,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == PUSH_TRANSITION) {
       r = push_transition(b, 0);
     }
+    else if (t == START_MAP_NAME_ELEMENT) {
+      r = start_map_name_element(b, 0);
+    }
     else if (t == START_STATE) {
       r = start_state(b, 0);
+    }
+    else if (t == START_STATE_NAME_ELEMENT) {
+      r = start_state_name_element(b, 0);
     }
     else if (t == STATE) {
       r = state(b, 0);
@@ -1550,7 +1556,32 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // START_KEYWORD comment* START_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR comment* START_STATE_NAME
+  // START_MAP_NAME comment*
+  public static boolean start_map_name_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "start_map_name_element")) return false;
+    if (!nextTokenIs(b, START_MAP_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, START_MAP_NAME);
+    r = r && start_map_name_element_1(b, l + 1);
+    exit_section_(b, m, START_MAP_NAME_ELEMENT, r);
+    return r;
+  }
+
+  // comment*
+  private static boolean start_map_name_element_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "start_map_name_element_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "start_map_name_element_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // START_KEYWORD comment* start_map_name_element MAP_NAME_STATE_NAME_SEPARATOR comment* start_state_name_element
   public static boolean start_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "start_state")) return false;
     if (!nextTokenIs(b, START_KEYWORD)) return false;
@@ -1558,11 +1589,10 @@ public class SmcParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, START_KEYWORD);
     r = r && start_state_1(b, l + 1);
-    r = r && consumeToken(b, START_MAP_NAME);
-    r = r && start_state_3(b, l + 1);
+    r = r && start_map_name_element(b, l + 1);
     r = r && consumeToken(b, MAP_NAME_STATE_NAME_SEPARATOR);
-    r = r && start_state_5(b, l + 1);
-    r = r && consumeToken(b, START_STATE_NAME);
+    r = r && start_state_4(b, l + 1);
+    r = r && start_state_name_element(b, l + 1);
     exit_section_(b, m, START_STATE, r);
     return r;
   }
@@ -1580,24 +1610,37 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   // comment*
-  private static boolean start_state_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "start_state_3")) return false;
+  private static boolean start_state_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "start_state_4")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "start_state_3", c)) break;
+      if (!empty_element_parsed_guard_(b, "start_state_4", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
+  /* ********************************************************** */
+  // START_STATE_NAME comment*
+  public static boolean start_state_name_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "start_state_name_element")) return false;
+    if (!nextTokenIs(b, START_STATE_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, START_STATE_NAME);
+    r = r && start_state_name_element_1(b, l + 1);
+    exit_section_(b, m, START_STATE_NAME_ELEMENT, r);
+    return r;
+  }
+
   // comment*
-  private static boolean start_state_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "start_state_5")) return false;
+  private static boolean start_state_name_element_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "start_state_name_element_1")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "start_state_5", c)) break;
+      if (!empty_element_parsed_guard_(b, "start_state_name_element_1", c)) break;
       c = current_position_(b);
     }
     return true;

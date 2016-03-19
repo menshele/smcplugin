@@ -4,13 +4,20 @@ package com.smcplugin.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 
-public interface SmcAction extends PsiElement {
+public interface SmcAction extends SmcCustomNamed {
 
   @Nullable
   SmcArguments getArguments();
 
   @NotNull
   List<SmcComment> getCommentList();
+
+  String getName();
+
+  PsiReference getReference();
+
+  PsiElement getNamePsiElement();
 
 }

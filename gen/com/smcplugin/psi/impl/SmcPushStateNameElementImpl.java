@@ -12,14 +12,14 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 import com.intellij.psi.PsiReference;
 
-public class SmcPushStateImpl extends ASTWrapperPsiElement implements SmcPushState {
+public class SmcPushStateNameElementImpl extends ASTWrapperPsiElement implements SmcPushStateNameElement {
 
-  public SmcPushStateImpl(ASTNode node) {
+  public SmcPushStateNameElementImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPushState(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPushStateNameElement(this);
     else super.accept(visitor);
   }
 
@@ -29,24 +29,8 @@ public class SmcPushStateImpl extends ASTWrapperPsiElement implements SmcPushSta
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
-  @Override
-  @Nullable
-  public SmcPushMapNameElement getPushMapNameElement() {
-    return findChildByClass(SmcPushMapNameElement.class);
-  }
-
-  @Override
-  @NotNull
-  public SmcPushStateNameElement getPushStateNameElement() {
-    return findNotNullChildByClass(SmcPushStateNameElement.class);
-  }
-
-  public String getMapName() {
-    return SmcPsiImplUtil.getMapName(this);
-  }
-
-  public String getStateName() {
-    return SmcPsiImplUtil.getStateName(this);
+  public String getName() {
+    return SmcPsiImplUtil.getName(this);
   }
 
   public PsiReference getReference() {

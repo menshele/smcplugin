@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class SmcContextClassImpl extends ASTWrapperPsiElement implements SmcContextClass {
 
@@ -26,6 +27,18 @@ public class SmcContextClassImpl extends ASTWrapperPsiElement implements SmcCont
   @NotNull
   public List<SmcComment> getCommentList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  public String getName() {
+    return SmcPsiImplUtil.getName(this);
+  }
+
+  public PsiElement getNamePsiElement() {
+    return SmcPsiImplUtil.getNamePsiElement(this);
+  }
+
+  public PsiReference getReference() {
+    return SmcPsiImplUtil.getReference(this);
   }
 
 }

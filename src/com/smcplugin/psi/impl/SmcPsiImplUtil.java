@@ -44,6 +44,14 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.TRANSITION_NAME);
     }
 
+    public static String getName(SmcAction element) {
+        return getStringName(element, SmcTypes.ACTION_NAME);
+    }
+
+    public static PsiElement getNamePsiElement(SmcAction element) {
+        return gePsiByToken(element, SmcTypes.ACTION_NAME);
+    }
+
     public static PsiElement setName(SmcTransition element, String newName) {
         return setStringName(element, newName, SmcTypes.TRANSITION_NAME);
     }
@@ -52,14 +60,33 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.NEXT_STATE_NAME);
     }
 
+    public static String getName(SmcPushMapNameElement element) {
+        return getStringName(element, SmcTypes.PUSH_MAP_NAME);
+    }
+
+    public static String getName(SmcPushStateNameElement element) {
+        return getStringName(element, SmcTypes.PUSH_STATE_NAME);
+    }
+
     public static String getMapName(SmcStartState element) {
         SmcStartMapNameElement map = PsiTreeUtil.findChildOfType(element, SmcStartMapNameElement.class);
-        return map != null? getStringName(map, SmcTypes.START_MAP_NAME):null;
+        return map != null ? getStringName(map, SmcTypes.START_MAP_NAME) : null;
     }
 
     public static String getStateName(SmcStartState element) {
         SmcStartStateNameElement state = PsiTreeUtil.findChildOfType(element, SmcStartStateNameElement.class);
-        return state != null? getStringName(state, SmcTypes.START_STATE_NAME):null;
+        return state != null ? getStringName(state, SmcTypes.START_STATE_NAME) : null;
+    }
+
+
+    public static String getMapName(SmcPushState element) {
+        SmcPushMapNameElement map = PsiTreeUtil.findChildOfType(element, SmcPushMapNameElement.class);
+        return map != null ? getStringName(map, SmcTypes.PUSH_MAP_NAME) : null;
+    }
+
+    public static String getStateName(SmcPushState element) {
+        SmcPushStateNameElement state = PsiTreeUtil.findChildOfType(element, SmcPushStateNameElement.class);
+        return state != null ? getStringName(state, SmcTypes.PUSH_STATE_NAME) : null;
     }
 
     public static PsiElement getNameIdentifier(SmcTransition element) {
@@ -75,13 +102,27 @@ public class SmcPsiImplUtil {
     }
 
     public static PsiReference getReference(SmcStartStateNameElement element) {
-        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
-                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
+        return getPsiReference(element);
     }
 
     public static PsiReference getReference(SmcStartMapNameElement element) {
-        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
-                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
+        return getPsiReference(element);
+    }
+
+    public static PsiReference getReference(SmcAction element) {
+        return getPsiReference(element);
+    }
+
+    public static PsiReference getReference(SmcPushState element) {
+        return getPsiReference(element);
+    }
+
+    public static PsiReference getReference(SmcPushMapNameElement element) {
+        return getPsiReference(element);
+    }
+
+    public static PsiReference getReference(SmcPushStateNameElement element) {
+        return getPsiReference(element);
     }
 
     @NotNull
@@ -90,13 +131,11 @@ public class SmcPsiImplUtil {
     }
 
     public static PsiReference getReference(SmcNextState element) {
-        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
-                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
+        return getPsiReference(element);
     }
 
     public static PsiReference getReference(SmcStartState element) {
-        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0?
-                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0]:null;
+        return getPsiReference(element);
     }
 
     @Nullable
@@ -125,10 +164,39 @@ public class SmcPsiImplUtil {
         ASTNode keyNode = element.getNode().findChildByType(nameToken);
         if (keyNode != null) {
             SmcMap property = SmcElementFactory.createMap(element.getProject(), newName);
-            ASTNode newKeyNode = property.getFirstChild().getNode();
-            element.getNode().replaceChild(keyNode, newKeyNode);
+            ASTNode newKeyNode = property.getNode().findChildByType(nameToken);
+            if (newKeyNode != null) {
+                element.getNode().replaceChild(keyNode, newKeyNode);
+            }
         }
         return element;
     }
 
+
+    public static String getName(SmcContextClass element) {
+        return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
+    }
+
+    public static String getPackageName(SmcContextClass element) {
+        return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
+    }
+
+    public static String getClassName(SmcContextClass element) {
+        return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
+    }
+
+    public static PsiReference getReference(SmcContextClass element) {
+        return getPsiReference(element);
+    }
+
+    public static PsiElement getNamePsiElement(SmcContextClass element) {
+        return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_NAME);
+    }
+
+
+    @Nullable
+    private static PsiReference getPsiReference(PsiElement element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0 ?
+                ReferenceProvidersRegistry.getReferencesFromProviders(element)[0] : null;
+    }
 }

@@ -1,12 +1,11 @@
 package com.smcplugin.psi;
 
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.*;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.IElementType;
@@ -33,15 +32,13 @@ public class SmcPsiUtil {
         for (VirtualFile virtualFile : virtualFiles) {
             SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (simpleFile != null) {
-                SmcMap[] properties = PsiTreeUtil.getChildrenOfType(simpleFile, SmcMap.class);
-                if (properties != null) {
-                    for (SmcMap property : properties) {
-                        if (name.equals(property.getName())) {
-                            if (result == null) {
-                                result = new ArrayList<SmcMap>();
-                            }
-                            result.add(property);
+                Collection<SmcMap> properties = PsiTreeUtil.findChildrenOfType(simpleFile, SmcMap.class);
+                for (SmcMap property : properties) {
+                    if (name.equals(property.getName())) {
+                        if (result == null) {
+                            result = new ArrayList<SmcMap>();
                         }
+                        result.add(property);
                     }
                 }
             }
@@ -49,6 +46,26 @@ public class SmcPsiUtil {
         return result != null ? result : Collections.<SmcMap>emptyList();
     }
 
+    public static List<PsiMethod> findJavaMethod(Project project, String name) {
+        List<PsiMethod> result = null;
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, JavaFileType.INSTANCE,
+                GlobalSearchScope.projectScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (javaFile != null) {
+                Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
+                for (PsiMethod javaMethod : properties) {
+                    if (name.equals(javaMethod.getName())) {
+                        if (result == null) {
+                            result = new ArrayList<PsiMethod>();
+                        }
+                        result.add(javaMethod);
+                    }
+                }
+            }
+        }
+        return result != null ? result : Collections.<PsiMethod>emptyList();
+    }
 
     public static <T extends SmcNamedElement> boolean isNotSingleNamedElement(@NotNull PsiElement root, @NotNull Class<T> namedElement, @NotNull String name) {
         Collection<T> childrenOfType = PsiTreeUtil.findChildrenOfType(root, namedElement);
@@ -115,13 +132,13 @@ public class SmcPsiUtil {
 
     @NotNull
     public static <T extends PsiNamedElement, K extends PsiNamedElement> Collection<K> getElementsByTypeAndNameWithinNamedType(@NotNull PsiElement myElement,
-                                                                                                                     @NotNull Class<T> enclosingType,
-                                                                                                                     @NotNull String enclosingName,
-                                                                                                                     @NotNull Class<K> enclosedType,
-                                                                                                                     @NotNull String enclosedName) {
+                                                                                                                               @NotNull Class<T> enclosingType,
+                                                                                                                               @NotNull String enclosingName,
+                                                                                                                               @NotNull Class<K> enclosedType,
+                                                                                                                               @NotNull String enclosedName) {
         Collection<K> results = new ArrayList<>();
         List<T> namedElementsByType = SmcPsiUtil.findNamedElementsByType(myElement.getContainingFile(), enclosingType, enclosingName);
-        for (T enclosing: namedElementsByType){
+        for (T enclosing : namedElementsByType) {
             results.addAll(SmcPsiUtil.findNamedElementsByType(enclosing, enclosedType, enclosedName));
         }
         return results;
@@ -129,13 +146,15 @@ public class SmcPsiUtil {
 
     @NotNull
     public static <T extends PsiNamedElement, K extends PsiNamedElement> Collection<K> getAllElementsByTypeWithinNamedType(@NotNull PsiElement myElement,
-                                                                                                                               @NotNull Class<T> enclosingType,
-                                                                                                                               String enclosingName,
-                                                                                                                               @NotNull Class<K> enclosedType) {
-        if(StringUtil.isEmpty(enclosingName)) {return PsiTreeUtil.findChildrenOfType(myElement.getContainingFile(), enclosedType);}
+                                                                                                                           @NotNull Class<T> enclosingType,
+                                                                                                                           String enclosingName,
+                                                                                                                           @NotNull Class<K> enclosedType) {
+        if (StringUtil.isEmpty(enclosingName)) {
+            return PsiTreeUtil.findChildrenOfType(myElement.getContainingFile(), enclosedType);
+        }
         Collection<K> results = new ArrayList<>();
         List<T> namedElementsByType = SmcPsiUtil.findNamedElementsByType(myElement.getContainingFile(), enclosingType, enclosingName);
-        for (T enclosing: namedElementsByType){
+        for (T enclosing : namedElementsByType) {
             results.addAll(PsiTreeUtil.findChildrenOfType(enclosing, enclosedType));
         }
         return results;
@@ -169,6 +188,20 @@ public class SmcPsiUtil {
     }
 
 
+    public static List<PsiMethod> findJavaMethod(Project project) {
+        List<PsiMethod> result = new ArrayList<PsiMethod>();
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, JavaFileType.INSTANCE,
+                GlobalSearchScope.projectScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (javaFile != null) {
+                Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
+                result.addAll(properties);
+            }
+        }
+        return result;
+    }
+
     public static List<SmcMap> findMap(Project project) {
         List<SmcMap> result = new ArrayList<SmcMap>();
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
@@ -176,68 +209,10 @@ public class SmcPsiUtil {
         for (VirtualFile virtualFile : virtualFiles) {
             SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (simpleFile != null) {
-                SmcMap[] properties = PsiTreeUtil.getChildrenOfType(simpleFile, SmcMap.class);
-                if (properties != null) {
-                    Collections.addAll(result, properties);
-                }
+                Collection<SmcMap> properties = PsiTreeUtil.findChildrenOfType(simpleFile, SmcMap.class);
+                result.addAll( properties);
             }
         }
-        return result;
-    }
-
-    public static List<SmcState> findState(Project project, String name) {
-        List<SmcState> result = null;
-        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
-                GlobalSearchScope.allScope(project));
-        for (VirtualFile virtualFile : virtualFiles) {
-            SmcFile smcFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
-            if (smcFile != null) {
-                SmcMap[] smcMaps = PsiTreeUtil.getChildrenOfType(smcFile, SmcMap.class);
-                if (smcMaps != null) {
-                    for (SmcMap map : smcMaps) {
-                        SmcStates states = map.getStates();
-                        if (states != null) {
-                            SmcState[] smcStates = PsiTreeUtil.getChildrenOfType(states, SmcState.class);
-                            if (smcStates != null) {
-                                for (SmcState smcState : smcStates) {
-                                    if (name.equals(smcState.getName())) {
-                                        if (result == null) {
-                                            result = new ArrayList<SmcState>();
-                                        }
-                                        result.add(smcState);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return result != null ? result : Collections.<SmcState>emptyList();
-    }
-
-    public static List<SmcState> findStates(Project project) {
-        List<SmcState> result = new ArrayList<SmcState>();
-        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
-                GlobalSearchScope.allScope(project));
-        for (VirtualFile virtualFile : virtualFiles) {
-            SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
-            if (simpleFile != null) {
-                SmcMap[] smcMaps = PsiTreeUtil.getChildrenOfType(simpleFile, SmcMap.class);
-                if (smcMaps != null) {
-                    for (SmcMap map : smcMaps) {
-                        SmcStates states = map.getStates();
-                        if (states != null) {
-                            SmcState[] smcState = PsiTreeUtil.getChildrenOfType(states, SmcState.class);
-                            if (smcState != null) {
-                                Collections.addAll(result, smcState);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         return result;
     }
 }

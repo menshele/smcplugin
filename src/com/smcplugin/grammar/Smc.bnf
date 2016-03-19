@@ -84,8 +84,8 @@
      ]
 }
 
-fsmFile ::= (verbatim_code_section|fsm_package| context_class| start_state|fsm_class|fsm_file| header_file| include_file|
- import_class| declare| access| comment)* map+ comment*
+fsmFile ::= (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
+ import_class| declare| access| comment)* map_declaration+ comment*
 
 comment ::=LINE_COMMENT|block_comment
 
@@ -106,7 +106,9 @@ start_state_name_element ::= START_STATE_NAME comment* { implements="com.smcplug
 start_map_name_element ::= START_MAP_NAME comment* { implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getReference]}
 
 
-context_class ::= CLASS_KEYWORD comment* CONTEXT_CLASS_NAME
+context_class_declaration ::= CLASS_KEYWORD comment* context_class
+
+context_class ::= comment* CONTEXT_CLASS_NAME  {pin=2 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getNamePsiElement getReference]}
 
 header_file ::= HEADER_KEYWORD comment* HEADER_FILE_NAME
 
@@ -120,8 +122,8 @@ declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 
 access ::= ACCESS_KEYWORD comment* ACCESS_LEVEL
 
-map ::= comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl"
-                                                                                                             implements="com.smcplugin.psi.SmcMapElement" methods=[getName setName getNameIdentifier]}
+map_declaration ::= comment* MAP_KEYWORD comment* map
+map ::= MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=3 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMapElement" methods=[getName setName getNameIdentifier ]}
 
 states ::= comment* state* comment*
 
@@ -160,7 +162,11 @@ private comment_nil ::= comment* NIL_KEYWORD comment*
 
 push_proxy_state ::= (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
 
-push_state ::= comment* (PUSH_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR)? comment* PUSH_STATE_NAME comment*
+push_state ::= comment* (push_map_name_element comment* MAP_NAME_STATE_NAME_SEPARATOR )? comment* push_state_name_element { implements="com.smcplugin.psi.SmcStateFullName" methods=[getMapName getStateName getReference]}
+
+push_state_name_element ::= PUSH_STATE_NAME comment* { implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getReference]}
+
+push_map_name_element ::= PUSH_MAP_NAME { implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getReference]}
 
 pop_transition ::= POP_KEYWORD callback_transition? {pin=1}
 
@@ -170,6 +176,6 @@ actions_block ::= BRACE_OPEN actions BRACE_CLOSE
 
 actions ::= (comment* action comment*)*
 
-action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1}
+action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1 implements="com.smcplugin.psi.SmcCustomNamed"  methods=[getName getReference getNamePsiElement]}
 
 arguments ::= (ARGUMENT_STATEMENT | STRING_LITERAL) comment* COMMA comment* arguments|comment* (STRING_LITERAL|ARGUMENT_STATEMENT) comment* {pin=1}

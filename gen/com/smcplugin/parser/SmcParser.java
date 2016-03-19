@@ -51,6 +51,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == CONTEXT_CLASS) {
       r = context_class(b, 0);
     }
+    else if (t == CONTEXT_CLASS_DECLARATION) {
+      r = context_class_declaration(b, 0);
+    }
     else if (t == DECLARE) {
       r = declare(b, 0);
     }
@@ -87,6 +90,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == MAP) {
       r = map(b, 0);
     }
+    else if (t == MAP_DECLARATION) {
+      r = map_declaration(b, 0);
+    }
     else if (t == NEXT_STATE) {
       r = next_state(b, 0);
     }
@@ -102,11 +108,17 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == POP_TRANSITION) {
       r = pop_transition(b, 0);
     }
+    else if (t == PUSH_MAP_NAME_ELEMENT) {
+      r = push_map_name_element(b, 0);
+    }
     else if (t == PUSH_PROXY_STATE) {
       r = push_proxy_state(b, 0);
     }
     else if (t == PUSH_STATE) {
       r = push_state(b, 0);
+    }
+    else if (t == PUSH_STATE_NAME_ELEMENT) {
+      r = push_state_name_element(b, 0);
     }
     else if (t == PUSH_TRANSITION) {
       r = push_transition(b, 0);
@@ -607,26 +619,50 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD comment* CONTEXT_CLASS_NAME
+  // comment* CONTEXT_CLASS_NAME
   public static boolean context_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "context_class")) return false;
-    if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, CLASS_KEYWORD);
-    r = r && context_class_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, "<context class>");
+    r = context_class_0(b, l + 1);
     r = r && consumeToken(b, CONTEXT_CLASS_NAME);
-    exit_section_(b, m, CONTEXT_CLASS, r);
+    exit_section_(b, l, m, CONTEXT_CLASS, r, false, null);
     return r;
   }
 
   // comment*
-  private static boolean context_class_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "context_class_1")) return false;
+  private static boolean context_class_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_0")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "context_class_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "context_class_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // CLASS_KEYWORD comment* context_class
+  public static boolean context_class_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_declaration")) return false;
+    if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CLASS_KEYWORD);
+    r = r && context_class_declaration_1(b, l + 1);
+    r = r && context_class(b, l + 1);
+    exit_section_(b, m, CONTEXT_CLASS_DECLARATION, r);
+    return r;
+  }
+
+  // comment*
+  private static boolean context_class_declaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_declaration_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "context_class_declaration_1", c)) break;
       c = current_position_(b);
     }
     return true;
@@ -737,8 +773,8 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (verbatim_code_section|fsm_package| context_class| start_state|fsm_class|fsm_file| header_file| include_file|
-  //  import_class| declare| access| comment)* map+ comment*
+  // (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
+  //  import_class| declare| access| comment)* map_declaration+ comment*
   static boolean fsmFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile")) return false;
     boolean r;
@@ -750,7 +786,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (verbatim_code_section|fsm_package| context_class| start_state|fsm_class|fsm_file| header_file| include_file|
+  // (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
   //  import_class| declare| access| comment)*
   private static boolean fsmFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile_0")) return false;
@@ -763,7 +799,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // verbatim_code_section|fsm_package| context_class| start_state|fsm_class|fsm_file| header_file| include_file|
+  // verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
   //  import_class| declare| access| comment
   private static boolean fsmFile_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile_0_0")) return false;
@@ -771,7 +807,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = verbatim_code_section(b, l + 1);
     if (!r) r = fsm_package(b, l + 1);
-    if (!r) r = context_class(b, l + 1);
+    if (!r) r = context_class_declaration(b, l + 1);
     if (!r) r = start_state(b, l + 1);
     if (!r) r = fsm_class(b, l + 1);
     if (!r) r = fsm_file(b, l + 1);
@@ -785,15 +821,15 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // map+
+  // map_declaration+
   private static boolean fsmFile_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = map(b, l + 1);
+    r = map_declaration(b, l + 1);
     int c = current_position_(b);
     while (r) {
-      if (!map(b, l + 1)) break;
+      if (!map_declaration(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "fsmFile_1", c)) break;
       c = current_position_(b);
     }
@@ -1064,55 +1100,67 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comment* MAP_KEYWORD comment* MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND
+  // MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND
   public static boolean map(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "map")) return false;
+    if (!nextTokenIs(b, MAP_NAME)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, "<map>");
-    r = map_0(b, l + 1);
-    r = r && consumeToken(b, MAP_KEYWORD);
-    p = r; // pin = 2
-    r = r && report_error_(b, map_2(b, l + 1));
-    r = p && report_error_(b, consumeToken(b, MAP_NAME)) && r;
-    r = p && report_error_(b, map_4(b, l + 1)) && r;
-    r = p && report_error_(b, consumeToken(b, MAP_SECTION_BOUND)) && r;
-    r = p && report_error_(b, states(b, l + 1)) && r;
+    Marker m = enter_section_(b, l, _NONE_, null);
+    r = consumeToken(b, MAP_NAME);
+    r = r && map_1(b, l + 1);
+    r = r && consumeToken(b, MAP_SECTION_BOUND);
+    p = r; // pin = 3
+    r = r && report_error_(b, states(b, l + 1));
     r = p && consumeToken(b, MAP_SECTION_BOUND) && r;
     exit_section_(b, l, m, MAP, r, p, null);
     return r || p;
   }
 
   // comment*
-  private static boolean map_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map_0")) return false;
+  private static boolean map_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_1")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "map_0", c)) break;
+      if (!empty_element_parsed_guard_(b, "map_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // comment* MAP_KEYWORD comment* map
+  public static boolean map_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_declaration")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<map declaration>");
+    r = map_declaration_0(b, l + 1);
+    r = r && consumeToken(b, MAP_KEYWORD);
+    r = r && map_declaration_2(b, l + 1);
+    r = r && map(b, l + 1);
+    exit_section_(b, l, m, MAP_DECLARATION, r, false, null);
+    return r;
+  }
+
+  // comment*
+  private static boolean map_declaration_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_declaration_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "map_declaration_0", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // comment*
-  private static boolean map_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map_2")) return false;
+  private static boolean map_declaration_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_declaration_2")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "map_2", c)) break;
-      c = current_position_(b);
-    }
-    return true;
-  }
-
-  // comment*
-  private static boolean map_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map_4")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "map_4", c)) break;
+      if (!empty_element_parsed_guard_(b, "map_declaration_2", c)) break;
       c = current_position_(b);
     }
     return true;
@@ -1367,6 +1415,18 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // PUSH_MAP_NAME
+  public static boolean push_map_name_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_map_name_element")) return false;
+    if (!nextTokenIs(b, PUSH_MAP_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PUSH_MAP_NAME);
+    exit_section_(b, m, PUSH_MAP_NAME_ELEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
   public static boolean push_proxy_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_proxy_state")) return false;
@@ -1404,7 +1464,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comment* (PUSH_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR)? comment* PUSH_STATE_NAME comment*
+  // comment* (push_map_name_element comment* MAP_NAME_STATE_NAME_SEPARATOR )? comment* push_state_name_element
   public static boolean push_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_state")) return false;
     boolean r;
@@ -1412,8 +1472,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     r = push_state_0(b, l + 1);
     r = r && push_state_1(b, l + 1);
     r = r && push_state_2(b, l + 1);
-    r = r && consumeToken(b, PUSH_STATE_NAME);
-    r = r && push_state_4(b, l + 1);
+    r = r && push_state_name_element(b, l + 1);
     exit_section_(b, l, m, PUSH_STATE, r, false, null);
     return r;
   }
@@ -1430,19 +1489,19 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (PUSH_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR)?
+  // (push_map_name_element comment* MAP_NAME_STATE_NAME_SEPARATOR )?
   private static boolean push_state_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_state_1")) return false;
     push_state_1_0(b, l + 1);
     return true;
   }
 
-  // PUSH_MAP_NAME comment* MAP_NAME_STATE_NAME_SEPARATOR
+  // push_map_name_element comment* MAP_NAME_STATE_NAME_SEPARATOR
   private static boolean push_state_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_state_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PUSH_MAP_NAME);
+    r = push_map_name_element(b, l + 1);
     r = r && push_state_1_0_1(b, l + 1);
     r = r && consumeToken(b, MAP_NAME_STATE_NAME_SEPARATOR);
     exit_section_(b, m, null, r);
@@ -1473,13 +1532,26 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return true;
   }
 
+  /* ********************************************************** */
+  // PUSH_STATE_NAME comment*
+  public static boolean push_state_name_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_state_name_element")) return false;
+    if (!nextTokenIs(b, PUSH_STATE_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PUSH_STATE_NAME);
+    r = r && push_state_name_element_1(b, l + 1);
+    exit_section_(b, m, PUSH_STATE_NAME_ELEMENT, r);
+    return r;
+  }
+
   // comment*
-  private static boolean push_state_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "push_state_4")) return false;
+  private static boolean push_state_name_element_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_state_name_element_1")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "push_state_4", c)) break;
+      if (!empty_element_parsed_guard_(b, "push_state_name_element_1", c)) break;
       c = current_position_(b);
     }
     return true;

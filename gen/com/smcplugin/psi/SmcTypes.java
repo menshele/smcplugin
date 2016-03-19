@@ -17,6 +17,7 @@ public interface SmcTypes {
   IElementType CALLBACK_TRANSITION = new SmcElementType("CALLBACK_TRANSITION");
   IElementType COMMENT = new SmcElementType("COMMENT");
   IElementType CONTEXT_CLASS = new SmcElementType("CONTEXT_CLASS");
+  IElementType CONTEXT_CLASS_DECLARATION = new SmcElementType("CONTEXT_CLASS_DECLARATION");
   IElementType DECLARE = new SmcElementType("DECLARE");
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
@@ -29,13 +30,16 @@ public interface SmcTypes {
   IElementType IMPORT_CLASS = new SmcElementType("IMPORT_CLASS");
   IElementType INCLUDE_FILE = new SmcElementType("INCLUDE_FILE");
   IElementType MAP = new SmcElementType("MAP");
+  IElementType MAP_DECLARATION = new SmcElementType("MAP_DECLARATION");
   IElementType NEXT_STATE = new SmcElementType("NEXT_STATE");
   IElementType ON_STATE = new SmcElementType("ON_STATE");
   IElementType PARAMETER = new SmcElementType("PARAMETER");
   IElementType PARAMETERS = new SmcElementType("PARAMETERS");
   IElementType POP_TRANSITION = new SmcElementType("POP_TRANSITION");
+  IElementType PUSH_MAP_NAME_ELEMENT = new SmcElementType("PUSH_MAP_NAME_ELEMENT");
   IElementType PUSH_PROXY_STATE = new SmcElementType("PUSH_PROXY_STATE");
   IElementType PUSH_STATE = new SmcElementType("PUSH_STATE");
+  IElementType PUSH_STATE_NAME_ELEMENT = new SmcElementType("PUSH_STATE_NAME_ELEMENT");
   IElementType PUSH_TRANSITION = new SmcElementType("PUSH_TRANSITION");
   IElementType START_MAP_NAME_ELEMENT = new SmcElementType("START_MAP_NAME_ELEMENT");
   IElementType START_STATE = new SmcElementType("START_STATE");
@@ -142,6 +146,9 @@ public interface SmcTypes {
       else if (type == CONTEXT_CLASS) {
         return new SmcContextClassImpl(node);
       }
+      else if (type == CONTEXT_CLASS_DECLARATION) {
+        return new SmcContextClassDeclarationImpl(node);
+      }
       else if (type == DECLARE) {
         return new SmcDeclareImpl(node);
       }
@@ -178,6 +185,9 @@ public interface SmcTypes {
       else if (type == MAP) {
         return new SmcMapImpl(node);
       }
+      else if (type == MAP_DECLARATION) {
+        return new SmcMapDeclarationImpl(node);
+      }
       else if (type == NEXT_STATE) {
         return new SmcNextStateImpl(node);
       }
@@ -193,11 +203,17 @@ public interface SmcTypes {
       else if (type == POP_TRANSITION) {
         return new SmcPopTransitionImpl(node);
       }
+      else if (type == PUSH_MAP_NAME_ELEMENT) {
+        return new SmcPushMapNameElementImpl(node);
+      }
       else if (type == PUSH_PROXY_STATE) {
         return new SmcPushProxyStateImpl(node);
       }
       else if (type == PUSH_STATE) {
         return new SmcPushStateImpl(node);
+      }
+      else if (type == PUSH_STATE_NAME_ELEMENT) {
+        return new SmcPushStateNameElementImpl(node);
       }
       else if (type == PUSH_TRANSITION) {
         return new SmcPushTransitionImpl(node);

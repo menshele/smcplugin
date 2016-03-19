@@ -12,27 +12,15 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 import com.intellij.psi.PsiReference;
 
-public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
+public class SmcPushMapNameElementImpl extends ASTWrapperPsiElement implements SmcPushMapNameElement {
 
-  public SmcActionImpl(ASTNode node) {
+  public SmcPushMapNameElementImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitAction(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPushMapNameElement(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public SmcArguments getArguments() {
-    return findChildByClass(SmcArguments.class);
-  }
-
-  @Override
-  @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
   public String getName() {
@@ -41,10 +29,6 @@ public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
 
   public PsiReference getReference() {
     return SmcPsiImplUtil.getReference(this);
-  }
-
-  public PsiElement getNamePsiElement() {
-    return SmcPsiImplUtil.getNamePsiElement(this);
   }
 
 }

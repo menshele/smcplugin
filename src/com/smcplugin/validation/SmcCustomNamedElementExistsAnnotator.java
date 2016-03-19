@@ -23,7 +23,7 @@ public class SmcCustomNamedElementExistsAnnotator implements Annotator {
     private final List<TypeDescriptor<SmcCustomNamed>> validateClasses = new ArrayList<>();
 
     public SmcCustomNamedElementExistsAnnotator() {
-        validateClasses.add(new TypeDescriptor<>(SmcNextState.class, SmcTypes.NEXT_STATE));
+        validateClasses.add(new TypeDescriptor<>(SmcNextState.class, SmcTypes.STATE));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SmcCustomNamedElementExistsAnnotator implements Annotator {
             if (typeClass.isInstance(element)) {
                 SmcCustomNamed smcCustomNamed = (SmcCustomNamed) element;
                 if (smcCustomNamed.getName() != null && !SmcPsiUtil.hasNamedElementsByTypeWithinParentType(element, SmcMap.class, SmcState.class, smcCustomNamed.getName())) {
-                    holder.createErrorAnnotation(element, getNoElementDeclarationFoundMessage(SmcTypes.STATE, smcCustomNamed.getName()));
+                    holder.createErrorAnnotation(element, getNoElementDeclarationFoundMessage(descriptor.getTypeType(), smcCustomNamed.getName()));
                 }
             }
         }

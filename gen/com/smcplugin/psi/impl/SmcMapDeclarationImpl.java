@@ -10,23 +10,16 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
-import com.intellij.psi.PsiReference;
 
-public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
+public class SmcMapDeclarationImpl extends ASTWrapperPsiElement implements SmcMapDeclaration {
 
-  public SmcActionImpl(ASTNode node) {
+  public SmcMapDeclarationImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitAction(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitMapDeclaration(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public SmcArguments getArguments() {
-    return findChildByClass(SmcArguments.class);
   }
 
   @Override
@@ -35,16 +28,10 @@ public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
-  public String getName() {
-    return SmcPsiImplUtil.getName(this);
-  }
-
-  public PsiReference getReference() {
-    return SmcPsiImplUtil.getReference(this);
-  }
-
-  public PsiElement getNamePsiElement() {
-    return SmcPsiImplUtil.getNamePsiElement(this);
+  @Override
+  @NotNull
+  public SmcMap getMap() {
+    return findNotNullChildByClass(SmcMap.class);
   }
 
 }

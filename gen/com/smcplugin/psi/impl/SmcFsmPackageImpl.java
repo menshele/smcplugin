@@ -28,4 +28,8 @@ public class SmcFsmPackageImpl extends ASTWrapperPsiElement implements SmcFsmPac
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
+  public String getName() {
+    return SmcPsiImplUtil.getName(this);
+  }
+
 }

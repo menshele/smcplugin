@@ -68,7 +68,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitFsmPackage(@NotNull SmcFsmPackage o) {
-    visitPsiElement(o);
+    visitCustomNamed(o);
   }
 
   public void visitGuard(@NotNull SmcGuard o) {

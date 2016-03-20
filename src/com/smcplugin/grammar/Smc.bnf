@@ -108,13 +108,13 @@ start_map_name_element ::= START_MAP_NAME comment* { implements="com.smcplugin.p
 
 context_class_declaration ::= CLASS_KEYWORD comment* context_class
 
-context_class ::= comment* CONTEXT_CLASS_NAME  {pin=2 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getNamePsiElement getReference]}
+context_class ::= comment* CONTEXT_CLASS_NAME  {pin=2 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getQualifiedName getNamePsiElement getReference]}
 
 header_file ::= HEADER_KEYWORD comment* HEADER_FILE_NAME
 
 include_file ::= INCLUDE_KEYWORD comment* INCLUDE_FILE_NAME
 
-fsm_package ::= PACKAGE_KEYWORD comment* PACKAGE_STATEMENT
+fsm_package ::= PACKAGE_KEYWORD comment* PACKAGE_STATEMENT {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
 
 import_class ::= IMPORT_KEYWORD comment* STATIC_JAVA_KEYWORD? comment* IMPORT_CLASS_STATEMENT
 

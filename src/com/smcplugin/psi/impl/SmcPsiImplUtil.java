@@ -7,6 +7,7 @@ import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.smcplugin.psi.*;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
  * Created by lemen on 30.01.2016.
  */
 public class SmcPsiImplUtil {
+
+    public static final String DOT = ".";
 
     public static String getName(SmcMap element) {
         return getStringName(element, SmcTypes.MAP_NAME);
@@ -99,6 +102,25 @@ public class SmcPsiImplUtil {
 
     public static String getName(SmcStartStateNameElement element) {
         return getStringName(element, SmcTypes.START_STATE_NAME);
+    }
+
+
+    public static String getName(SmcFsmPackage element) {
+        return getStringName(element, SmcTypes.PACKAGE_STATEMENT);
+    }
+
+
+    public static String getQualifiedName(SmcContextClass element) {
+        SmcFsmPackage smcFsmPackage = PsiTreeUtil.getChildOfType(element.getContainingFile(), SmcFsmPackage.class);
+        String name = element.getName();
+        StringBuilder qualifiedName = new StringBuilder();
+        if (!StringUtils.contains(name, DOT) && smcFsmPackage != null) {
+            String packageName = smcFsmPackage.getName();
+            if (packageName != null) {
+                qualifiedName.append(packageName).append(DOT);
+            }
+        }
+        return name != null ? qualifiedName.append(name).toString() : null;
     }
 
     public static PsiReference getReference(SmcStartStateNameElement element) {

@@ -33,6 +33,10 @@ public class SmcContextClassImpl extends ASTWrapperPsiElement implements SmcCont
     return SmcPsiImplUtil.getName(this);
   }
 
+  public String getQualifiedName() {
+    return SmcPsiImplUtil.getQualifiedName(this);
+  }
+
   public PsiElement getNamePsiElement() {
     return SmcPsiImplUtil.getNamePsiElement(this);
   }

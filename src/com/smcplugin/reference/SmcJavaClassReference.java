@@ -3,13 +3,10 @@ package com.smcplugin.reference;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectCoreUtil;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.file.impl.JavaFileManager;
-import com.intellij.psi.impl.file.impl.JavaFileManagerImpl;
-import com.intellij.psi.search.GlobalSearchScope;
+import com.smcplugin.psi.SmcPsiUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,12 +20,15 @@ import java.util.List;
  */
 public class SmcJavaClassReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 
-    @SuppressWarnings("ConstantConditions")
-    public static final JavaFileManager fileManager = new JavaFileManagerImpl(ProjectCoreUtil.theOnlyOpenProject());
 
     public SmcJavaClassReference(PsiElement element, TextRange textRange) {
         super(element, textRange);
         name = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+    }
+
+    public SmcJavaClassReference(PsiElement element, String name, TextRange textRange) {
+        super(element, textRange);
+        this.name =name;
     }
 
     private String name;
@@ -37,8 +37,7 @@ public class SmcJavaClassReference extends PsiReferenceBase<PsiElement> implemen
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        Project project = myElement.getProject();
-        final PsiClass[] properties = fileManager.findClasses(name, GlobalSearchScope.projectScope(project));
+        final PsiClass[] properties = SmcPsiUtil.findClasses(name);
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (PsiClass property : properties) {
             results.add(new PsiElementResolveResult(property));
@@ -56,11 +55,10 @@ public class SmcJavaClassReference extends PsiReferenceBase<PsiElement> implemen
     @NotNull
     @Override
     public Object[] getVariants() {
-        Project project = myElement.getProject();
-        final PsiClass[] properties = fileManager.findClasses(name, GlobalSearchScope.projectScope(project));
+        final PsiClass[] properties = SmcPsiUtil.findClasses(name);
         List<LookupElement> variants = new ArrayList<LookupElement>();
         for (final PsiClass property : properties) {
-            if (property.getQualifiedName().length() > 0) {
+            if (!StringUtils.isEmpty(property.getQualifiedName())) {
                 variants.add(LookupElementBuilder.create(property).
                         withIcon(AllIcons.Hierarchy.Class).
                         withTypeText(property.getContainingFile().getName())

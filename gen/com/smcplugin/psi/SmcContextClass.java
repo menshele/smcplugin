@@ -13,6 +13,8 @@ public interface SmcContextClass extends SmcCustomNamed {
 
   String getName();
 
+  String getQualifiedName();
+
   PsiElement getNamePsiElement();
 
   PsiReference getReference();

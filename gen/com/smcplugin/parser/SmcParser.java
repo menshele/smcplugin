@@ -906,13 +906,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
   public static boolean fsm_package(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsm_package")) return false;
     if (!nextTokenIs(b, PACKAGE_KEYWORD)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeToken(b, PACKAGE_KEYWORD);
-    r = r && fsm_package_1(b, l + 1);
-    r = r && consumeToken(b, PACKAGE_STATEMENT);
-    exit_section_(b, m, FSM_PACKAGE, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, fsm_package_1(b, l + 1));
+    r = p && consumeToken(b, PACKAGE_STATEMENT) && r;
+    exit_section_(b, l, m, FSM_PACKAGE, r, p, null);
+    return r || p;
   }
 
   // comment*

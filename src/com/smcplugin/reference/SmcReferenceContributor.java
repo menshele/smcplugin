@@ -99,9 +99,8 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                     public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                         SmcContextClass smcContext = (SmcContextClass) element;
 
-                        if (smcContext.getName() != null) {
-                            PsiElement namePsiElement = smcContext.getNamePsiElement();
-                            return new PsiReference[]{new SmcJavaClassReference(namePsiElement, new TextRange(0, namePsiElement.getTextLength()))};
+                        if (smcContext.getQualifiedName() != null) {
+                            return new PsiReference[]{new SmcJavaClassReference(element, smcContext.getQualifiedName(), new TextRange(0, element.getTextLength()))};
                         }
                         return new PsiReference[0];
                     }

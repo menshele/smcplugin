@@ -5,9 +5,11 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcFsmPackage extends PsiElement {
+public interface SmcFsmPackage extends SmcCustomNamed {
 
   @NotNull
   List<SmcComment> getCommentList();
+
+  String getName();
 
 }

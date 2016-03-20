@@ -3,9 +3,12 @@ package com.smcplugin.psi;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectCoreUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.file.impl.JavaFileManager;
+import com.intellij.psi.impl.file.impl.JavaFileManagerImpl;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.IElementType;
@@ -25,6 +28,27 @@ import java.util.List;
  * Created by lemen on 29.02.2016.
  */
 public class SmcPsiUtil {
+
+    public static final Project PROJECT = ProjectCoreUtil.theOnlyOpenProject();
+    @SuppressWarnings("ConstantConditions")
+    public static final JavaFileManager fileManager = new JavaFileManagerImpl(PROJECT);
+
+    @SuppressWarnings("ConstantConditions")
+    public static PsiClass [] findClasses(String name){
+        return fileManager.findClasses(name, GlobalSearchScope.projectScope(PROJECT));
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static PsiClass findClass(String qName){
+        return fileManager.findClass(qName,GlobalSearchScope.projectScope(PROJECT));
+    }
+
+
+    @SuppressWarnings("ConstantConditions")
+    public static boolean classExists(String qName){
+        return fileManager.findClass(qName,GlobalSearchScope.projectScope(PROJECT)) == null;
+    }
+
     public static List<SmcMap> findMap(Project project, String name) {
         List<SmcMap> result = null;
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,

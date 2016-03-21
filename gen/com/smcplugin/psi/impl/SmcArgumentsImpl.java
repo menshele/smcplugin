@@ -23,9 +23,9 @@ public class SmcArgumentsImpl extends ASTWrapperPsiElement implements SmcArgumen
   }
 
   @Override
-  @Nullable
-  public SmcArguments getArguments() {
-    return findChildByClass(SmcArguments.class);
+  @NotNull
+  public List<SmcArgument> getArgumentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcArgument.class);
   }
 
   @Override

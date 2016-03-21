@@ -143,9 +143,9 @@ exit ::= comment* EXIT_KEYWORD comment* actions_block {pin=2 implements="com.smc
 
 transition_args ::=PARENTHESES_OPEN comment* parameters comment* PARENTHESES_CLOSE {pin=1}
 
-parameters ::= parameter comment* COMMA comment* parameters |comment* parameter
+parameters ::= parameter (COMMA comment* parameter)*
 
-parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE
+parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE comment*
 
 guard ::= BRACKET_OPEN comment*  guard_raw_code? comment* BRACKET_CLOSE
 
@@ -178,4 +178,5 @@ actions ::= (comment* action comment*)*
 
 action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1 implements="com.smcplugin.psi.SmcCustomNamed"  methods=[getName getReference getNamePsiElement]}
 
-arguments ::= (ARGUMENT_STATEMENT | STRING_LITERAL) comment* COMMA comment* arguments|comment* (STRING_LITERAL|ARGUMENT_STATEMENT) comment* {pin=1}
+arguments ::= argument (COMMA comment* argument)*
+argument ::= ARGUMENT_STATEMENT|STRING_LITERAL comment*

@@ -11,9 +11,6 @@ public interface SmcParameters extends PsiElement {
   List<SmcComment> getCommentList();
 
   @NotNull
-  SmcParameter getParameter();
-
-  @Nullable
-  SmcParameters getParameters();
+  List<SmcParameter> getParameterList();
 
 }

@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcArguments extends PsiElement {
 
-  @Nullable
-  SmcArguments getArguments();
+  @NotNull
+  List<SmcArgument> getArgumentList();
 
   @NotNull
   List<SmcComment> getCommentList();

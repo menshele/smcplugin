@@ -23,6 +23,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitArgument(@NotNull SmcArgument o) {
+    visitPsiElement(o);
+  }
+
   public void visitArguments(@NotNull SmcArguments o) {
     visitPsiElement(o);
   }

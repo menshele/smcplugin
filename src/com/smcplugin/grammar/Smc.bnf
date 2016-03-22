@@ -85,7 +85,7 @@
 }
 
 fsmFile ::= (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
- import_class| declare| access| comment)* map_declaration+ comment*
+ import_class_declaration| declare| access| comment)* map_declaration+ comment*
 
 comment ::=LINE_COMMENT|block_comment
 
@@ -108,7 +108,7 @@ start_map_name_element ::= START_MAP_NAME comment* { implements="com.smcplugin.p
 
 context_class_declaration ::= CLASS_KEYWORD comment* context_class
 
-context_class ::= comment* CONTEXT_CLASS_NAME  {pin=2 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getQualifiedName getNamePsiElement getReference]}
+context_class ::= comment* CONTEXT_CLASS_NAME  {pin=2 implements="com.smcplugin.psi.SmcQualifiedNamed" methods=[getName getQualifiedName getNamePsiElement getReference]}
 
 header_file ::= HEADER_KEYWORD comment* HEADER_FILE_NAME
 
@@ -116,7 +116,9 @@ include_file ::= INCLUDE_KEYWORD comment* INCLUDE_FILE_NAME
 
 fsm_package ::= PACKAGE_KEYWORD comment* PACKAGE_STATEMENT {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
 
-import_class ::= IMPORT_KEYWORD comment* STATIC_JAVA_KEYWORD? comment* IMPORT_CLASS_STATEMENT
+import_class_declaration ::= IMPORT_KEYWORD comment* STATIC_JAVA_KEYWORD? comment* import_class
+
+import_class ::= comment* IMPORT_CLASS_STATEMENT {pin=2 implements="com.smcplugin.psi.SmcQualifiedNamed" methods=[getName isWildcard isClassName getQualifiedName getReference]}
 
 declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 

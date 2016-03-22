@@ -44,7 +44,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitContextClass(@NotNull SmcContextClass o) {
-    visitCustomNamed(o);
+    visitQualifiedNamed(o);
   }
 
   public void visitContextClassDeclaration(@NotNull SmcContextClassDeclaration o) {
@@ -88,6 +88,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitImportClass(@NotNull SmcImportClass o) {
+    visitQualifiedNamed(o);
+  }
+
+  public void visitImportClassDeclaration(@NotNull SmcImportClassDeclaration o) {
     visitPsiElement(o);
   }
 
@@ -192,6 +196,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitOnStateNestedElement(@NotNull SmcOnStateNestedElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitQualifiedNamed(@NotNull SmcQualifiedNamed o) {
     visitPsiElement(o);
   }
 

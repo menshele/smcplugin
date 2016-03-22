@@ -123,6 +123,11 @@ public class SmcPsiImplUtil {
         return name != null ? qualifiedName.append(name).toString() : null;
     }
 
+
+    public static String getQualifiedName(SmcImportClass element) {
+        return element.isClassName() ? element.getName() : null;
+    }
+
     public static PsiReference getReference(SmcStartStateNameElement element) {
         return getPsiReference(element);
     }
@@ -199,13 +204,6 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
     }
 
-    public static String getPackageName(SmcContextClass element) {
-        return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
-    }
-
-    public static String getClassName(SmcContextClass element) {
-        return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
-    }
 
     public static PsiReference getReference(SmcContextClass element) {
         return getPsiReference(element);
@@ -215,6 +213,21 @@ public class SmcPsiImplUtil {
         return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_NAME);
     }
 
+    public static String getName(SmcImportClass element) {
+        return getStringName(element, SmcTypes.IMPORT_CLASS_STATEMENT);
+    }
+
+    public static boolean isWildcard(SmcImportClass element) {
+        return element.getName() != null && element.getName().contains("*");
+    }
+
+    public static boolean isClassName(SmcImportClass element) {
+        return element.getName() != null && !element.getName().contains("*");
+    }
+
+    public static PsiReference getReference(SmcImportClass element) {
+        return getPsiReference(element);
+    }
 
     @Nullable
     private static PsiReference getPsiReference(PsiElement element) {

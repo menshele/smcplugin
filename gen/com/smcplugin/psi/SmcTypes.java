@@ -29,6 +29,7 @@ public interface SmcTypes {
   IElementType GUARD_RAW_CODE = new SmcElementType("GUARD_RAW_CODE");
   IElementType HEADER_FILE = new SmcElementType("HEADER_FILE");
   IElementType IMPORT_CLASS = new SmcElementType("IMPORT_CLASS");
+  IElementType IMPORT_CLASS_DECLARATION = new SmcElementType("IMPORT_CLASS_DECLARATION");
   IElementType INCLUDE_FILE = new SmcElementType("INCLUDE_FILE");
   IElementType MAP = new SmcElementType("MAP");
   IElementType MAP_DECLARATION = new SmcElementType("MAP_DECLARATION");
@@ -182,6 +183,9 @@ public interface SmcTypes {
       }
       else if (type == IMPORT_CLASS) {
         return new SmcImportClassImpl(node);
+      }
+      else if (type == IMPORT_CLASS_DECLARATION) {
+        return new SmcImportClassDeclarationImpl(node);
       }
       else if (type == INCLUDE_FILE) {
         return new SmcIncludeFileImpl(node);

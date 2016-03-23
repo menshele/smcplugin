@@ -13,4 +13,6 @@ public interface SmcArguments extends PsiElement {
   @NotNull
   List<SmcComment> getCommentList();
 
+  int getArgumentsCount();
+
 }

@@ -123,6 +123,15 @@ public class SmcPsiImplUtil {
         return name != null ? qualifiedName.append(name).toString() : null;
     }
 
+    public static String getContextClassName(SmcAction element) {
+        SmcContextClass contextClass = PsiTreeUtil.findChildOfType(element.getContainingFile(), SmcContextClass.class);
+        return contextClass != null ? contextClass.getQualifiedName() : "";
+    }
+
+    public static int getArgumentsCount(SmcArguments element) {
+        return element.getArgumentList().size();
+    }
+
 
     public static String getQualifiedName(SmcImportClass element) {
         return element.isClassName() ? element.getName() : null;

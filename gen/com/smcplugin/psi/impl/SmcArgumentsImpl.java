@@ -34,4 +34,8 @@ public class SmcArgumentsImpl extends ASTWrapperPsiElement implements SmcArgumen
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
+  public int getArgumentsCount() {
+    return SmcPsiImplUtil.getArgumentsCount(this);
+  }
+
 }

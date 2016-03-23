@@ -3,7 +3,6 @@ package com.smcplugin.reference;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.smcplugin.psi.SmcPsiUtil;
@@ -15,15 +14,26 @@ import java.util.List;
 
 /**
  * Deprecation candidate see {@link AbstractNamedLocalReference}
- *
+ * <p>
  * Created by lemen on 13.03.2016.
  */
-//TODO: Implement AbstractGlobalReference once required
-public class SmcJavaMethodReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 
-    public SmcJavaMethodReference(PsiElement element, TextRange textRange) {
+    private final String className;
+    private final int paramCount;
+
+    public SmcJavaMethodInClassReference(PsiElement element, TextRange textRange, String className, int paramCount) {
         super(element, textRange);
         methodName = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+        this.className = className;
+        this.paramCount = paramCount;
+    }
+
+    public SmcJavaMethodInClassReference(PsiElement element, TextRange textRange, String className) {
+        super(element, textRange);
+        methodName = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+        this.className = className;
+        this.paramCount = -1;
     }
 
     private String methodName;
@@ -32,8 +42,7 @@ public class SmcJavaMethodReference extends PsiReferenceBase<PsiElement> impleme
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        Project project = myElement.getProject();
-        final List<PsiMethod> properties = SmcPsiUtil.findJavaMethod(project, methodName);
+        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount);
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (PsiMethod property : properties) {
             results.add(new PsiElementResolveResult(property));
@@ -51,8 +60,7 @@ public class SmcJavaMethodReference extends PsiReferenceBase<PsiElement> impleme
     @NotNull
     @Override
     public Object[] getVariants() {
-        Project project = myElement.getProject();
-        List<PsiMethod> properties = SmcPsiUtil.findJavaMethod(project);
+        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount);
         List<LookupElement> variants = new ArrayList<LookupElement>();
         for (final PsiMethod property : properties) {
             if (property.getName().length() > 0) {

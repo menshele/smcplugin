@@ -39,6 +39,10 @@ public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
     return SmcPsiImplUtil.getName(this);
   }
 
+  public String getContextClassName() {
+    return SmcPsiImplUtil.getContextClassName(this);
+  }
+
   public PsiReference getReference() {
     return SmcPsiImplUtil.getReference(this);
   }

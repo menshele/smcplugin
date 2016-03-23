@@ -18,10 +18,7 @@ import com.intellij.util.indexing.FileBasedIndex;
 import com.smcplugin.SmcFileType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * scmplugin
@@ -34,19 +31,37 @@ public class SmcPsiUtil {
     public static final JavaFileManager fileManager = new JavaFileManagerImpl(PROJECT);
 
     @SuppressWarnings("ConstantConditions")
-    public static PsiClass [] findClasses(String name){
+    public static PsiClass[] findClasses(String name) {
         return fileManager.findClasses(name, GlobalSearchScope.projectScope(PROJECT));
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static PsiClass findClass(String qName){
-        return fileManager.findClass(qName,GlobalSearchScope.projectScope(PROJECT));
+    public static PsiClass findClass(String qName) {
+        return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT));
     }
 
 
     @SuppressWarnings("ConstantConditions")
-    public static boolean classExists(String qName){
-        return fileManager.findClass(qName,GlobalSearchScope.projectScope(PROJECT)) == null;
+    public static List<PsiMethod> findMethodInClass(String qName, String methodName, int methodParameterCount) {
+        PsiClass aClass = SmcPsiUtil.findClass(qName);
+        if (aClass == null) return Collections.<PsiMethod>emptyList();
+        final PsiMethod[] methodsByName = aClass.findMethodsByName(methodName, true);
+        if (methodParameterCount < 0) {
+            return Arrays.asList(methodsByName);
+        }
+        List<PsiMethod> methodsNyNameAndParamCount = new ArrayList<>();
+        for (PsiMethod method : methodsByName) {
+            if (method.getParameterList().getParametersCount() == methodParameterCount) {
+                methodsNyNameAndParamCount.add(method);
+            }
+        }
+        return methodsNyNameAndParamCount;
+    }
+
+
+    @SuppressWarnings("ConstantConditions")
+    public static boolean classExists(String qName) {
+        return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT)) == null;
     }
 
     public static List<SmcMap> findMap(Project project, String name) {
@@ -234,7 +249,7 @@ public class SmcPsiUtil {
             SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (simpleFile != null) {
                 Collection<SmcMap> properties = PsiTreeUtil.findChildrenOfType(simpleFile, SmcMap.class);
-                result.addAll( properties);
+                result.addAll(properties);
             }
         }
         return result;

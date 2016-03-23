@@ -8,6 +8,20 @@ import com.smcplugin.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 public class SmcReferenceContributor extends PsiReferenceContributor {
+
+    public static final PsiReferenceProvider CLASS_REFERENCE_PROVIDER = new PsiReferenceProvider() {
+        @NotNull
+        @Override
+        public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+            SmcQualifiedNamed smcQualifiedElement = (SmcQualifiedNamed) element;
+
+            if (smcQualifiedElement.getQualifiedName() != null) {
+                return new PsiReference[]{new SmcJavaClassReference(element, smcQualifiedElement.getQualifiedName(), new TextRange(0, element.getTextLength()))};
+            }
+            return new PsiReference[0];
+        }
+    };
+
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcNextState.class),
@@ -78,18 +92,6 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcImportClass.class),
-                new PsiReferenceProvider() {
-                    @NotNull
-                    @Override
-                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                        SmcQualifiedNamed importClass = (SmcQualifiedNamed) element;
-                        if (importClass.getQualifiedName() != null) {
-                            return new PsiReference[]{new SmcJavaClassReference(element, importClass.getQualifiedName(), new TextRange(0, element.getTextLength()))};
-                        }
-                        return new PsiReference[0];
-                    }
-                });
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcAction.class),
                 new PsiReferenceProvider() {
                     @NotNull
@@ -99,24 +101,20 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
 
                         if (smcAction.getName() != null) {
                             PsiElement namePsiElement = smcAction.getNamePsiElement();
-                            return new PsiReference[]{new SmcJavaMethodReference(namePsiElement, new TextRange(0, namePsiElement.getTextLength()))};
+                            TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
+                            if (smcAction.getArguments() != null) {
+                                return new PsiReference[]{new SmcJavaMethodInClassReference(namePsiElement, textRange,
+                                        smcAction.getContextClassName(), smcAction.getArguments().getArgumentsCount())};
+                            } else {
+                                return new PsiReference[]{new SmcJavaMethodInClassReference(namePsiElement, textRange,
+                                        smcAction.getContextClassName())};
+                            }
                         }
                         return new PsiReference[0];
                     }
                 });
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClass.class),
-                new PsiReferenceProvider() {
-                    @NotNull
-                    @Override
-                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                        SmcQualifiedNamed smcContext = (SmcQualifiedNamed) element;
-
-                        if (smcContext.getQualifiedName() != null) {
-                            return new PsiReference[]{new SmcJavaClassReference(element, smcContext.getQualifiedName(), new TextRange(0, element.getTextLength()))};
-                        }
-                        return new PsiReference[0];
-                    }
-                });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcImportClass.class), CLASS_REFERENCE_PROVIDER);
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClass.class), CLASS_REFERENCE_PROVIDER);
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
                 new PsiReferenceProvider() {
                     @NotNull

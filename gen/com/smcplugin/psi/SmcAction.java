@@ -16,6 +16,8 @@ public interface SmcAction extends SmcCustomNamed {
 
   String getName();
 
+  String getContextClassName();
+
   PsiReference getReference();
 
   PsiElement getNamePsiElement();

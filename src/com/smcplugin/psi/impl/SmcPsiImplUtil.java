@@ -128,6 +128,10 @@ public class SmcPsiImplUtil {
         return contextClass != null ? contextClass.getQualifiedName() : "";
     }
 
+    public static int getArgumentCount(SmcAction element) {
+        return element.getArguments() != null ? element.getArguments().getArgumentsCount() : 0;
+    }
+
     public static int getArgumentsCount(SmcArguments element) {
         return element.getArgumentList().size();
     }

@@ -58,6 +58,9 @@ public class SmcPsiUtil {
         return methodsNyNameAndParamCount;
     }
 
+    public static boolean isMethodInClass(String qName, String methodName, int methodParameterCount) {
+        return !findMethodInClass(qName, methodName, methodParameterCount).isEmpty();
+    }
 
     @SuppressWarnings("ConstantConditions")
     public static boolean classExists(String qName) {

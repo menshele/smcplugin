@@ -102,13 +102,9 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         if (smcAction.getName() != null) {
                             PsiElement namePsiElement = smcAction.getNamePsiElement();
                             TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
-                            if (smcAction.getArguments() != null) {
-                                return new PsiReference[]{new SmcJavaMethodInClassReference(namePsiElement, textRange,
-                                        smcAction.getContextClassName(), smcAction.getArguments().getArgumentsCount())};
-                            } else {
-                                return new PsiReference[]{new SmcJavaMethodInClassReference(namePsiElement, textRange,
-                                        smcAction.getContextClassName())};
-                            }
+                            return new PsiReference[]{new SmcJavaMethodInClassReference(namePsiElement, textRange,
+                                    smcAction.getContextClassName(), smcAction.getArgumentCount())};
+
                         }
                         return new PsiReference[0];
                     }

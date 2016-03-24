@@ -178,7 +178,7 @@ actions_block ::= BRACE_OPEN actions BRACE_CLOSE
 
 actions ::= (comment* action comment*)*
 
-action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1 implements="com.smcplugin.psi.SmcCustomNamed"  methods=[getName getContextClassName getReference getNamePsiElement]}
+action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1 implements="com.smcplugin.psi.SmcCustomNamed"  methods=[getName getContextClassName getArgumentCount getReference getNamePsiElement]}
 
 arguments ::= argument (COMMA comment* argument)* { methods=[getArgumentsCount]}
 argument ::= ARGUMENT_STATEMENT|STRING_LITERAL comment*

@@ -108,6 +108,14 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.START_MAP_NAME);
     }
 
+    public static PsiElement getNameIdentifier(SmcStartMapNameElement element) {
+        return gePsiByToken(element, SmcTypes.START_MAP_NAME);
+    }
+
+    public static PsiElement setName(SmcStartMapNameElement element, String newName) {
+        return setStringName(element, newName, SmcTypes.START_MAP_NAME);
+    }
+
     public static String getName(SmcStartStateNameElement element) {
         return getStringName(element, SmcTypes.START_STATE_NAME);
     }

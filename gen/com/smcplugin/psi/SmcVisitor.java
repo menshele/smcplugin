@@ -148,7 +148,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitStartMapNameElement(@NotNull SmcStartMapNameElement o) {
-    visitCustomNamed(o);
+    visitNamedElement(o);
   }
 
   public void visitStartState(@NotNull SmcStartState o) {

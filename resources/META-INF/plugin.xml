@@ -47,10 +47,11 @@
         <psi.referenceContributor language="smc" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <psi.referenceContributor language="JAVA" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/>
+        <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
         <!--
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
             <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.SmcRefactoringSupportProvider"/>
-            <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.SmcFindUsagesProvider"/>
+
             <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
             <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>
 -->

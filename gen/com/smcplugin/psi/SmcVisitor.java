@@ -128,7 +128,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitPushMapNameElement(@NotNull SmcPushMapNameElement o) {
-    visitCustomNamed(o);
+    visitNamedElement(o);
   }
 
   public void visitPushProxyState(@NotNull SmcPushProxyState o) {
@@ -192,6 +192,10 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitMapElement(@NotNull SmcMapElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull SmcNamedElement o) {
     visitPsiElement(o);
   }
 

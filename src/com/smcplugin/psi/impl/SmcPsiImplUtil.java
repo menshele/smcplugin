@@ -67,6 +67,14 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.PUSH_MAP_NAME);
     }
 
+    public static PsiElement setName(SmcPushMapNameElement element, String newName) {
+        return setStringName(element, newName, SmcTypes.PUSH_MAP_NAME);
+    }
+
+    public static PsiElement getNameIdentifier(SmcPushMapNameElement element) {
+        return gePsiByToken(element, SmcTypes.PUSH_MAP_NAME);
+    }
+
     public static String getName(SmcPushStateNameElement element) {
         return getStringName(element, SmcTypes.PUSH_STATE_NAME);
     }
@@ -203,7 +211,7 @@ public class SmcPsiImplUtil {
     private static PsiElement setStringName(SmcNamedElement element, String newName, IElementType nameToken) {
         ASTNode keyNode = element.getNode().findChildByType(nameToken);
         if (keyNode != null) {
-            SmcMap property = SmcElementFactory.createMap(element.getProject(), newName);
+            SmcNamedElement property = SmcElementFactory.createElement(element.getProject(),element.getClass(), newName);
             ASTNode newKeyNode = property.getNode().findChildByType(nameToken);
             if (newKeyNode != null) {
                 element.getNode().replaceChild(keyNode, newKeyNode);

@@ -168,7 +168,7 @@ push_state ::= comment* (push_map_name_element comment* MAP_NAME_STATE_NAME_SEPA
 
 push_state_name_element ::= PUSH_STATE_NAME comment* { implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getReference]}
 
-push_map_name_element ::= PUSH_MAP_NAME { implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getReference]}
+push_map_name_element ::= PUSH_MAP_NAME {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[getName setName getNameIdentifier getReference]}
 
 pop_transition ::= POP_KEYWORD callback_transition? {pin=1}
 

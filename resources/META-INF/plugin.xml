@@ -51,7 +51,6 @@
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
             <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.SmcRefactoringSupportProvider"/>
             <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.SmcFindUsagesProvider"/>
-            <lang.foldingBuilder language="JAVA" implementationClass="com.smcplugin.SmcFoldingBuilder"/>
             <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
             <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>
 -->

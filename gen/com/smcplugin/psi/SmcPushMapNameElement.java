@@ -6,9 +6,13 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
-public interface SmcPushMapNameElement extends SmcCustomNamed {
+public interface SmcPushMapNameElement extends SmcNamedElement {
 
   String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
   PsiReference getReference();
 

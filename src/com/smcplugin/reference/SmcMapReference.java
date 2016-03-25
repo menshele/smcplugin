@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import com.smcplugin.psi.SmcMap;
 import com.smcplugin.psi.SmcPsiUtil;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +18,7 @@ import java.util.List;
 
 /**
  * Deprecation candidate see {@link AbstractNamedLocalReference}
- *
+ * <p>
  * Created by lemen on 13.03.2016.
  */
 //TODO: Implement AbstractGlobalReference once required
@@ -65,5 +66,13 @@ public class SmcMapReference extends PsiReferenceBase<PsiElement> implements Psi
             }
         }
         return variants.toArray();
+    }
+
+    @Override
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        if (myElement instanceof PsiNamedElement) {
+            ((PsiNamedElement)myElement).setName(newElementName);
+        }
+        return myElement;
     }
 }

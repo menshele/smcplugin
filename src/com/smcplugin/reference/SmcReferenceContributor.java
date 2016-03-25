@@ -111,7 +111,7 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                 });
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcImportClass.class), CLASS_REFERENCE_PROVIDER);
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClass.class), CLASS_REFERENCE_PROVIDER);
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
+    /*    registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
                 new PsiReferenceProvider() {
                     @NotNull
                     @Override
@@ -123,6 +123,6 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         }
                         return new PsiReference[0];
                     }
-                });
+                });*/
     }
 }

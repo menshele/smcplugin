@@ -1,8 +1,7 @@
 package com.smcplugin.reference;
 
+import com.intellij.codeInsight.completion.JavaLookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.smcplugin.psi.SmcPsiUtil;
@@ -18,7 +17,7 @@ import java.util.List;
  * Created by lemen on 13.03.2016.
  */
 public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
-
+    //private final static JavaQualifiedNameProvider methodProvider = new JavaQualifiedNameProvider();
     private final String className;
     private final int paramCount;
 
@@ -60,14 +59,11 @@ public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> 
     @NotNull
     @Override
     public Object[] getVariants() {
-        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount);
+        List<PsiMethod> properties = SmcPsiUtil.findMethodsWithAtLeastArgCount(className, paramCount);
         List<LookupElement> variants = new ArrayList<LookupElement>();
-        for (final PsiMethod property : properties) {
-            if (property.getName().length() > 0) {
-                variants.add(LookupElementBuilder.create(property).
-                        withIcon(AllIcons.Hierarchy.MethodDefined).
-                        withTypeText(property.getContainingFile().getName())
-                );
+        for (final PsiMethod psiMethod : properties) {
+            if (psiMethod.getName().length() > 0) {
+                variants.add(JavaLookupElementBuilder.forMethod(psiMethod, PsiSubstitutor.EMPTY));
             }
         }
 

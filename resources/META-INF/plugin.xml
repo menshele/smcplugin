@@ -49,6 +49,7 @@
         <codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/>
         <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
         <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.refactoring.SmcRefactoringSupportProvider"/>
+        <!--completion.contributor language="smc" implementationClass="com.smcplugin."/-->
         <!--
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
 

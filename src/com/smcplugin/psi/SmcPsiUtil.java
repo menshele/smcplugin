@@ -40,6 +40,22 @@ public class SmcPsiUtil {
         return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT));
     }
 
+    @SuppressWarnings("ConstantConditions")
+    public static List<PsiMethod> findMethodsWithAtLeastArgCount(String qName, int argNum) {
+        PsiClass aClass = findClass(qName);
+        if (aClass == null) {
+            return Collections.emptyList();
+        }
+        List<PsiMethod> psiMethods = Arrays.asList(aClass.getMethods());
+        List<PsiMethod> result = new ArrayList<>();
+        for (PsiMethod method : psiMethods) {
+            if (method.getParameterList().getParametersCount() >= argNum) {
+                result.add(method);
+            }
+        }
+        return result;
+    }
+
 
     @SuppressWarnings("ConstantConditions")
     public static List<PsiMethod> findMethodInClass(String qName, String methodName, int methodParameterCount) {

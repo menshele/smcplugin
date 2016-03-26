@@ -11,21 +11,15 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 import com.intellij.psi.PsiReference;
 
-public class SmcNextStateImpl extends SmcNamedElementImpl implements SmcNextState {
+public class SmcPushProxyStateNameElementImpl extends SmcNamedElementImpl implements SmcPushProxyStateNameElement {
 
-  public SmcNextStateImpl(ASTNode node) {
+  public SmcPushProxyStateNameElementImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitNextState(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitPushProxyStateNameElement(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
   public String getName() {

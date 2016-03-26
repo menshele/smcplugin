@@ -70,6 +70,7 @@ public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> 
                 );
             }
         }
+
         return variants.toArray();
     }
 }

@@ -12,7 +12,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitAction(@NotNull SmcAction o) {
-    visitCustomNamed(o);
+    visitNamedElement(o);
   }
 
   public void visitActions(@NotNull SmcActions o) {
@@ -133,6 +133,10 @@ public class SmcVisitor extends PsiElementVisitor {
 
   public void visitPushProxyState(@NotNull SmcPushProxyState o) {
     visitPsiElement(o);
+  }
+
+  public void visitPushProxyStateNameElement(@NotNull SmcPushProxyStateNameElement o) {
+    visitNamedElement(o);
   }
 
   public void visitPushState(@NotNull SmcPushState o) {

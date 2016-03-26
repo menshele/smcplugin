@@ -28,4 +28,10 @@ public class SmcPushProxyStateImpl extends ASTWrapperPsiElement implements SmcPu
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
+  @Override
+  @Nullable
+  public SmcPushProxyStateNameElement getPushProxyStateNameElement() {
+    return findChildByClass(SmcPushProxyStateNameElement.class);
+  }
+
 }

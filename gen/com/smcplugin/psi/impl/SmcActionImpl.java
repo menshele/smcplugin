@@ -8,11 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 import com.intellij.psi.PsiReference;
 
-public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
+public class SmcActionImpl extends SmcNamedElementImpl implements SmcAction {
 
   public SmcActionImpl(ASTNode node) {
     super(node);
@@ -39,6 +38,14 @@ public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
     return SmcPsiImplUtil.getName(this);
   }
 
+  public PsiElement setName(String newName) {
+    return SmcPsiImplUtil.setName(this, newName);
+  }
+
+  public PsiElement getNameIdentifier() {
+    return SmcPsiImplUtil.getNameIdentifier(this);
+  }
+
   public String getContextClassName() {
     return SmcPsiImplUtil.getContextClassName(this);
   }
@@ -49,10 +56,6 @@ public class SmcActionImpl extends ASTWrapperPsiElement implements SmcAction {
 
   public PsiReference getReference() {
     return SmcPsiImplUtil.getReference(this);
-  }
-
-  public PsiElement getNamePsiElement() {
-    return SmcPsiImplUtil.getNamePsiElement(this);
   }
 
 }

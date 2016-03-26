@@ -8,11 +8,13 @@ package com.smcplugin.refactoring;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import com.smcplugin.psi.SmcMap;
+import com.smcplugin.psi.SmcState;
 import org.jetbrains.annotations.NotNull;
 
 public class SmcRefactoringSupportProvider extends RefactoringSupportProvider {
     @Override
     public boolean isMemberInplaceRenameAvailable(@NotNull PsiElement element, PsiElement context) {
-        return element instanceof SmcMap;
+        return element instanceof SmcMap
+                || element instanceof SmcState;
     }
 }

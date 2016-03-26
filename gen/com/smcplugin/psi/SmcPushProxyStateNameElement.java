@@ -6,23 +6,13 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
-public interface SmcAction extends SmcNamedElement {
-
-  @Nullable
-  SmcArguments getArguments();
-
-  @NotNull
-  List<SmcComment> getCommentList();
+public interface SmcPushProxyStateNameElement extends SmcNamedElement {
 
   String getName();
 
   PsiElement setName(String newName);
 
   PsiElement getNameIdentifier();
-
-  String getContextClassName();
-
-  int getArgumentCount();
 
   PsiReference getReference();
 

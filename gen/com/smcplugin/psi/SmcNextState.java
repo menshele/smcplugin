@@ -19,7 +19,4 @@ public interface SmcNextState extends SmcNamedElement {
 
   PsiReference getReference();
 
-  @NotNull
-  PsiReference[] getReferences();
-
 }

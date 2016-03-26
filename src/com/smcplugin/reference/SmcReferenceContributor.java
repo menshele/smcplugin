@@ -36,6 +36,18 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcPushProxyStateNameElement.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcPushProxyStateNameElement stateNameElement = (SmcPushProxyStateNameElement) element;
+                        if (stateNameElement.getName() != null) {
+                            return new PsiReference[]{new SmcStateReference(element)};
+                        }
+                        return new PsiReference[0];
+                    }
+                });
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcStartStateNameElement.class),
                 new PsiReferenceProvider() {
                     @NotNull
@@ -99,10 +111,10 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                     public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                         SmcAction smcAction = (SmcAction) element;
 
-                        if (smcAction.getName() != null) {
-                            PsiElement namePsiElement = smcAction.getNamePsiElement();
+                        PsiElement namePsiElement = smcAction.getNameIdentifier();
+                        if (namePsiElement != null && smcAction.getName() != null) {
                             TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
-                            return new PsiReference[]{new SmcJavaMethodInClassReference(namePsiElement, textRange,
+                            return new PsiReference[]{new SmcActionToJavaMethodReference(namePsiElement, textRange,
                                     smcAction.getContextClassName(), smcAction.getArgumentCount())};
 
                         }

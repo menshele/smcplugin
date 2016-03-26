@@ -10,4 +10,7 @@ public interface SmcPushProxyState extends PsiElement {
   @NotNull
   List<SmcComment> getCommentList();
 
+  @Nullable
+  SmcPushProxyStateNameElement getPushProxyStateNameElement();
+
 }

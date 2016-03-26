@@ -120,6 +120,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == PUSH_PROXY_STATE) {
       r = push_proxy_state(b, 0);
     }
+    else if (t == PUSH_PROXY_STATE_NAME_ELEMENT) {
+      r = push_proxy_state_name_element(b, 0);
+    }
     else if (t == PUSH_STATE) {
       r = push_state(b, 0);
     }
@@ -1423,7 +1426,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (PUSH_PROXY_STATE_NAME|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
+  // (push_proxy_state_name_element|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
   public static boolean push_proxy_state(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_proxy_state")) return false;
     if (!nextTokenIs(b, "<push proxy state>", NIL_KEYWORD, PUSH_PROXY_STATE_NAME)) return false;
@@ -1436,12 +1439,12 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // PUSH_PROXY_STATE_NAME|NIL_KEYWORD
+  // push_proxy_state_name_element|NIL_KEYWORD
   private static boolean push_proxy_state_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_proxy_state_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PUSH_PROXY_STATE_NAME);
+    r = push_proxy_state_name_element(b, l + 1);
     if (!r) r = consumeToken(b, NIL_KEYWORD);
     exit_section_(b, m, null, r);
     return r;
@@ -1457,6 +1460,18 @@ public class SmcParser implements PsiParser, LightPsiParser {
       c = current_position_(b);
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // PUSH_PROXY_STATE_NAME
+  public static boolean push_proxy_state_name_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "push_proxy_state_name_element")) return false;
+    if (!nextTokenIs(b, PUSH_PROXY_STATE_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PUSH_PROXY_STATE_NAME);
+    exit_section_(b, m, PUSH_PROXY_STATE_NAME_ELEMENT, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -1533,12 +1548,13 @@ public class SmcParser implements PsiParser, LightPsiParser {
   public static boolean push_state_name_element(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "push_state_name_element")) return false;
     if (!nextTokenIs(b, PUSH_STATE_NAME)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeToken(b, PUSH_STATE_NAME);
+    p = r; // pin = 1
     r = r && push_state_name_element_1(b, l + 1);
-    exit_section_(b, m, PUSH_STATE_NAME_ELEMENT, r);
-    return r;
+    exit_section_(b, l, m, PUSH_STATE_NAME_ELEMENT, r, p, null);
+    return r || p;
   }
 
   // comment*

@@ -26,7 +26,7 @@ public class SmcElementFactory {
             "\n" +
             "STATE_NAME\n" +
             "{\n" +
-            "    PUSH_TRANSITION_NAME push(PUSHMAPNAMEELEMENT_NAME::PUSHSTATENAMEELEMENT_NAME) {}\n" +
+            "    PUSH_TRANSITION_NAME PUSHPROXYSTATENAMEELEMENT_NAME/push(PUSHMAPNAMEELEMENT_NAME::PUSHSTATENAMEELEMENT_NAME) {}\n" +
             "\n" +
             "    TRANSITION_NAME\n" +
             "    NEXTSTATE_NAME\n" +

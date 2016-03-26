@@ -62,6 +62,10 @@ public class SmcPsiUtil {
         return !findMethodInClass(qName, methodName, methodParameterCount).isEmpty();
     }
 
+    public static boolean isMethodInClassNotUnique(String qName, String methodName, int methodParameterCount) {
+        return findMethodInClass(qName, methodName, methodParameterCount).size() > 1;
+    }
+
     @SuppressWarnings("ConstantConditions")
     public static boolean classExists(String qName) {
         return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT)) == null;

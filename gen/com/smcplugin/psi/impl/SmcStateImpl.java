@@ -39,14 +39,6 @@ public class SmcStateImpl extends SmcNamedElementImpl implements SmcState {
     return findChildByClass(SmcTransitionsBlock.class);
   }
 
-  public String getName() {
-    return SmcPsiImplUtil.getName(this);
-  }
-
-  public PsiElement setName(String newName) {
-    return SmcPsiImplUtil.setName(this, newName);
-  }
-
   public PsiElement getNameIdentifier() {
     return SmcPsiImplUtil.getNameIdentifier(this);
   }

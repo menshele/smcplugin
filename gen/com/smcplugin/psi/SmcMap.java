@@ -13,10 +13,6 @@ public interface SmcMap extends SmcMapElement {
   @Nullable
   SmcStates getStates();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }

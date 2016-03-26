@@ -63,14 +63,6 @@ public class SmcTransitionImpl extends SmcNamedElementImpl implements SmcTransit
     return findChildByClass(SmcTransitionArgs.class);
   }
 
-  public String getName() {
-    return SmcPsiImplUtil.getName(this);
-  }
-
-  public PsiElement setName(String newName) {
-    return SmcPsiImplUtil.setName(this, newName);
-  }
-
   public PsiElement getNameIdentifier() {
     return SmcPsiImplUtil.getNameIdentifier(this);
   }

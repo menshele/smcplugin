@@ -143,26 +143,6 @@ public class SmcPsiImplUtil {
     }
 
 
-    public static String getName(SmcNamedElement element) {
-        PsiElement nameIdentifier = element.getNameIdentifier();
-        ASTNode keyNode = nameIdentifier != null ? nameIdentifier.getNode() : null;
-        return normalizeNodeText(keyNode);
-    }
-
-    public static PsiElement setName(SmcNamedElement element, String newName) {
-        PsiElement nameIdentifier = element.getNameIdentifier();
-        ASTNode keyNode = nameIdentifier != null ? nameIdentifier.getNode() : null;
-        if (keyNode != null) {
-            SmcNamedElement property = SmcElementFactory.createElement(element.getProject(), element.getClass(), newName);
-            ASTNode newKeyNode = property.getNode().findChildByType(keyNode.getElementType());
-            if (newKeyNode != null) {
-                element.getNode().replaceChild(keyNode, newKeyNode);
-            }
-        }
-        return element;
-    }
-
-
     public static PsiReference getReference(PsiElement element) {
         return ReferenceProvidersRegistry.getReferencesFromProviders(element).length > 0 ?
                 ReferenceProvidersRegistry.getReferencesFromProviders(element)[0] : null;
@@ -181,7 +161,7 @@ public class SmcPsiImplUtil {
         return normalizeNodeText(keyNode);
     }
 
-    private static String normalizeNodeText(ASTNode keyNode) {
+    public static String normalizeNodeText(ASTNode keyNode) {
         if (keyNode != null) {
             // IMPORTANT: Convert embedded escaped spaces to simple spaces
             return keyNode.getText().replaceAll("\\\\ ", " ");

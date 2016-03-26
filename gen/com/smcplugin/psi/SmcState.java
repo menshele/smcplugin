@@ -16,10 +16,6 @@ public interface SmcState extends SmcStateElement {
   @Nullable
   SmcTransitionsBlock getTransitionsBlock();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }

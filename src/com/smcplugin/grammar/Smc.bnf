@@ -97,13 +97,13 @@ fsm_file ::= FSM_FILE_KEYWORD comment* FSM_FILE_NAME
 
 fsm_class ::= FSM_CLASS_KEYWORD comment* FSM_CLASS_NAME
 
-start_state ::= START_KEYWORD comment* start_map_name_element MAP_NAME_STATE_NAME_SEPARATOR comment* start_state_name_element { implements="com.smcplugin.psi.SmcStateFullName" methods=[getMapName getStateName getReference]}
+start_state ::= START_KEYWORD comment* start_map_name_element MAP_NAME_STATE_NAME_SEPARATOR comment* start_state_name_element { implements="com.smcplugin.psi.SmcStateFullName" methods=[getMapName getStateName]}
 
 
-start_state_name_element ::= START_STATE_NAME comment* {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getName setName getNameIdentifier getReference]}
+start_state_name_element ::= START_STATE_NAME comment* {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier ]}
 
 
-start_map_name_element ::= START_MAP_NAME comment* {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[getName setName getNameIdentifier getReference]}
+start_map_name_element ::= START_MAP_NAME comment* {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
 
 
 context_class_declaration ::= CLASS_KEYWORD comment* context_class
@@ -125,11 +125,11 @@ declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 access ::= ACCESS_KEYWORD comment* ACCESS_LEVEL
 
 map_declaration ::= comment* MAP_KEYWORD comment* map
-map ::= MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=3 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMapElement" methods=[getName setName getNameIdentifier ]}
+map ::= MAP_NAME comment* MAP_SECTION_BOUND states MAP_SECTION_BOUND {pin=3 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMapElement" methods=[ getNameIdentifier ]}
 
 states ::= comment* state* comment*
 
-state ::= comment * STATE_NAME comment* on_state? comment* transitions_block comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcStateElement" methods=[getName setName getNameIdentifier]}
+state ::= comment * STATE_NAME comment* on_state? comment* transitions_block comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcStateElement" methods=[ getNameIdentifier]}
 
 on_state ::= (entry exit)|(exit entry)|((entry|exit)?)
 
@@ -137,7 +137,7 @@ transitions_block ::= BRACE_OPEN comment* transitions comment* BRACE_CLOSE
 
 transitions ::= comment* transition* comment*
 
-transition ::= comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcTransitionElement" methods=[getName setName getNameIdentifier]}
+transition ::= comment* TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcTransitionElement" methods=[ getNameIdentifier]}
 
 entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" }
 
@@ -155,7 +155,7 @@ guard_raw_code::= (GUARD_NOT_BRACKET|bracket_expression)*
 
 private bracket_expression::=  GUARD_BRACKET_OPEN (GUARD_NOT_BRACKET|bracket_expression)* GUARD_BRACKET_CLOSE {pin=1}
 
-next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getName setName getNameIdentifier getReference]}
+next_state ::= comment* (NEXT_STATE_NAME|NIL_KEYWORD) comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier ]}
 
 
 push_transition ::= (push_proxy_state)? comment* PUSH_KEYWORD comment* PARENTHESES_OPEN (push_state|comment_nil) PARENTHESES_CLOSE {pin=3}
@@ -164,13 +164,13 @@ private comment_nil ::= comment* NIL_KEYWORD comment*
 
 push_proxy_state ::= (push_proxy_state_name_element|NIL_KEYWORD) comment* PUSH_PROXY_STATE_KEYWORD_SEPARATOR
 
-push_proxy_state_name_element ::= PUSH_PROXY_STATE_NAME {mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getName setName getNameIdentifier getReference]}
+push_proxy_state_name_element ::= PUSH_PROXY_STATE_NAME {mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getNameIdentifier]}
 
-push_state ::= comment* (push_map_name_element comment* MAP_NAME_STATE_NAME_SEPARATOR )? comment* push_state_name_element { implements="com.smcplugin.psi.SmcStateFullName" methods=[getMapName getStateName getReference]}
+push_state ::= comment* (push_map_name_element comment* MAP_NAME_STATE_NAME_SEPARATOR )? comment* push_state_name_element { implements="com.smcplugin.psi.SmcStateFullName" methods=[ getMapName getStateName ]}
 
-push_state_name_element ::= PUSH_STATE_NAME comment* {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getName setName getNameIdentifier getReference]}
+push_state_name_element ::= PUSH_STATE_NAME comment* {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier ]}
 
-push_map_name_element ::= PUSH_MAP_NAME {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[getName setName getNameIdentifier getReference]}
+push_map_name_element ::= PUSH_MAP_NAME {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
 
 pop_transition ::= POP_KEYWORD callback_transition? {pin=1}
 
@@ -180,7 +180,7 @@ actions_block ::= BRACE_OPEN actions BRACE_CLOSE
 
 actions ::= (comment* action comment*)*
 
-action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getName setName getNameIdentifier getContextClassName getArgumentCount getReference ]}
+action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier getContextClassName getArgumentCount ]}
 
 arguments ::= argument (COMMA comment* argument)* { methods=[getArgumentsCount]}
 argument ::= ARGUMENT_STATEMENT|STRING_LITERAL comment*

@@ -33,14 +33,6 @@ public class SmcMapImpl extends SmcNamedElementImpl implements SmcMap {
     return findChildByClass(SmcStates.class);
   }
 
-  public String getName() {
-    return SmcPsiImplUtil.getName(this);
-  }
-
-  public PsiElement setName(String newName) {
-    return SmcPsiImplUtil.setName(this, newName);
-  }
-
   public PsiElement getNameIdentifier() {
     return SmcPsiImplUtil.getNameIdentifier(this);
   }

@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
-import com.intellij.psi.PsiReference;
 
 public class SmcStartStateImpl extends ASTWrapperPsiElement implements SmcStartState {
 
@@ -47,10 +46,6 @@ public class SmcStartStateImpl extends ASTWrapperPsiElement implements SmcStartS
 
   public String getStateName() {
     return SmcPsiImplUtil.getStateName(this);
-  }
-
-  public PsiReference getReference() {
-    return SmcPsiImplUtil.getReference(this);
   }
 
 }

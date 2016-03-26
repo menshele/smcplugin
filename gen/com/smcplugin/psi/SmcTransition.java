@@ -28,10 +28,6 @@ public interface SmcTransition extends SmcTransitionElement {
   @Nullable
   SmcTransitionArgs getTransitionArgs();
 
-  String getName();
-
-  PsiElement setName(String newName);
-
   PsiElement getNameIdentifier();
 
 }

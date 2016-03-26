@@ -44,11 +44,19 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitContextClass(@NotNull SmcContextClass o) {
-    visitQualifiedNamed(o);
+    visitQualifiedNamedElement(o);
   }
 
   public void visitContextClassDeclaration(@NotNull SmcContextClassDeclaration o) {
     visitPsiElement(o);
+  }
+
+  public void visitContextClassNameFull(@NotNull SmcContextClassNameFull o) {
+    visitPsiElement(o);
+  }
+
+  public void visitContextClassPackageElement(@NotNull SmcContextClassPackageElement o) {
+    visitNamedElement(o);
   }
 
   public void visitDeclare(@NotNull SmcDeclare o) {
@@ -88,11 +96,19 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitImportClass(@NotNull SmcImportClass o) {
-    visitQualifiedNamed(o);
+    visitPsiElement(o);
   }
 
   public void visitImportClassDeclaration(@NotNull SmcImportClassDeclaration o) {
     visitPsiElement(o);
+  }
+
+  public void visitImportClassPackageElement(@NotNull SmcImportClassPackageElement o) {
+    visitNamedElement(o);
+  }
+
+  public void visitImportClassStatementElement(@NotNull SmcImportClassStatementElement o) {
+    visitQualifiedNamedElement(o);
   }
 
   public void visitIncludeFile(@NotNull SmcIncludeFile o) {
@@ -207,7 +223,7 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitQualifiedNamed(@NotNull SmcQualifiedNamed o) {
+  public void visitQualifiedNamedElement(@NotNull SmcQualifiedNamedElement o) {
     visitPsiElement(o);
   }
 

@@ -3,8 +3,10 @@ package com.smcplugin.validation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
+import com.smcplugin.psi.SmcContextClass;
+import com.smcplugin.psi.SmcImportClassStatementElement;
 import com.smcplugin.psi.SmcPsiUtil;
-import com.smcplugin.psi.SmcQualifiedNamed;
+import com.smcplugin.psi.SmcQualifiedNamedElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
@@ -18,11 +20,17 @@ public class SmcClassExistsAnnotator implements Annotator {
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
-        if (element instanceof SmcQualifiedNamed) {
-            SmcQualifiedNamed classNameElement = (SmcQualifiedNamed) element;
+        if (element instanceof SmcContextClass) {
+            SmcQualifiedNamedElement classNameElement = (SmcQualifiedNamedElement) element;
             String qualifiedName = classNameElement.getQualifiedName();
-            if (qualifiedName != null && SmcPsiUtil.classExists(qualifiedName)) {
-                holder.createErrorAnnotation(classNameElement, getMessage(classNameElement.getQualifiedName()));
+            if (qualifiedName != null && !SmcPsiUtil.classExists(qualifiedName)) {
+                    holder.createErrorAnnotation(classNameElement.getParent(), getMessage(classNameElement.getQualifiedName()));
+            }
+        }else if(element instanceof SmcImportClassStatementElement){
+            SmcImportClassStatementElement classNameElement = (SmcImportClassStatementElement) element;
+            String qualifiedName = classNameElement.getQualifiedName();
+            if (classNameElement.isClassName() && !SmcPsiUtil.classExists(qualifiedName)) {
+                holder.createErrorAnnotation(classNameElement.getParent(), getMessage(classNameElement.getQualifiedName()));
             }
         }
     }

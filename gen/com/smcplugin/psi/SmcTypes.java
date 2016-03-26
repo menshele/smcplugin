@@ -19,6 +19,8 @@ public interface SmcTypes {
   IElementType COMMENT = new SmcElementType("COMMENT");
   IElementType CONTEXT_CLASS = new SmcElementType("CONTEXT_CLASS");
   IElementType CONTEXT_CLASS_DECLARATION = new SmcElementType("CONTEXT_CLASS_DECLARATION");
+  IElementType CONTEXT_CLASS_NAME_FULL = new SmcElementType("CONTEXT_CLASS_NAME_FULL");
+  IElementType CONTEXT_CLASS_PACKAGE_ELEMENT = new SmcElementType("CONTEXT_CLASS_PACKAGE_ELEMENT");
   IElementType DECLARE = new SmcElementType("DECLARE");
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
@@ -30,6 +32,8 @@ public interface SmcTypes {
   IElementType HEADER_FILE = new SmcElementType("HEADER_FILE");
   IElementType IMPORT_CLASS = new SmcElementType("IMPORT_CLASS");
   IElementType IMPORT_CLASS_DECLARATION = new SmcElementType("IMPORT_CLASS_DECLARATION");
+  IElementType IMPORT_CLASS_PACKAGE_ELEMENT = new SmcElementType("IMPORT_CLASS_PACKAGE_ELEMENT");
+  IElementType IMPORT_CLASS_STATEMENT_ELEMENT = new SmcElementType("IMPORT_CLASS_STATEMENT_ELEMENT");
   IElementType INCLUDE_FILE = new SmcElementType("INCLUDE_FILE");
   IElementType MAP = new SmcElementType("MAP");
   IElementType MAP_DECLARATION = new SmcElementType("MAP_DECLARATION");
@@ -71,6 +75,7 @@ public interface SmcTypes {
   IElementType COLON = new SmcTokenType(":");
   IElementType COMMA = new SmcTokenType(",");
   IElementType CONTEXT_CLASS_NAME = new SmcTokenType("<context class name>");
+  IElementType CONTEXT_CLASS_PACKAGE = new SmcTokenType("<context package name>");
   IElementType DECLARE_KEYWORD = new SmcTokenType("%declare");
   IElementType DECLARE_STATEMENT = new SmcTokenType("<declare statement>");
   IElementType ENTRY_KEYWORD = new SmcTokenType("Entry");
@@ -84,6 +89,7 @@ public interface SmcTypes {
   IElementType GUARD_NOT_BRACKET = new SmcTokenType("<any char except '[' or ']' >");
   IElementType HEADER_FILE_NAME = new SmcTokenType("<header file name>");
   IElementType HEADER_KEYWORD = new SmcTokenType("%header");
+  IElementType IMPORT_CLASS_PACKAGE = new SmcTokenType("IMPORT_CLASS_PACKAGE");
   IElementType IMPORT_CLASS_STATEMENT = new SmcTokenType("<java import statement>");
   IElementType IMPORT_KEYWORD = new SmcTokenType("%import");
   IElementType INCLUDE_FILE_NAME = new SmcTokenType("<include file name>");
@@ -155,6 +161,12 @@ public interface SmcTypes {
       else if (type == CONTEXT_CLASS_DECLARATION) {
         return new SmcContextClassDeclarationImpl(node);
       }
+      else if (type == CONTEXT_CLASS_NAME_FULL) {
+        return new SmcContextClassNameFullImpl(node);
+      }
+      else if (type == CONTEXT_CLASS_PACKAGE_ELEMENT) {
+        return new SmcContextClassPackageElementImpl(node);
+      }
       else if (type == DECLARE) {
         return new SmcDeclareImpl(node);
       }
@@ -187,6 +199,12 @@ public interface SmcTypes {
       }
       else if (type == IMPORT_CLASS_DECLARATION) {
         return new SmcImportClassDeclarationImpl(node);
+      }
+      else if (type == IMPORT_CLASS_PACKAGE_ELEMENT) {
+        return new SmcImportClassPackageElementImpl(node);
+      }
+      else if (type == IMPORT_CLASS_STATEMENT_ELEMENT) {
+        return new SmcImportClassStatementElementImpl(node);
       }
       else if (type == INCLUDE_FILE) {
         return new SmcIncludeFileImpl(node);

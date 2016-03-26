@@ -5,6 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import com.smcplugin.psi.SmcPsiUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -66,5 +67,13 @@ public class SmcJavaClassReference extends PsiReferenceBase<PsiElement> implemen
             }
         }
         return variants.toArray();
+    }
+
+    @Override
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        if (myElement instanceof PsiNamedElement) {
+            ((PsiNamedElement)myElement).setName(newElementName);
+        }
+        return myElement;
     }
 }

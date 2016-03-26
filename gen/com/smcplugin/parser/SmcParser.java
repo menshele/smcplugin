@@ -57,6 +57,12 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == CONTEXT_CLASS_DECLARATION) {
       r = context_class_declaration(b, 0);
     }
+    else if (t == CONTEXT_CLASS_NAME_FULL) {
+      r = context_class_name_full(b, 0);
+    }
+    else if (t == CONTEXT_CLASS_PACKAGE_ELEMENT) {
+      r = context_class_package_element(b, 0);
+    }
     else if (t == DECLARE) {
       r = declare(b, 0);
     }
@@ -89,6 +95,12 @@ public class SmcParser implements PsiParser, LightPsiParser {
     }
     else if (t == IMPORT_CLASS_DECLARATION) {
       r = import_class_declaration(b, 0);
+    }
+    else if (t == IMPORT_CLASS_PACKAGE_ELEMENT) {
+      r = import_class_package_element(b, 0);
+    }
+    else if (t == IMPORT_CLASS_STATEMENT_ELEMENT) {
+      r = import_class_statement_element(b, 0);
     }
     else if (t == INCLUDE_FILE) {
       r = include_file(b, 0);
@@ -605,7 +617,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comment* CONTEXT_CLASS_NAME
+  // comment*  CONTEXT_CLASS_NAME
   public static boolean context_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "context_class")) return false;
     boolean r;
@@ -629,7 +641,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD comment* context_class
+  // CLASS_KEYWORD comment* context_class_name_full
   public static boolean context_class_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "context_class_declaration")) return false;
     if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
@@ -637,7 +649,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, CLASS_KEYWORD);
     r = r && context_class_declaration_1(b, l + 1);
-    r = r && context_class(b, l + 1);
+    r = r && context_class_name_full(b, l + 1);
     exit_section_(b, m, CONTEXT_CLASS_DECLARATION, r);
     return r;
   }
@@ -649,6 +661,59 @@ public class SmcParser implements PsiParser, LightPsiParser {
     while (true) {
       if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "context_class_declaration_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // (context_class_package_element)? context_class
+  public static boolean context_class_name_full(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_name_full")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<context class name full>");
+    r = context_class_name_full_0(b, l + 1);
+    r = r && context_class(b, l + 1);
+    exit_section_(b, l, m, CONTEXT_CLASS_NAME_FULL, r, false, null);
+    return r;
+  }
+
+  // (context_class_package_element)?
+  private static boolean context_class_name_full_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_name_full_0")) return false;
+    context_class_name_full_0_0(b, l + 1);
+    return true;
+  }
+
+  // (context_class_package_element)
+  private static boolean context_class_name_full_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_name_full_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = context_class_package_element(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // comment* CONTEXT_CLASS_PACKAGE
+  public static boolean context_class_package_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_package_element")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<context class package element>");
+    r = context_class_package_element_0(b, l + 1);
+    r = r && consumeToken(b, CONTEXT_CLASS_PACKAGE);
+    exit_section_(b, l, m, CONTEXT_CLASS_PACKAGE_ELEMENT, r, false, null);
+    return r;
+  }
+
+  // comment*
+  private static boolean context_class_package_element_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "context_class_package_element_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "context_class_package_element_0", c)) break;
       c = current_position_(b);
     }
     return true;
@@ -1014,13 +1079,14 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comment* IMPORT_CLASS_STATEMENT
+  // comment* import_class_package_element import_class_statement_element
   public static boolean import_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_class")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<import class>");
     r = import_class_0(b, l + 1);
-    r = r && consumeToken(b, IMPORT_CLASS_STATEMENT);
+    r = r && import_class_package_element(b, l + 1);
+    r = r && import_class_statement_element(b, l + 1);
     exit_section_(b, l, m, IMPORT_CLASS, r, false, null);
     return r;
   }
@@ -1079,6 +1145,54 @@ public class SmcParser implements PsiParser, LightPsiParser {
     while (true) {
       if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "import_class_declaration_3", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // comment* IMPORT_CLASS_PACKAGE
+  public static boolean import_class_package_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_class_package_element")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<import class package element>");
+    r = import_class_package_element_0(b, l + 1);
+    r = r && consumeToken(b, IMPORT_CLASS_PACKAGE);
+    exit_section_(b, l, m, IMPORT_CLASS_PACKAGE_ELEMENT, r, false, null);
+    return r;
+  }
+
+  // comment*
+  private static boolean import_class_package_element_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_class_package_element_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "import_class_package_element_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // comment* IMPORT_CLASS_STATEMENT
+  public static boolean import_class_statement_element(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_class_statement_element")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<import class statement element>");
+    r = import_class_statement_element_0(b, l + 1);
+    r = r && consumeToken(b, IMPORT_CLASS_STATEMENT);
+    exit_section_(b, l, m, IMPORT_CLASS_STATEMENT_ELEMENT, r, false, null);
+    return r;
+  }
+
+  // comment*
+  private static boolean import_class_statement_element_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_class_statement_element_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "import_class_statement_element_0", c)) break;
       c = current_position_(b);
     }
     return true;

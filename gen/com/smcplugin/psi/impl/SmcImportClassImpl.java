@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
-import com.intellij.psi.PsiReference;
 
 public class SmcImportClassImpl extends ASTWrapperPsiElement implements SmcImportClass {
 
@@ -29,24 +28,16 @@ public class SmcImportClassImpl extends ASTWrapperPsiElement implements SmcImpor
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
-  public String getName() {
-    return SmcPsiImplUtil.getName(this);
+  @Override
+  @NotNull
+  public SmcImportClassPackageElement getImportClassPackageElement() {
+    return findNotNullChildByClass(SmcImportClassPackageElement.class);
   }
 
-  public boolean isWildcard() {
-    return SmcPsiImplUtil.isWildcard(this);
-  }
-
-  public boolean isClassName() {
-    return SmcPsiImplUtil.isClassName(this);
-  }
-
-  public String getQualifiedName() {
-    return SmcPsiImplUtil.getQualifiedName(this);
-  }
-
-  public PsiReference getReference() {
-    return SmcPsiImplUtil.getReference(this);
+  @Override
+  @NotNull
+  public SmcImportClassStatementElement getImportClassStatementElement() {
+    return findNotNullChildByClass(SmcImportClassStatementElement.class);
   }
 
 }

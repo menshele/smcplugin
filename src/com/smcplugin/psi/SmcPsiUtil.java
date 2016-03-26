@@ -84,7 +84,7 @@ public class SmcPsiUtil {
 
     @SuppressWarnings("ConstantConditions")
     public static boolean classExists(String qName) {
-        return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT)) == null;
+        return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT)) != null;
     }
 
     public static List<SmcMap> findMap(Project project, String name) {

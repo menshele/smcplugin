@@ -4,21 +4,16 @@ package com.smcplugin.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
 
-public interface SmcImportClass extends SmcQualifiedNamed {
+public interface SmcImportClass extends PsiElement {
 
   @NotNull
   List<SmcComment> getCommentList();
 
-  String getName();
+  @NotNull
+  SmcImportClassPackageElement getImportClassPackageElement();
 
-  boolean isWildcard();
-
-  boolean isClassName();
-
-  String getQualifiedName();
-
-  PsiReference getReference();
+  @NotNull
+  SmcImportClassStatementElement getImportClassStatementElement();
 
 }

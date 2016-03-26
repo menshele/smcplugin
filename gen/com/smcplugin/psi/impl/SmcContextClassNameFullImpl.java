@@ -11,27 +11,27 @@ import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcContextClassDeclarationImpl extends ASTWrapperPsiElement implements SmcContextClassDeclaration {
+public class SmcContextClassNameFullImpl extends ASTWrapperPsiElement implements SmcContextClassNameFull {
 
-  public SmcContextClassDeclarationImpl(ASTNode node) {
+  public SmcContextClassNameFullImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitContextClassDeclaration(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitContextClassNameFull(this);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
-  public List<SmcComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  public SmcContextClass getContextClass() {
+    return findNotNullChildByClass(SmcContextClass.class);
   }
 
   @Override
-  @NotNull
-  public SmcContextClassNameFull getContextClassNameFull() {
-    return findNotNullChildByClass(SmcContextClassNameFull.class);
+  @Nullable
+  public SmcContextClassPackageElement getContextClassPackageElement() {
+    return findChildByClass(SmcContextClassPackageElement.class);
   }
 
 }

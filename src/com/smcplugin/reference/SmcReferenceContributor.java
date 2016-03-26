@@ -13,8 +13,21 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
         @NotNull
         @Override
         public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-            SmcQualifiedNamed smcQualifiedElement = (SmcQualifiedNamed) element;
+            SmcQualifiedNamedElement smcQualifiedElement = (SmcQualifiedNamedElement) element;
 
+            if (smcQualifiedElement.getQualifiedName() != null) {
+                return new PsiReference[]{new SmcJavaClassReference(element, smcQualifiedElement.getQualifiedName(), new TextRange(0, element.getTextLength()))};
+            }
+            return new PsiReference[0];
+        }
+    };
+
+    public static final PsiReferenceProvider CLASS_REFERENCE_PROVIDER_NAME = new PsiReferenceProvider() {
+        @NotNull
+        @Override
+        public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+
+            SmcQualifiedNamedElement smcQualifiedElement = (SmcQualifiedNamedElement) element;
             if (smcQualifiedElement.getQualifiedName() != null) {
                 return new PsiReference[]{new SmcJavaClassReference(element, smcQualifiedElement.getQualifiedName(), new TextRange(0, element.getTextLength()))};
             }
@@ -121,8 +134,7 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcImportClass.class), CLASS_REFERENCE_PROVIDER);
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClass.class), CLASS_REFERENCE_PROVIDER);
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcQualifiedNamedElement.class), CLASS_REFERENCE_PROVIDER);
     /*    registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
                 new PsiReferenceProvider() {
                     @NotNull

@@ -81,6 +81,7 @@
       CALLBACK_TRANSITION_NAME="<pop state transition name>"
       STRING_LITERAL="<string literal>"
       ARGUMENT_STATEMENT="<argument>"
+      CONTEXT_CLASS_PACKAGE="<context package name>"
      ]
 }
 
@@ -106,9 +107,13 @@ start_state_name_element ::= START_STATE_NAME comment* {pin=1 mixin="com.smcplug
 start_map_name_element ::= START_MAP_NAME comment* {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
 
 
-context_class_declaration ::= CLASS_KEYWORD comment* context_class
+context_class_declaration ::= CLASS_KEYWORD comment* context_class_name_full
 
-context_class ::= comment* CONTEXT_CLASS_NAME  {pin=2 implements="com.smcplugin.psi.SmcQualifiedNamed" methods=[getName getQualifiedName getNamePsiElement getReference]}
+context_class_name_full ::= (context_class_package_element)? context_class
+
+context_class_package_element ::=  comment* CONTEXT_CLASS_PACKAGE {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
+
+context_class ::= comment*  CONTEXT_CLASS_NAME  {pin=3 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcQualifiedNamedElement" methods=[ getQualifiedName getNameIdentifier]}
 
 header_file ::= HEADER_KEYWORD comment* HEADER_FILE_NAME
 
@@ -118,7 +123,12 @@ fsm_package ::= PACKAGE_KEYWORD comment* PACKAGE_STATEMENT {pin=1 implements="co
 
 import_class_declaration ::= IMPORT_KEYWORD comment* STATIC_JAVA_KEYWORD? comment* import_class
 
-import_class ::= comment* IMPORT_CLASS_STATEMENT {pin=2 implements="com.smcplugin.psi.SmcQualifiedNamed" methods=[getName isWildcard isClassName getQualifiedName getReference]}
+import_class ::= comment* import_class_package_element import_class_statement_element
+
+import_class_package_element ::=  comment* IMPORT_CLASS_PACKAGE  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
+
+import_class_statement_element ::= comment* IMPORT_CLASS_STATEMENT {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcQualifiedNamedElement" methods=[ isWildcard isClassName getQualifiedName getNameIdentifier ]}
+
 
 declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 

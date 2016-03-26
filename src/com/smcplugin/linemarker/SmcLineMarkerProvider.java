@@ -30,7 +30,7 @@ public class SmcLineMarkerProvider extends RelatedItemLineMarkerProvider {
                     NavigationGutterIconBuilder<PsiElement> builder =
                             NavigationGutterIconBuilder.create(SmcIcons.FILE).
                                     setTargets(state).
-                                    setTooltipText("Navigate to a states property");
+                                    setTooltipText("Navigate to a states z");
                     result.add(builder.createLineMarkerInfo(element));
                 }
             }

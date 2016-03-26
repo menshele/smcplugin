@@ -5,6 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.SmcPsiUtil;
 import org.jetbrains.annotations.NotNull;
@@ -75,5 +76,11 @@ public abstract class AbstractNamedLocalReference<ENCLOSING_TYPE extends PsiElem
             results.add(new PsiElementResolveResult(enclosed));
         }
         return results.toArray(new ResolveResult[results.size()]);
+    }
+
+    @Override
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        ((PsiNamedElement) myElement).setName(newElementName);
+        return myElement;
     }
 }

@@ -39,7 +39,7 @@
 
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleElementsAnnotator"/>
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcSingleNamedElementAnnotator"/>
-        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcCustomNamedElementExistsAnnotator"/>
+        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcNamedElementExistsAnnotator"/>
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcStartStateAnnotator"/>
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcPushStateAnnotator"/>
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcClassExistsAnnotator"/>
@@ -48,9 +48,10 @@
         <psi.referenceContributor language="JAVA" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/>
         <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
+        <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.refactoring.SmcRefactoringSupportProvider"/>
         <!--
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
-            <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.SmcRefactoringSupportProvider"/>
+
 
             <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
             <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>

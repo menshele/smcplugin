@@ -16,22 +16,22 @@ import java.util.List;
  * scmplugin
  * Created by lemen on 10.03.2016.
  */
-public class SmcCustomNamedElementExistsAnnotator implements Annotator {
+public class SmcNamedElementExistsAnnotator implements Annotator {
 
     private static final String DECLARATION_NOT_FOUND = "There is no {0} with name {1} found";
 
-    private final List<TypeDescriptor<SmcCustomNamed>> validateClasses = new ArrayList<>();
+    private final List<TypeDescriptor<SmcNamedElement>> validateClasses = new ArrayList<>();
 
-    public SmcCustomNamedElementExistsAnnotator() {
+    public SmcNamedElementExistsAnnotator() {
         validateClasses.add(new TypeDescriptor<>(SmcNextState.class, SmcTypes.STATE));
     }
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
-        for (TypeDescriptor<SmcCustomNamed> descriptor : validateClasses) {
-            Class<? extends SmcCustomNamed> typeClass = descriptor.getTypeClass();
+        for (TypeDescriptor<SmcNamedElement> descriptor : validateClasses) {
+            Class<? extends SmcNamedElement> typeClass = descriptor.getTypeClass();
             if (typeClass.isInstance(element)) {
-                SmcCustomNamed smcCustomNamed = (SmcCustomNamed) element;
+                SmcNamedElement smcCustomNamed = (SmcNamedElement) element;
                 if (smcCustomNamed.getName() != null && !SmcPsiUtil.hasNamedElementsByTypeWithinParentType(element, SmcMap.class, SmcState.class, smcCustomNamed.getName())) {
                     holder.createErrorAnnotation(element, getNoElementDeclarationFoundMessage(descriptor.getTypeType(), smcCustomNamed.getName()));
                 }

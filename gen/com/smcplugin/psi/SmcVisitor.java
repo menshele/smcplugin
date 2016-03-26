@@ -108,7 +108,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitNextState(@NotNull SmcNextState o) {
-    visitCustomNamed(o);
+    visitNamedElement(o);
   }
 
   public void visitOnState(@NotNull SmcOnState o) {
@@ -140,7 +140,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitPushStateNameElement(@NotNull SmcPushStateNameElement o) {
-    visitCustomNamed(o);
+    visitNamedElement(o);
   }
 
   public void visitPushTransition(@NotNull SmcPushTransition o) {
@@ -156,7 +156,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitStartStateNameElement(@NotNull SmcStartStateNameElement o) {
-    visitCustomNamed(o);
+    visitNamedElement(o);
   }
 
   public void visitState(@NotNull SmcState o) {

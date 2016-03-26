@@ -5,6 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.SmcMap;
 import com.smcplugin.psi.SmcPsiUtil;
@@ -59,5 +60,13 @@ public class SmcGlobalStateReference  extends PsiReferenceBase<PsiElement> imple
             results.add(new PsiElementResolveResult(enclosed));
         }
         return results.toArray(new ResolveResult[results.size()]);
+    }
+
+    @Override
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        if (myElement instanceof PsiNamedElement) {
+            ((PsiNamedElement)myElement).setName(newElementName);
+        }
+        return myElement;
     }
 }

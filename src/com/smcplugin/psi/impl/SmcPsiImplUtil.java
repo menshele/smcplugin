@@ -63,6 +63,15 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.NEXT_STATE_NAME);
     }
 
+    public static PsiElement setName(SmcNextState element, String newName) {
+        return setStringName(element, newName, SmcTypes.NEXT_STATE_NAME);
+    }
+
+    public static PsiElement getNameIdentifier(SmcNextState element) {
+        return gePsiByToken(element, SmcTypes.NEXT_STATE_NAME);
+    }
+
+
     public static String getName(SmcPushMapNameElement element) {
         return getStringName(element, SmcTypes.PUSH_MAP_NAME);
     }
@@ -77,6 +86,14 @@ public class SmcPsiImplUtil {
 
     public static String getName(SmcPushStateNameElement element) {
         return getStringName(element, SmcTypes.PUSH_STATE_NAME);
+    }
+
+    public static PsiElement setName(SmcPushStateNameElement element, String newName) {
+        return setStringName(element, newName, SmcTypes.PUSH_STATE_NAME);
+    }
+
+    public static PsiElement getNameIdentifier(SmcPushStateNameElement element) {
+        return gePsiByToken(element, SmcTypes.PUSH_STATE_NAME);
     }
 
     public static String getMapName(SmcStartState element) {
@@ -120,6 +137,13 @@ public class SmcPsiImplUtil {
         return getStringName(element, SmcTypes.START_STATE_NAME);
     }
 
+    public static PsiElement setName(SmcStartStateNameElement element, String newName) {
+        return setStringName(element, newName, SmcTypes.START_STATE_NAME);
+    }
+
+    public static PsiElement getNameIdentifier(SmcStartStateNameElement element) {
+        return gePsiByToken(element, SmcTypes.START_STATE_NAME);
+    }
 
     public static String getName(SmcFsmPackage element) {
         return getStringName(element, SmcTypes.PACKAGE_STATEMENT);

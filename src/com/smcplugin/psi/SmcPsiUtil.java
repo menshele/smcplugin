@@ -162,6 +162,21 @@ public class SmcPsiUtil {
         return false;
     }
 
+    public static  boolean isNotSingleTransition(@NotNull SmcTransitions root, @NotNull String name) {
+        List<SmcTransition> transitions = root.getTransitionList();
+        boolean found = false;
+        for (SmcTransition transition : transitions) {
+            if (name.equals(transition.getName()) && transition.getGuard() == null) {
+                if (found) {
+                    return true;
+                } else {
+                    found = true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Check that element type of the given AST node belongs to the token set.
      * <p>

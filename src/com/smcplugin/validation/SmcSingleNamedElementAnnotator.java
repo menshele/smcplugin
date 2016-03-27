@@ -18,8 +18,7 @@ public class SmcSingleNamedElementAnnotator implements Annotator {
     private static final String DUPLICATE_NAMED_MESSAGE = "Duplicate {0} named \"{1}\"";
     private final TypeDescriptor[] validateClasses = new TypeDescriptor[]{
             new TypeDescriptor<SmcNamedElement>(SmcMap.class, SmcTypes.MAP),
-            new TypeDescriptor<SmcNamedElement>(SmcState.class, SmcTypes.STATE),
-            new TypeDescriptor<SmcNamedElement>(SmcTransition.class, SmcTypes.TRANSITION),
+            new TypeDescriptor<SmcNamedElement>(SmcState.class, SmcTypes.STATE)
     };
 
     @Override

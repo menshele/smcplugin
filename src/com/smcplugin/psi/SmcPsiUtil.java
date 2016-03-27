@@ -36,6 +36,24 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
+    public static List<PsiClass> findClassesForPackage(String name) {
+        PsiPackage aPackage = fileManager.findPackage(name);
+        if(aPackage != null){
+            return Arrays.asList(aPackage.getClasses());
+        }
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static List<PsiPackage> findSubPackagesForPackage(String name) {
+        PsiPackage aPackage = fileManager.findPackage(name);
+        if(aPackage != null){
+            return Arrays.asList(aPackage.getSubPackages());
+        }
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public static PsiClass findClass(String qName) {
         return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT));
     }

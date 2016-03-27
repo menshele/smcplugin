@@ -10,6 +10,8 @@ public interface SmcImportClassStatementElement extends SmcQualifiedNamedElement
   @NotNull
   List<SmcComment> getCommentList();
 
+  String getPackageText();
+
   boolean isWildcard();
 
   boolean isClassName();

@@ -10,6 +10,9 @@ public interface SmcContextClass extends SmcQualifiedNamedElement {
   @NotNull
   List<SmcComment> getCommentList();
 
+  @Nullable
+  String getPackageText();
+
   String getQualifiedName();
 
   PsiElement getNameIdentifier();

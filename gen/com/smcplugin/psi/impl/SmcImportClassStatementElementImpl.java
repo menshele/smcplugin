@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 
-public class SmcImportClassStatementElementImpl extends SmcNamedElementImpl implements SmcImportClassStatementElement {
+public class SmcImportClassStatementElementImpl extends SmcQualifiedNamedElementImpl implements SmcImportClassStatementElement {
 
   public SmcImportClassStatementElementImpl(ASTNode node) {
     super(node);
@@ -25,6 +25,10 @@ public class SmcImportClassStatementElementImpl extends SmcNamedElementImpl impl
   @NotNull
   public List<SmcComment> getCommentList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  public String getPackageText() {
+    return SmcPsiImplUtil.getPackageText(this);
   }
 
   public boolean isWildcard() {

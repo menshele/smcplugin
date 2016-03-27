@@ -87,6 +87,7 @@ public class SmcPsiImplUtil {
     public static PsiElement getNameIdentifier(SmcContextClass element) {
         return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_NAME);
     }
+
     public static PsiElement getNameIdentifier(SmcContextClassPackageElement element) {
         return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_PACKAGE);
     }
@@ -96,15 +97,21 @@ public class SmcPsiImplUtil {
     }
 
     public static String getQualifiedName(SmcContextClass element) {
+        return  getPackageText(element) + element.getName();
+    }
+
+    @Nullable
+    public static String getPackageText(SmcContextClass element) {
         SmcContextClassDeclaration smcContextClass = PsiTreeUtil.getParentOfType(element, SmcContextClassDeclaration.class);
         SmcContextClassPackageElement packageNameElement = PsiTreeUtil.findChildOfType(smcContextClass, SmcContextClassPackageElement.class);
-        String name = element.getName();
-        if(packageNameElement == null){
+        String resultPackageName;
+        if (packageNameElement == null) {
             SmcFsmPackage smcFsmPackage = PsiTreeUtil.getChildOfType(element.getContainingFile(), SmcFsmPackage.class);
-            return smcFsmPackage + name;
-        }else{
-            return packageNameElement.getName() + name;
+            resultPackageName = smcFsmPackage != null ? smcFsmPackage.getName() : null;
+        } else {
+            resultPackageName = packageNameElement.getName();
         }
+        return resultPackageName;
     }
 
     public static String getContextClassName(SmcAction element) {
@@ -122,11 +129,13 @@ public class SmcPsiImplUtil {
 
 
     public static String getQualifiedName(SmcImportClassStatementElement element) {
+        return getPackageText(element) + element.getName();
+    }
+
+    public static String getPackageText(SmcImportClassStatementElement element) {
         SmcImportClass smcImportClass = PsiTreeUtil.getParentOfType(element, SmcImportClass.class);
         SmcImportClassPackageElement packageNameElement = PsiTreeUtil.getChildOfType(smcImportClass, SmcImportClassPackageElement.class);
-        String name = element.getName();
-        String packageName = packageNameElement != null ? packageNameElement.getName() : "";
-        return packageName + name;
+        return packageNameElement != null ? packageNameElement.getName() : "";
     }
 
     @Nullable

@@ -6,4 +6,6 @@ package com.smcplugin.psi;
  */
 public interface SmcQualifiedNamedElement extends SmcNamedElement{
     String getQualifiedName();
+    String getPackageName();
+    String getPackageText();
 }

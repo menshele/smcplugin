@@ -16,20 +16,7 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
             SmcQualifiedNamedElement smcQualifiedElement = (SmcQualifiedNamedElement) element;
 
             if (smcQualifiedElement.getQualifiedName() != null) {
-                return new PsiReference[]{new SmcJavaClassReference(element, smcQualifiedElement.getQualifiedName(), new TextRange(0, element.getTextLength()))};
-            }
-            return new PsiReference[0];
-        }
-    };
-
-    public static final PsiReferenceProvider CLASS_REFERENCE_PROVIDER_NAME = new PsiReferenceProvider() {
-        @NotNull
-        @Override
-        public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-
-            SmcQualifiedNamedElement smcQualifiedElement = (SmcQualifiedNamedElement) element;
-            if (smcQualifiedElement.getQualifiedName() != null) {
-                return new PsiReference[]{new SmcJavaClassReference(element, smcQualifiedElement.getQualifiedName(), new TextRange(0, element.getTextLength()))};
+                return new PsiReference[]{new SmcJavaClassReference(smcQualifiedElement, new TextRange(0, element.getTextLength()))};
             }
             return new PsiReference[0];
         }

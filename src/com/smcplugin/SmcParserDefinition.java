@@ -30,11 +30,11 @@ public class SmcParserDefinition implements ParserDefinition {
             SmcTypes.NIL_KEYWORD,
             SmcTypes.POP_KEYWORD,
             SmcTypes.PUSH_KEYWORD
-            );
+    );
     public static final TokenSet ON_ENTRY_EXIT_KEYWORDS = TokenSet.create(
             SmcTypes.ENTRY_KEYWORD,
             SmcTypes.EXIT_KEYWORD
-            );
+    );
     public static final TokenSet BEGIN_LINE_KEYWORDS = TokenSet.create(
             SmcTypes.ACCESS_KEYWORD,
             SmcTypes.CLASS_KEYWORD,
@@ -48,9 +48,9 @@ public class SmcParserDefinition implements ParserDefinition {
             SmcTypes.STATIC_JAVA_KEYWORD,
             SmcTypes.START_KEYWORD,
             SmcTypes.PACKAGE_KEYWORD
-            );
+    );
 
-    public static final TokenSet KEYWORDS = TokenSet.orSet(BEGIN_LINE_KEYWORDS,IN_CODE_KEYWORDS);
+    public static final TokenSet KEYWORDS = TokenSet.orSet(BEGIN_LINE_KEYWORDS, IN_CODE_KEYWORDS);
 
     public static final TokenSet CONTAINERS = TokenSet.create(SmcTypes.ON_STATE, SmcTypes.TRANSITIONS, SmcTypes.ACTIONS);
 

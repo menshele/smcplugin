@@ -82,8 +82,8 @@ public class SmcBlock implements ASTBlock {
             myWrap = Wrap.createWrap(getCustomSettings().WRAP_EXIT, true);
             myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
         } else if (myPsiElement instanceof SmcGuard) {
-            myWrap = Wrap.createWrap(getCustomSettings().WRAP_GUARD, true);
-            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
+            myWrap = Wrap.createWrap(getCustomSettings().WRAP_GUARD, false);
+            myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, false);
         } else if (myPsiElement instanceof SmcTransitionArgs) {
             myWrap = Wrap.createWrap(getCustomSettings().WRAP_TRANSITION_ARGS, true);
             myChildWrap = Wrap.createWrap(CommonCodeStyleSettings.DO_NOT_WRAP, true);
@@ -129,7 +129,9 @@ public class SmcBlock implements ASTBlock {
         if (hasElementType(myNode, SmcParserDefinition.CONTAINERS)) {
             assert myChildWrap != null;
             wrap = myChildWrap;
-            indent = Indent.getNormalIndent();
+            if (!(childNode instanceof SmcGuardRawCode)) {
+                indent = Indent.getNormalIndent();
+            }
         }
         // Handle properties alignment
         else if (hasElementType(myNode, ARGUMENTS)) {

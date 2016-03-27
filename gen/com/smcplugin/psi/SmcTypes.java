@@ -124,6 +124,7 @@ public interface SmcTypes {
   IElementType VERBATIM_CLOSE = new SmcTokenType("%}");
   IElementType VERBATIM_CODE = new SmcTokenType("<row code block>");
   IElementType VERBATIM_OPEN = new SmcTokenType("%{");
+  IElementType WHITE_SPACE = new SmcTokenType("<whitespace>");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

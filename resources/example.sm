@@ -1,32 +1,129 @@
 %{
-    some.row.code.Here();
+asda;
+as;asdjlaksd
+asdasd
 %}
-%class ClassName
-//Line Comment
-/*
-Multiline Comment
-*/
-%package com.example.package
-%start MainMap::Locked
-%map
-MainMap
+
+%class com.company.smc.ContextClass
+%package com.company.smc
+%import sdajasdl.*
+%import com.company.test.ImportedClass
+%fsmfile turnstile
+%fsmclass StateMachine
+%access private
+%header asd
+%start Unlocked::Unlocked
+%declare asdsd
+%include asdas
+
+%map Unlocked
 %%
 Locked
-Entry {
-   print(param, "Entry \n \f");
-}
-{
 
- coin ( arggs : asd , arg: test )
- [ some guard here ]
- Unlocked {
-    unlock();
- }
- pass nil { alarm(); }
+    Entry {
+        pickUp(";sadlfsdk \t\f sdf@\"' \' ;");
+    }
+
+    Exit {
+        hangOn(asd);
+    }
+{
+    coins (arggs : asd, arg : sfsd)
+    [ asdasd[ ]askldjaskl[][] ]
+    Unlocked {}
+
+    coin1 (arggs : asd, arg : sfsd)
+    [ dasdsad []asdasd ]
+    Unlocked {
+        alarm();
+        unlock(sdf);
+        unlock(sdf, "sdf\" asldas \t\'", sdf);
+        unlock(sdf, "sdf\" asldas \t\'");
+    }
+
+    coin2X
+    [    asdasd    ]
+    Unlocked {}
+
+    coin4
+    [    test etead klsd; jas if new Array [new []] asd [] ]
+    Unlocked {
+        unlock(sdf, "sdf\" asldas \t\'");
+    }
+
+    pass
+    nil
+    {
+        alarm();
+    }
+
+    test1 pop (pass, wqe){
+        testAction("test ");
+        testAction(asdas, asdas);
+    }
+
+    test2 pop {}
+
+    test3 pop (lkj){
+        testAction();
+    }
+
+    test4
+    Unlocked {}
+
+    test5 Unlocked/push(Unlocked::Locked){
+        pickUp(test);
+    }
+
+    test6 Unlocked/push(Unlocked){
+        hangOn(asd);
+    }
+
+    test7 Unlocked/push(Locked::Unlocked){
+        hangOn(asd);
+    }
+
+    test8 push(Locked)
+    {
+        hangOn(asd);
+    }
+    test10 push(Locked::Unlocked){
+        hangOn(te);
+    }
+
+    test push(nil){
+        pickUp();
+    }
 }
+
 Unlocked
 {
- pass Locked { lock(); }
- coin nil { thankyou(); }
+    test push(Locked::Unlocked){}
+
+    lock
+    Locked {
+        lock();
+    }
+
+    coin
+    nil{
+        thankyou();
+    }
 }
 %%
+%map Locked %%
+
+Unlocked
+{
+    test push(Unlocked::Locked){}
+
+    lock
+    Unlocked {
+        lock();
+    }
+
+    coin
+    nil{
+        thankyou();
+    }
+}

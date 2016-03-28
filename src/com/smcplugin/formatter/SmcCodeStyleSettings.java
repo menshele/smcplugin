@@ -17,7 +17,7 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
     }
 
     public enum SmcOptions {
-        SPACE_BEFORE_LEFT_BRACE,
+        SPACE_BEFORE_TRANSITIONS_BLOCK,
         SPACE_AFTER_KEYWORD,
         SPACE_WITHIN_PARENTHESES,
         SPACE_BEFORE_PARENTHESES_OPEN,
@@ -42,8 +42,6 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
         WRAP_PUSH_TRANSITION,
         WRAP_POP_TRANSITION,
         WRAP_TRANSITION_ARGS,
-        WRAP_GUARD;
-
     }
 
 
@@ -53,7 +51,7 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
 
     public boolean SPACE_BEFORE_ACTIONS_BLOCK = true;
 
-    public boolean SPACE_BEFORE_LEFT_BRACE = true;
+    public boolean SPACE_BEFORE_TRANSITIONS_BLOCK = true;
 
     public boolean SPACE_AFTER_KEYWORD = true;
 
@@ -77,5 +75,4 @@ public class SmcCodeStyleSettings extends CustomCodeStyleSettings {
     public int WRAP_PUSH_TRANSITION = CommonCodeStyleSettings.DO_NOT_WRAP;
     public int WRAP_POP_TRANSITION = CommonCodeStyleSettings.DO_NOT_WRAP;
     public int WRAP_TRANSITION_ARGS = CommonCodeStyleSettings.DO_NOT_WRAP;
-    public int WRAP_GUARD = CommonCodeStyleSettings.WRAP_ALWAYS;
 }

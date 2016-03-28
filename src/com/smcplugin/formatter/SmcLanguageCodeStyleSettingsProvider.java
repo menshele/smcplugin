@@ -16,12 +16,12 @@ import static com.smcplugin.formatter.SmcCodeStyleSettings.SmcOptions;
 public class SmcLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
     public static final String SEPARATORS_GROUP = "Spaces around separators";
-    public static final String INSERT_SPACES_BEFORE_LABEL = "Insert space before brace";
     private static final String SPACES_AFTER_KEYWORD_LABEL = "Space After Keyword";
     public static final String SPACE_WITHIN_PARENTHESES_LABEL = "Space within parentheses";
     public static final String SPACE_BEFORE_PARENTHESES_LABEL = "Space before parentheses";
     public static final String SPACE_AROUND_MAP_STATE_SEPARATOR_LABEL = "Space around map-state (\"::\") separator";
     public static final String SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR_LABEL = "Space around push-proxy-state (\"/\") separator";
+    public static final String INSERT_SPACES_BEFORE_TRANSITIONS_LABEL = "Space before \"Transitions block\"";
     private static final String SPACE_BEFORE_TRANSITION_ARGS_LABEL = "Space before \"Transition arguments\"";
     private static final String SPACE_BEFORE_ACTIONS_BLOCK_LABEL = "Space before \"Actions\" block";
     private static final String SPACE_AFTER_ENTRY_EXIT_KEYWORDS_LABEL = "Space after \"Entry/Exit\" keywords";
@@ -43,15 +43,15 @@ public class SmcLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
             consumer.moveStandardOption(String.valueOf(SPACE_AFTER_SEMICOLON), SEPARATORS_GROUP);
 
             consumer.showStandardOptions(String.valueOf(SPACE_BEFORE_COLON), String.valueOf(SPACE_AFTER_COLON), String.valueOf(SPACE_AFTER_COMMA),
-                    String.valueOf(SPACE_BEFORE_SEMICOLON), String.valueOf(SPACE_AFTER_SEMICOLON), String.valueOf(SPACE_WITHIN_BRACKETS), String.valueOf(SPACE_WITHIN_BRACES));
+                    String.valueOf(SPACE_BEFORE_SEMICOLON), String.valueOf(SPACE_AFTER_SEMICOLON), String.valueOf(SPACE_WITHIN_BRACES));
 
-            consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_LEFT_BRACE), INSERT_SPACES_BEFORE_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_LEFT_BRACE);
 
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AFTER_KEYWORD), SPACES_AFTER_KEYWORD_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_WITHIN_PARENTHESES), SPACE_WITHIN_PARENTHESES_LABEL, CodeStyleSettingsCustomizable.SPACES_WITHIN);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_PARENTHESES_OPEN), SPACE_BEFORE_PARENTHESES_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_TRANSITION_ARGS), SPACE_BEFORE_TRANSITION_ARGS_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_ACTIONS_BLOCK), SPACE_BEFORE_ACTIONS_BLOCK_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
+            consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_BEFORE_TRANSITIONS_BLOCK), INSERT_SPACES_BEFORE_TRANSITIONS_LABEL, CodeStyleSettingsCustomizable.SPACES_BEFORE_PARENTHESES);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AROUND_MAP_STATE_SEPARATOR), SPACE_AROUND_MAP_STATE_SEPARATOR_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR), SPACE_AROUND_PUSH_PROXY_STATE_KEYWORD_SEPARATOR_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
             consumer.showCustomOption(SmcCodeStyleSettings.class, String.valueOf(SmcOptions.SPACE_AFTER_ENTRY_EXIT_KEYWORDS), SPACE_AFTER_ENTRY_EXIT_KEYWORDS_LABEL, CodeStyleSettingsCustomizable.SPACES_OTHER);
@@ -68,7 +68,6 @@ public class SmcLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
             newWrapOption(consumer, SmcOptions.WRAP_ACTIONS, "Wrap \"Action\" statement");
             newWrapOption(consumer, SmcOptions.WRAP_ENTRY, "Wrap \"Entry\"block");
             newWrapOption(consumer, SmcOptions.WRAP_EXIT, "Wrap \"Exit\" block");
-            newWrapOption(consumer, SmcOptions.WRAP_GUARD, "Wrap \"Guard\" statement");
             newWrapOption(consumer, SmcOptions.WRAP_NEXT_STATE, "Wrap \"Next state\" name");
             newWrapOption(consumer, SmcOptions.WRAP_POP_TRANSITION, "Wrap \"Pop transition\" statement");
             newWrapOption(consumer, SmcOptions.WRAP_PUSH_TRANSITION, "Wrap \"Push transition\" statement");
@@ -93,125 +92,128 @@ public class SmcLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
                 "asdasd\n" +
                 "%}\n" +
                 "\n" +
-                "%package sdfd\n" +
-                "\n" +
-                "%class adtest\n" +
-                "%import static sdajasdl.*\n" +
-                "%import com.db.Class\n" +
-                "%package turnstile\n" +
+                "%class com.company.smc.ContextClass\n" +
+                "%package com.company.smc\n" +
+                "%import sdajasdl.*\n" +
+                "%import com.company.test.ImportedClass\n" +
                 "%fsmfile turnstile\n" +
-                "%fsmclass turnstile\n" +
+                "%fsmclass StateMachine\n" +
                 "%access private\n" +
                 "%header asd\n" +
+                "%start Unlocked::Unlocked\n" +
                 "%declare asdsd\n" +
                 "%include asdas\n" +
-                "%start MainMap::State\n" +
-                "%map MainMap\n" +
+                "\n" +
+                "%map Unlocked\n" +
                 "%%\n" +
                 "Locked\n" +
+                "\n" +
                 "    Entry {\n" +
-                "        asd(tst, \";sadlfsdk \\t\\f sdf@\\\"' \\' ;\");\n" +
-                "        asd();\n" +
-                "        asd(te);\n" +
+                "        pickUp(\";sadlfsdk \\t\\f sdf@\\\"' \\' ;\");\n" +
                 "    }\n" +
                 "\n" +
                 "    Exit {\n" +
-                "        asd(te, \"asdasd\\r\");\n" +
+                "        hangOn(asd);\n" +
                 "    }\n" +
                 "{\n" +
-                "    coin (arggs : asd, arg : sfsd)\n" +
-                "    [  asd() && test [ ] status + test - 6 asdlk [] z [ ] [ ] ]\n" +
-                "    Unlocked {\n" +
-                "        unlock(sdf, \"sdf\\\" asldas \\t\\'\");\n" +
-                "    }\n" +
-                "\n" +
-                "    coin2 (arggs : asd, arg : sfsd)\n" +
-                "    [  asd() && test [] ]\n" +
-                "    Unlocked {\n" +
-                "        unlock(sdf, \"sdf\\\" asldas \\t\\'\");\n" +
-                "    }\n" +
+                "    coins (arggs : asd, arg : sfsd)\n" +
+                "    [ asdasd[ ]askldjaskl[][] ]\n" +
+                "    Unlocked {}\n" +
                 "\n" +
                 "    coin1 (arggs : asd, arg : sfsd)\n" +
+                "    [ dasdsad []asdasd ]\n" +
+                "    Unlocked {\n" +
+                "        alarm();\n" +
+                "        unlock(sdf);\n" +
+                "        unlock(sdf, \"sdf\\\" asldas \\t\\'\", sdf);\n" +
+                "        unlock(sdf, \"sdf\\\" asldas \\t\\'\");\n" +
+                "    }\n" +
+                "\n" +
+                "    coin2X\n" +
+                "    [    asdasd    ]\n" +
+                "    Unlocked {}\n" +
+                "\n" +
+                "    coin4\n" +
+                "    [    test etead klsd; jas if new Array [new []] asd [] ]\n" +
                 "    Unlocked {\n" +
                 "        unlock(sdf, \"sdf\\\" asldas \\t\\'\");\n" +
                 "    }\n" +
                 "\n" +
-                "    coin2 Unlocked {}\n" +
-                "\n" +
-                "    coin3\n" +
-                "    [  asd() && test [ ] [ ] ]\n" +
-                "    Unlocked {\n" +
-                "        unlock(sdf, \"sdf\\\" asldas \\t\\'\");\n" +
-                "    }\n" +
-                "\n" +
-                "    coin4 Unlocked {\n" +
-                "        unlock(sdf, \"sdf\\\" asldas \\t\\'\");\n" +
-                "    }\n" +
-                "\n" +
-                "    pass nil {\n" +
+                "    pass\n" +
+                "    nil\n" +
+                "    {\n" +
                 "        alarm();\n" +
                 "    }\n" +
                 "\n" +
-                "    test pop(pass, wqe) {\n" +
-                "        test(); test2(); test3();\n" +
+                "    test1 pop (pass, wqe){\n" +
+                "        testAction(\"test \");\n" +
+                "        testAction(asdas, asdas);\n" +
                 "    }\n" +
                 "\n" +
-                "    test pop {\n" +
-                "        test(asad); test2();\n" +
+                "    test2 pop {}\n" +
+                "\n" +
+                "    test3 pop (lkj){\n" +
+                "        testAction();\n" +
                 "    }\n" +
                 "\n" +
-                "    test pop(lkj) {\n" +
-                "        test(asad);\n" +
-                "        test();\n" +
+                "    test4\n" +
+                "    Unlocked {}\n" +
+                "\n" +
+                "    test5 Unlocked/push(Unlocked::Locked){\n" +
+                "        pickUp(test);\n" +
                 "    }\n" +
                 "\n" +
-                "    test push1 {\n" +
-                "\n" +
+                "    test6 Unlocked/push(Unlocked){\n" +
+                "        hangOn(asd);\n" +
                 "    }\n" +
                 "\n" +
-                "    test Unlocked/push(sdas::werwr) {\n" +
-                "        asdasd(asd);\n" +
+                "    test7 Unlocked/push(Locked::Unlocked){\n" +
+                "        hangOn(asd);\n" +
                 "    }\n" +
                 "\n" +
-                "    test Unlocked/push(werwr) {\n" +
-                "        asdasd(asd);\n" +
+                "    test8 push(Locked)\n" +
+                "    {\n" +
+                "        hangOn(asd);\n" +
+                "    }\n" +
+                "    test10 push(Locked::Unlocked){\n" +
+                "        hangOn(te);\n" +
                 "    }\n" +
                 "\n" +
-                "    test\n" +
-                "    Unlocked/push(klj) {\n" +
-                "        asdasd(asd);\n" +
-                "    }\n" +
-                "\n" +
-                "    test push(sdas::werwr) {\n" +
-                "        asdasd(asd);\n" +
-                "    }\n" +
-                "\n" +
-                "    test push(werwr) {\n" +
-                "        asdasd(asd);\n" +
-                "    }\n" +
-                "\n" +
-                "    test push(werwr) {\n" +
-                "        asdasd();\n" +
-                "    }\n" +
-                "\n" +
-                "    test push(nil) {\n" +
-                "        asdasd();\n" +
+                "    test push(nil){\n" +
+                "        pickUp();\n" +
                 "    }\n" +
                 "}\n" +
                 "\n" +
-                "Unlocked {\n" +
+                "Unlocked\n" +
+                "{\n" +
+                "    test push(Locked::Unlocked){}\n" +
                 "\n" +
-                "    test push(sdas::werwr) {\n" +
-                "    }\n" +
-                "\n" +
-                "    lock Locked {\n" +
+                "    lock\n" +
+                "    Locked {\n" +
                 "        lock();\n" +
                 "    }\n" +
                 "\n" +
-                "    coin nil {\n" +
+                "    coin\n" +
+                "    nil{\n" +
                 "        thankyou();\n" +
                 "    }\n" +
                 "}\n" +
-                "%%";
+                "%%\n" +
+                "%map Locked %%\n" +
+                "\n" +
+                "Unlocked\n" +
+                "{\n" +
+                "    test push(Unlocked::Locked){}\n" +
+                "\n" +
+                "    lock\n" +
+                "    Unlocked {\n" +
+                "        lock();\n" +
+                "    }\n" +
+                "\n" +
+                "    coin\n" +
+                "    nil{\n" +
+                "        thankyou();\n" +
+                "    }\n" +
+                "}";
     }
 }

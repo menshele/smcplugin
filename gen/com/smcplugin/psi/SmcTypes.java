@@ -25,6 +25,7 @@ public interface SmcTypes {
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
   IElementType FSM_CLASS = new SmcElementType("FSM_CLASS");
+  IElementType FSM_CLASS_DECLARATION = new SmcElementType("FSM_CLASS_DECLARATION");
   IElementType FSM_FILE = new SmcElementType("FSM_FILE");
   IElementType FSM_PACKAGE = new SmcElementType("FSM_PACKAGE");
   IElementType GUARD = new SmcElementType("GUARD");
@@ -124,7 +125,6 @@ public interface SmcTypes {
   IElementType VERBATIM_CLOSE = new SmcTokenType("%}");
   IElementType VERBATIM_CODE = new SmcTokenType("<row code block>");
   IElementType VERBATIM_OPEN = new SmcTokenType("%{");
-  IElementType WHITE_SPACE = new SmcTokenType("<whitespace>");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -179,6 +179,9 @@ public interface SmcTypes {
       }
       else if (type == FSM_CLASS) {
         return new SmcFsmClassImpl(node);
+      }
+      else if (type == FSM_CLASS_DECLARATION) {
+        return new SmcFsmClassDeclarationImpl(node);
       }
       else if (type == FSM_FILE) {
         return new SmcFsmFileImpl(node);

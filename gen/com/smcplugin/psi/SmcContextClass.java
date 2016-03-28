@@ -13,8 +13,6 @@ public interface SmcContextClass extends SmcQualifiedNamedElement {
   @Nullable
   String getPackageText();
 
-  String getQualifiedName();
-
   PsiElement getNameIdentifier();
 
 }

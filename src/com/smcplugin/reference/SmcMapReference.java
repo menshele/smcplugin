@@ -2,12 +2,12 @@ package com.smcplugin.reference;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
+import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.SmcMap;
 import com.smcplugin.psi.SmcPsiUtil;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +60,7 @@ public class SmcMapReference extends PsiReferenceBase<PsiElement> implements Psi
         for (final SmcMap property : properties) {
             if (!StringUtil.isEmpty(property.getName())) {
                 variants.add(LookupElementBuilder.create(property).
-                        withIcon(AllIcons.Hierarchy.MethodDefined).
+                        withIcon(SmcIcons.SM_MAP).
                         withTypeText(property.getContainingFile().getName())
                 );
             }

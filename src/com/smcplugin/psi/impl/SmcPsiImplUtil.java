@@ -1,11 +1,18 @@
 package com.smcplugin.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.smcplugin.PresentationFactory;
+import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.*;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 
 /**
  * scmplugin
@@ -14,13 +21,33 @@ import org.jetbrains.annotations.Nullable;
 public class SmcPsiImplUtil {
 
     public static final String DOT = ".";
+    public static final String ARG_PREFIX = "arg";
+    public static final String MY_COMMA = ",";
+    public static final String SPACE = " ";
 
     public static PsiElement getNameIdentifier(SmcMap element) {
         return gePsiByToken(element, SmcTypes.MAP_NAME);
     }
 
+    public static ItemPresentation getPresentation(SmcMap element) {
+        return PresentationFactory.forMap(element);
+    }
+
+
+    public static Icon getElementIcon(SmcMap element, @Iconable.IconFlags int flags) {
+        return SmcIcons.SM_MAP;
+    }
+
     public static PsiElement getNameIdentifier(SmcState element) {
         return gePsiByToken(element, SmcTypes.STATE_NAME);
+    }
+
+    public static ItemPresentation getPresentation(SmcState element) {
+        return PresentationFactory.forState(element);
+    }
+
+    public static Icon getElementIcon(SmcState element, @Iconable.IconFlags int flags) {
+        return SmcIcons.STATE;
     }
 
     public static PsiElement getNameIdentifier(SmcAction element) {
@@ -88,16 +115,16 @@ public class SmcPsiImplUtil {
         return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_NAME);
     }
 
-    public static PsiElement getNameIdentifier(SmcContextClassPackageElement element) {
-        return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_PACKAGE);
-    }
-
     public static PsiElement getNameIdentifier(SmcImportClassPackageElement element) {
         return gePsiByToken(element, SmcTypes.IMPORT_CLASS_PACKAGE);
     }
 
+    public static PsiElement getNameIdentifier(SmcContextClassPackageElement element) {
+        return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_PACKAGE);
+    }
+
     public static String getQualifiedName(SmcContextClass element) {
-        return  getPackageText(element) + element.getName();
+        return  element.getPackageName() + element.getName();
     }
 
     @Nullable
@@ -114,6 +141,17 @@ public class SmcPsiImplUtil {
         return resultPackageName;
     }
 
+    public static PsiElement getNameIdentifier(SmcFsmClass element) {
+        return gePsiByToken(element, SmcTypes.FSM_CLASS_NAME);
+    }
+
+
+    @Nullable
+    public static String getPackageText(SmcFsmClass element) {
+        SmcFsmPackage smcFsmPackage = PsiTreeUtil.getChildOfType(element.getContainingFile(), SmcFsmPackage.class);
+        return smcFsmPackage != null ? smcFsmPackage.getName() : ".";
+    }
+
     public static String getContextClassName(SmcAction element) {
         SmcContextClass contextClass = PsiTreeUtil.findChildOfType(element.getContainingFile(), SmcContextClass.class);
         return contextClass != null ? contextClass.getQualifiedName() : "";
@@ -121,6 +159,67 @@ public class SmcPsiImplUtil {
 
     public static int getArgumentCount(SmcAction element) {
         return element.getArguments() != null ? element.getArguments().getArgumentsCount() : 0;
+    }
+
+    public static Icon getElementIcon(SmcAction element, @Iconable.IconFlags int flags) {
+        return SmcIcons.CTX_ACTION;
+    }
+
+    public static ItemPresentation getPresentation(SmcAction element) {
+        return PresentationFactory.forAction(element);
+    }
+
+
+    public static String getType(SmcEntry element) {
+        return SmcOnStateNestedElement.ON_ENTRY_TYPE;
+    }
+
+    public static String getType(SmcExit element) {
+        return SmcOnStateNestedElement.ON_EXIT_TYPE;
+    }
+
+    public static String getQualifiedFullName(SmcAction action) {
+        PsiNamedElement transition = PsiTreeUtil.getParentOfType(action, SmcTransition.class);
+        String actionParentName;
+        if (transition != null) {
+            actionParentName = transition.getName();
+        } else {
+            SmcOnStateNestedElement onState = PsiTreeUtil.getParentOfType(action, SmcOnStateNestedElement.class);
+            actionParentName = onState != null ? onState.getType() : "";
+        }
+
+        SmcState state = PsiTreeUtil.getParentOfType(action, SmcState.class);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(state != null ? state.getName() : "").append(DOT);
+        stringBuilder.append(actionParentName).append(DOT);
+        stringBuilder.append(action.getName());
+        int argCount = action.getArgumentCount();
+
+        stringBuilder.append("(");
+        for (int i = 0; i < argCount; i++) {
+            stringBuilder.append(ARG_PREFIX).append(i);
+            if (i < argCount - 1) {
+                stringBuilder.append(MY_COMMA).append(SPACE);
+            }
+        }
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
+
+    public static String getFullName(SmcAction action) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(action.getName());
+        int argCount = action.getArgumentCount();
+
+        stringBuilder.append("(");
+        for (int i = 0; i < argCount; i++) {
+            stringBuilder.append(ARG_PREFIX).append(i);
+            if (i < argCount - 1) {
+                stringBuilder.append(MY_COMMA).append(SPACE);
+            }
+        }
+        stringBuilder.append(")");
+        return stringBuilder.toString();
     }
 
     public static int getArgumentsCount(SmcArguments element) {

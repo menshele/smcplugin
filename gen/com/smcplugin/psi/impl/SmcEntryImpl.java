@@ -34,4 +34,8 @@ public class SmcEntryImpl extends ASTWrapperPsiElement implements SmcEntry {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
+  public String getType() {
+    return SmcPsiImplUtil.getType(this);
+  }
+
 }

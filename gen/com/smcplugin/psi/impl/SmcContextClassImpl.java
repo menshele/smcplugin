@@ -32,10 +32,6 @@ public class SmcContextClassImpl extends SmcQualifiedNamedElementImpl implements
     return SmcPsiImplUtil.getPackageText(this);
   }
 
-  public String getQualifiedName() {
-    return SmcPsiImplUtil.getQualifiedName(this);
-  }
-
   public PsiElement getNameIdentifier() {
     return SmcPsiImplUtil.getNameIdentifier(this);
   }

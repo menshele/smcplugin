@@ -48,6 +48,7 @@
         <psi.referenceContributor language="smc" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <psi.referenceContributor language="JAVA" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.linemarker.SmcJavaLineMarkerProvider"/>
         <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
         <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.refactoring.SmcRefactoringSupportProvider"/>
         <!--completion.contributor language="smc" implementationClass="com.smcplugin."/-->

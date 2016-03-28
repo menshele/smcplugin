@@ -6,11 +6,11 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.SmcPsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,13 +59,15 @@ public abstract class AbstractNamedLocalReference<ENCLOSING_TYPE extends PsiElem
         for (final ENCLOSED_TYPE enclosed : enclosedTypes) {
             if (!StringUtil.isEmpty(enclosed.getName())) {
                 variants.add(LookupElementBuilder.create(enclosed).
-                        withIcon(SmcIcons.FILE).
+                        withIcon(getFile()).
                         withTypeText(enclosed.getContainingFile().getName())
                 );
             }
         }
         return variants.toArray();
     }
+
+    protected abstract Icon getFile();
 
     @NotNull
     @Override

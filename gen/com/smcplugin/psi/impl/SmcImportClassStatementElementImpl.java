@@ -39,10 +39,6 @@ public class SmcImportClassStatementElementImpl extends SmcQualifiedNamedElement
     return SmcPsiImplUtil.isClassName(this);
   }
 
-  public String getQualifiedName() {
-    return SmcPsiImplUtil.getQualifiedName(this);
-  }
-
   public PsiElement getNameIdentifier() {
     return SmcPsiImplUtil.getNameIdentifier(this);
   }

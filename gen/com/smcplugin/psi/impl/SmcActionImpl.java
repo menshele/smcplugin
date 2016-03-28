@@ -9,6 +9,8 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import javax.swing.Icon;
 
 public class SmcActionImpl extends SmcNamedElementImpl implements SmcAction {
 
@@ -43,6 +45,22 @@ public class SmcActionImpl extends SmcNamedElementImpl implements SmcAction {
 
   public int getArgumentCount() {
     return SmcPsiImplUtil.getArgumentCount(this);
+  }
+
+  public ItemPresentation getPresentation() {
+    return SmcPsiImplUtil.getPresentation(this);
+  }
+
+  public String getFullName() {
+    return SmcPsiImplUtil.getFullName(this);
+  }
+
+  public String getQualifiedFullName() {
+    return SmcPsiImplUtil.getQualifiedFullName(this);
+  }
+
+  public Icon getElementIcon(int flags) {
+    return SmcPsiImplUtil.getElementIcon(this, flags);
   }
 
 }

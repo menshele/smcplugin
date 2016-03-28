@@ -16,8 +16,6 @@ public interface SmcImportClassStatementElement extends SmcQualifiedNamedElement
 
   boolean isClassName();
 
-  String getQualifiedName();
-
   PsiElement getNameIdentifier();
 
 }

@@ -18,6 +18,11 @@ public abstract class SmcQualifiedNamedElementImpl extends SmcNamedElementImpl i
     @Override
     public String getPackageName() {
         String packageText = getPackageText();
-        return StringUtils.substring(packageText, 0, packageText.length() - 1);
+        return packageText.endsWith(SmcPsiImplUtil.DOT) ?
+                StringUtils.substring(packageText, 0, packageText.length() - 1): packageText;
+    }
+
+    public String getQualifiedName() {
+        return getPackageName() + SmcPsiImplUtil.DOT + getName();
     }
 }

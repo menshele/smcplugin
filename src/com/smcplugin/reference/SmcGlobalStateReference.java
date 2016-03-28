@@ -43,7 +43,7 @@ public class SmcGlobalStateReference  extends PsiReferenceBase<PsiElement> imple
         for (final SmcState enclosed : enclosedTypes) {
             if (!StringUtil.isEmpty(enclosed.getName())) {
                 variants.add(LookupElementBuilder.create(enclosed).
-                        withIcon(SmcIcons.FILE).
+                        withIcon(SmcIcons.STATE).
                         withTypeText(enclosed.getContainingFile().getName())
                 );
             }

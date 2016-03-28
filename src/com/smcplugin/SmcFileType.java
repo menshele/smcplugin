@@ -39,6 +39,6 @@ public class SmcFileType extends LanguageFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return SmcIcons.FILE;
+        return SmcIcons.SM;
     }
 }

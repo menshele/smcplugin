@@ -10,6 +10,7 @@ import com.smcplugin.psi.SmcPsiUtil;
 import com.smcplugin.psi.SmcState;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 
 /**
@@ -28,9 +29,9 @@ public class SmcLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 final SmcState state = SmcPsiUtil.findStateByNameWithinCurrentMap(nextState, name);
                 if (state != null) {
                     NavigationGutterIconBuilder<PsiElement> builder =
-                            NavigationGutterIconBuilder.create(SmcIcons.FILE).
+                            NavigationGutterIconBuilder.create(SmcIcons.STATE).
                                     setTargets(state).
-                                    setTooltipText("Navigate to a states z");
+                                    setTooltipText(MessageFormat.format("Navigate to a states \"{0}\"",name));
                     result.add(builder.createLineMarkerInfo(element));
                 }
             }

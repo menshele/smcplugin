@@ -13,4 +13,6 @@ public interface SmcEntry extends SmcOnStateNestedElement {
   @NotNull
   List<SmcComment> getCommentList();
 
+  String getType();
+
 }

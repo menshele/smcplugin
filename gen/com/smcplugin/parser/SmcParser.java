@@ -75,6 +75,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == FSM_CLASS) {
       r = fsm_class(b, 0);
     }
+    else if (t == FSM_CLASS_DECLARATION) {
+      r = fsm_class_declaration(b, 0);
+    }
     else if (t == FSM_FILE) {
       r = fsm_file(b, 0);
     }
@@ -824,7 +827,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
+  // (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class_declaration|fsm_file| header_file| include_file|
   //  import_class_declaration| declare| access| comment)* map_declaration+ comment*
   static boolean fsmFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile")) return false;
@@ -837,7 +840,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
+  // (verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class_declaration|fsm_file| header_file| include_file|
   //  import_class_declaration| declare| access| comment)*
   private static boolean fsmFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile_0")) return false;
@@ -850,7 +853,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class|fsm_file| header_file| include_file|
+  // verbatim_code_section|fsm_package| context_class_declaration| start_state|fsm_class_declaration|fsm_file| header_file| include_file|
   //  import_class_declaration| declare| access| comment
   private static boolean fsmFile_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsmFile_0_0")) return false;
@@ -860,7 +863,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
     if (!r) r = fsm_package(b, l + 1);
     if (!r) r = context_class_declaration(b, l + 1);
     if (!r) r = start_state(b, l + 1);
-    if (!r) r = fsm_class(b, l + 1);
+    if (!r) r = fsm_class_declaration(b, l + 1);
     if (!r) r = fsm_file(b, l + 1);
     if (!r) r = header_file(b, l + 1);
     if (!r) r = include_file(b, l + 1);
@@ -901,26 +904,50 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FSM_CLASS_KEYWORD comment* FSM_CLASS_NAME
+  // comment* FSM_CLASS_NAME
   public static boolean fsm_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fsm_class")) return false;
-    if (!nextTokenIs(b, FSM_CLASS_KEYWORD)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, FSM_CLASS_KEYWORD);
-    r = r && fsm_class_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, "<fsm class>");
+    r = fsm_class_0(b, l + 1);
     r = r && consumeToken(b, FSM_CLASS_NAME);
-    exit_section_(b, m, FSM_CLASS, r);
+    exit_section_(b, l, m, FSM_CLASS, r, false, null);
     return r;
   }
 
   // comment*
-  private static boolean fsm_class_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "fsm_class_1")) return false;
+  private static boolean fsm_class_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fsm_class_0")) return false;
     int c = current_position_(b);
     while (true) {
       if (!comment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "fsm_class_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "fsm_class_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // FSM_CLASS_KEYWORD comment* fsm_class
+  public static boolean fsm_class_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fsm_class_declaration")) return false;
+    if (!nextTokenIs(b, FSM_CLASS_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FSM_CLASS_KEYWORD);
+    r = r && fsm_class_declaration_1(b, l + 1);
+    r = r && fsm_class(b, l + 1);
+    exit_section_(b, m, FSM_CLASS_DECLARATION, r);
+    return r;
+  }
+
+  // comment*
+  private static boolean fsm_class_declaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fsm_class_declaration_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "fsm_class_declaration_1", c)) break;
       c = current_position_(b);
     }
     return true;

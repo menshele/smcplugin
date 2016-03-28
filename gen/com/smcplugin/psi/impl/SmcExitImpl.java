@@ -34,4 +34,8 @@ public class SmcExitImpl extends ASTWrapperPsiElement implements SmcExit {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
+  public String getType() {
+    return SmcPsiImplUtil.getType(this);
+  }
+
 }

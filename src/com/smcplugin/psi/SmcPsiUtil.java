@@ -38,7 +38,7 @@ public class SmcPsiUtil {
     @SuppressWarnings("ConstantConditions")
     public static List<PsiClass> findClassesForPackage(String name) {
         PsiPackage aPackage = fileManager.findPackage(name);
-        if(aPackage != null){
+        if (aPackage != null) {
             return Arrays.asList(aPackage.getClasses());
         }
         return Collections.emptyList();
@@ -47,7 +47,7 @@ public class SmcPsiUtil {
     @SuppressWarnings("ConstantConditions")
     public static List<PsiPackage> findSubPackagesForPackage(String name) {
         PsiPackage aPackage = fileManager.findPackage(name);
-        if(aPackage != null){
+        if (aPackage != null) {
             return Arrays.asList(aPackage.getSubPackages());
         }
         return Collections.emptyList();
@@ -126,6 +126,48 @@ public class SmcPsiUtil {
         return result != null ? result : Collections.<SmcMap>emptyList();
     }
 
+    public static List<SmcFile> findSmcWithQualifiedNamedElement(Project project, Class<? extends SmcQualifiedNamedElement> cClass, @NotNull String contextQName) {
+        List<SmcFile> result = null;
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
+                GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            SmcFile smcFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (smcFile != null) {
+                SmcQualifiedNamedElement contextClass = PsiTreeUtil.findChildOfType(smcFile, cClass);
+                if (contextClass != null && contextClass.getQualifiedName().equals(contextQName)) {
+                    if (result == null) {
+                        result = new ArrayList<>();
+                    }
+                    result.add(smcFile);
+                }
+            }
+        }
+        return result != null ? result : Collections.<SmcFile>emptyList();
+    }
+
+    public static List<SmcAction> findActionsForMethod(PsiMethod psiMethod) {
+        List<SmcAction> result = null;
+        Project project = psiMethod.getProject();
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
+                GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (simpleFile != null) {
+                Collection<SmcAction> actions = PsiTreeUtil.findChildrenOfType(simpleFile, SmcAction.class);
+                for (SmcAction action : actions) {
+                    if (psiMethod.getName().equals(action.getName()) &&
+                            psiMethod.getParameterList().getParametersCount() == action.getArgumentCount()) {
+                        if (result == null) {
+                            result = new ArrayList<>();
+                        }
+                        result.add(action);
+                    }
+                }
+            }
+        }
+        return result != null ? result : Collections.<SmcAction>emptyList();
+    }
+
     public static List<PsiMethod> findJavaMethod(Project project, String name) {
         List<PsiMethod> result = null;
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, JavaFileType.INSTANCE,
@@ -162,7 +204,7 @@ public class SmcPsiUtil {
         return false;
     }
 
-    public static  boolean isNotSingleTransition(@NotNull SmcTransitions root, @NotNull String name) {
+    public static boolean isNotSingleTransition(@NotNull SmcTransitions root, @NotNull String name) {
         List<SmcTransition> transitions = root.getTransitionList();
         boolean found = false;
         for (SmcTransition transition : transitions) {

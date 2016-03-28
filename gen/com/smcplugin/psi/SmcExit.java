@@ -13,4 +13,6 @@ public interface SmcExit extends SmcOnStateNestedElement {
   @NotNull
   List<SmcComment> getCommentList();
 
+  String getType();
+
 }

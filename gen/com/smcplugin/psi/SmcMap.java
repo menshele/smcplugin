@@ -4,6 +4,8 @@ package com.smcplugin.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
+import javax.swing.Icon;
 
 public interface SmcMap extends SmcMapElement {
 
@@ -14,5 +16,9 @@ public interface SmcMap extends SmcMapElement {
   SmcStates getStates();
 
   PsiElement getNameIdentifier();
+
+  ItemPresentation getPresentation();
+
+  Icon getElementIcon(int flags);
 
 }

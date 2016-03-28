@@ -18,11 +18,11 @@ import java.text.MessageFormat;
  * Created by lemen on 10.03.2016.
  */
 public class SmcActionAnnotator implements Annotator {
-    private static final String METHOD_NOT_FOUND_IN_CLASS = "Can\'\'t find method \"{0}({1})\" in Java class \"{2}\"";
+    private static final String METHOD_NOT_FOUND_IN_CLASS = "Can\'\'t find method \"{0}\" in Java class \"{1}\"";
     public static final String ARG_PREFIX = "arg";
     public static final String COMMA = ",";
     public static final String SPACE = " ";
-    private static final String AMBIGUOS_METHOD_FOUND_IN_CLASS = "Ambiguos method call \"{0}({1})\" in Java class \"{2}\"";
+    private static final String AMBIGUOS_METHOD_FOUND_IN_CLASS = "Ambiguos method call \"{0}\" in Java class \"{1}\"";
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
@@ -34,33 +34,21 @@ public class SmcActionAnnotator implements Annotator {
             SmcAction action = (SmcAction) parent;
             String contextClassName = action.getContextClassName();
             if (!SmcPsiUtil.isMethodInClass(contextClassName, action.getName(), action.getArgumentCount())) {
-                Annotation errorAnnotation = holder.createErrorAnnotation(element, getNotResolvedMessage(action.getName(), action.getArgumentCount(), contextClassName));
+                Annotation errorAnnotation = holder.createErrorAnnotation(element, getNotResolvedMessage(action.getFullName(), contextClassName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
-                errorAnnotation.registerFix(new CreateMethodInContextClassFix(action.getName(),action.getArgumentCount()));
+                errorAnnotation.registerFix(new CreateMethodInContextClassFix(action.getName(), action.getArgumentCount()));
             } else if (SmcPsiUtil.isMethodInClassNotUnique(contextClassName, action.getName(), action.getArgumentCount())) {
-                holder.createWarningAnnotation(element, getAmbiguityMessage(action.getName(), action.getArgumentCount(), contextClassName));
+                holder.createWarningAnnotation(element, getAmbiguityMessage(action.getFullName(),contextClassName));
             }
         }
     }
 
-    private String getAmbiguityMessage(String name, int argumentCount, String contextClassName) {
-        return MessageFormat.format(AMBIGUOS_METHOD_FOUND_IN_CLASS, contextClassName, getArgsString(argumentCount), name);
+    private String getAmbiguityMessage(String name, String contextClassName) {
+        return MessageFormat.format(AMBIGUOS_METHOD_FOUND_IN_CLASS, name,contextClassName);
     }
 
     @NotNull
-    private String getNotResolvedMessage(String methodName, int argCount, String className) {
-        return MessageFormat.format(METHOD_NOT_FOUND_IN_CLASS, methodName, getArgsString(argCount), className);
-    }
-
-
-    public static String getArgsString(int argCount) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < argCount; i++) {
-            stringBuilder.append(ARG_PREFIX).append(i);
-            if (i < argCount - 1) {
-                stringBuilder.append(COMMA).append(SPACE);
-            }
-        }
-        return stringBuilder.toString();
+    private String getNotResolvedMessage(String methodName, String className) {
+        return MessageFormat.format(METHOD_NOT_FOUND_IN_CLASS, methodName, className);
     }
 }

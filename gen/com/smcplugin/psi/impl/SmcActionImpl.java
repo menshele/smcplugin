@@ -39,10 +39,6 @@ public class SmcActionImpl extends SmcNamedElementImpl implements SmcAction {
     return SmcPsiImplUtil.getNameIdentifier(this);
   }
 
-  public String getContextClassName() {
-    return SmcPsiImplUtil.getContextClassName(this);
-  }
-
   public int getArgumentCount() {
     return SmcPsiImplUtil.getArgumentCount(this);
   }

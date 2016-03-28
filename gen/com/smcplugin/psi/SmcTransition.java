@@ -4,6 +4,8 @@ package com.smcplugin.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
+import javax.swing.Icon;
 
 public interface SmcTransition extends SmcTransitionElement {
 
@@ -29,5 +31,15 @@ public interface SmcTransition extends SmcTransitionElement {
   SmcTransitionArgs getTransitionArgs();
 
   PsiElement getNameIdentifier();
+
+  int getArgumentCount();
+
+  ItemPresentation getPresentation();
+
+  String getFullName();
+
+  String getQualifiedFullName();
+
+  Icon getElementIcon(int flags);
 
 }

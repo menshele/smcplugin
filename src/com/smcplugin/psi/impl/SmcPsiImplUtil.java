@@ -124,7 +124,7 @@ public class SmcPsiImplUtil {
     }
 
     public static String getQualifiedName(SmcContextClass element) {
-        return  element.getPackageName() + element.getName();
+        return element.getPackageName() + element.getName();
     }
 
     @Nullable
@@ -152,21 +152,30 @@ public class SmcPsiImplUtil {
         return smcFsmPackage != null ? smcFsmPackage.getName() : ".";
     }
 
-    public static String getContextClassName(SmcAction element) {
-        SmcContextClass contextClass = PsiTreeUtil.findChildOfType(element.getContainingFile(), SmcContextClass.class);
-        return contextClass != null ? contextClass.getQualifiedName() : "";
-    }
-
     public static int getArgumentCount(SmcAction element) {
         return element.getArguments() != null ? element.getArguments().getArgumentsCount() : 0;
+    }
+
+    public static int getArgumentCount(SmcTransition element) {
+        SmcTransitionArgs transitionArgs = element.getTransitionArgs();
+        SmcParameters parameters = transitionArgs != null ? transitionArgs.getParameters() : null;
+        return parameters != null ? parameters.getParameterList().size() : 0;
     }
 
     public static Icon getElementIcon(SmcAction element, @Iconable.IconFlags int flags) {
         return SmcIcons.CTX_ACTION;
     }
 
+    public static Icon getElementIcon(SmcTransition element, @Iconable.IconFlags int flags) {
+        return SmcIcons.TRANSITION;
+    }
+
     public static ItemPresentation getPresentation(SmcAction element) {
         return PresentationFactory.forAction(element);
+    }
+
+    public static ItemPresentation getPresentation(SmcTransition element) {
+        return PresentationFactory.forTransition(element);
     }
 
 
@@ -189,46 +198,24 @@ public class SmcPsiImplUtil {
         }
 
         SmcState state = PsiTreeUtil.getParentOfType(action, SmcState.class);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(state != null ? state.getName() : "").append(DOT);
-        stringBuilder.append(actionParentName).append(DOT);
-        stringBuilder.append(action.getName());
-        int argCount = action.getArgumentCount();
+        return (state != null ? state.getName() + DOT : "") + actionParentName + DOT + action.getFullName();
+    }
 
-        stringBuilder.append("(");
-        for (int i = 0; i < argCount; i++) {
-            stringBuilder.append(ARG_PREFIX).append(i);
-            if (i < argCount - 1) {
-                stringBuilder.append(MY_COMMA).append(SPACE);
-            }
-        }
-        stringBuilder.append(")");
-        return stringBuilder.toString();
+    public static String getQualifiedFullName(SmcTransition smcTransition) {
+        SmcState state = PsiTreeUtil.getParentOfType(smcTransition, SmcState.class);
+        return (state != null ? state.getName() + DOT : "") +  smcTransition.getFullName();
     }
 
     public static String getFullName(SmcAction action) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(action.getName());
-        int argCount = action.getArgumentCount();
+        return SmcPsiUtil.getFullNameMethod(action.getName(), action.getArgumentCount(), true);
+    }
 
-        stringBuilder.append("(");
-        for (int i = 0; i < argCount; i++) {
-            stringBuilder.append(ARG_PREFIX).append(i);
-            if (i < argCount - 1) {
-                stringBuilder.append(MY_COMMA).append(SPACE);
-            }
-        }
-        stringBuilder.append(")");
-        return stringBuilder.toString();
+    public static String getFullName(SmcTransition transition) {
+        return SmcPsiUtil.getFullNameMethod(transition.getName(), transition.getArgumentCount(), false);
     }
 
     public static int getArgumentsCount(SmcArguments element) {
         return element.getArgumentList().size();
-    }
-
-
-    public static String getQualifiedName(SmcImportClassStatementElement element) {
-        return getPackageText(element) + element.getName();
     }
 
     public static String getPackageText(SmcImportClassStatementElement element) {

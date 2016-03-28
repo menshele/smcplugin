@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.psi.PsiElement;
 import com.smcplugin.intentions.CreateMethodInContextClassFix;
 import com.smcplugin.psi.SmcAction;
+import com.smcplugin.psi.SmcFile;
 import com.smcplugin.psi.SmcPsiUtil;
 import com.smcplugin.psi.SmcTypes;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,8 @@ public class SmcActionAnnotator implements Annotator {
                 return;
             }
             SmcAction action = (SmcAction) parent;
-            String contextClassName = action.getContextClassName();
+            SmcFile containingFile = (SmcFile)action.getContainingFile();
+            String contextClassName = containingFile.getContextClassQName();
             if (!SmcPsiUtil.isMethodInClass(contextClassName, action.getName(), action.getArgumentCount())) {
                 Annotation errorAnnotation = holder.createErrorAnnotation(element, getNotResolvedMessage(action.getFullName(), contextClassName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);

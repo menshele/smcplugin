@@ -16,6 +16,7 @@ import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.smcplugin.SmcFileType;
+import com.smcplugin.psi.impl.SmcPsiImplUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -166,6 +167,29 @@ public class SmcPsiUtil {
             }
         }
         return result != null ? result : Collections.<SmcAction>emptyList();
+    }
+
+    public static List<SmcTransition> findTransitionsForMethod(PsiMethod psiMethod) {
+        List<SmcTransition> result = null;
+        Project project = psiMethod.getProject();
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
+                GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (simpleFile != null) {
+                Collection<SmcTransition> actions = PsiTreeUtil.findChildrenOfType(simpleFile, SmcTransition.class);
+                for (SmcTransition smcTransition : actions) {
+                    if (psiMethod.getName().equals(smcTransition.getName()) &&
+                            psiMethod.getParameterList().getParametersCount() == smcTransition.getArgumentCount()) {
+                        if (result == null) {
+                            result = new ArrayList<>();
+                        }
+                        result.add(smcTransition);
+                    }
+                }
+            }
+        }
+        return result != null ? result : Collections.<SmcTransition>emptyList();
     }
 
     public static List<PsiMethod> findJavaMethod(Project project, String name) {
@@ -351,5 +375,21 @@ public class SmcPsiUtil {
             }
         }
         return result;
+    }
+
+    @NotNull
+    public static String getFullNameMethod(String name, int argumentCount, boolean appendBracesIfNoArgs) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(name);
+        boolean needToShowBracesIfNoArguments= appendBracesIfNoArgs || argumentCount > 0;
+        if(needToShowBracesIfNoArguments) {stringBuilder.append("(");}
+        for (int i = 0; i < argumentCount; i++) {
+            stringBuilder.append(SmcPsiImplUtil.ARG_PREFIX).append(i);
+            if (i < argumentCount - 1) {
+                stringBuilder.append(SmcPsiImplUtil.MY_COMMA).append(SmcPsiImplUtil.SPACE);
+            }
+        }
+        if(needToShowBracesIfNoArguments) {stringBuilder.append("}");}
+        return stringBuilder.toString();
     }
 }

@@ -114,8 +114,27 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         PsiElement namePsiElement = smcAction.getNameIdentifier();
                         if (namePsiElement != null && smcAction.getName() != null) {
                             TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
-                            return new PsiReference[]{new SmcActionToJavaMethodReference(namePsiElement, textRange,
-                                    smcAction.getContextClassName(), smcAction.getArgumentCount())};
+                            SmcFile containingFile = (SmcFile) smcAction.getContainingFile();
+                            return new PsiReference[]{new SmcToJavaMethodReference(namePsiElement, textRange,
+                                    containingFile.getContextClassQName(), smcAction.getArgumentCount())};
+
+                        }
+                        return new PsiReference[0];
+                    }
+                });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcTransition.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcTransition smcTransition = (SmcTransition) element;
+
+                        PsiElement namePsiElement = smcTransition.getNameIdentifier();
+                        if (namePsiElement != null && smcTransition.getName() != null) {
+                            TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
+                            SmcFile containingFile = (SmcFile) smcTransition.getContainingFile();
+                            return new PsiReference[]{new SmcToJavaMethodReference(namePsiElement, textRange,
+                                    containingFile.getFsmClassQName(), smcTransition.getArgumentCount())};
 
                         }
                         return new PsiReference[0];

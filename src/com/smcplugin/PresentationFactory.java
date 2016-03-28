@@ -5,6 +5,7 @@ import com.intellij.psi.PsiFile;
 import com.smcplugin.psi.SmcAction;
 import com.smcplugin.psi.SmcMap;
 import com.smcplugin.psi.SmcState;
+import com.smcplugin.psi.SmcTransition;
 import com.sun.istack.internal.Nullable;
 
 import javax.swing.*;
@@ -62,6 +63,29 @@ public class PresentationFactory {
     }
 
     public static ItemPresentation forAction(SmcAction element) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return element.getQualifiedFullName();
+            }
+
+            @Nullable
+            @Override
+            public String getLocationString() {
+                PsiFile containingFile = element.getContainingFile();
+                return containingFile == null ? null : containingFile.getName();
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return null;
+            }
+        };
+    }
+
+    public static ItemPresentation forTransition(SmcTransition element) {
         return new ItemPresentation() {
             @Nullable
             @Override

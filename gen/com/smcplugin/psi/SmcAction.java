@@ -17,8 +17,6 @@ public interface SmcAction extends SmcNamedElement {
 
   PsiElement getNameIdentifier();
 
-  String getContextClassName();
-
   int getArgumentCount();
 
   ItemPresentation getPresentation();

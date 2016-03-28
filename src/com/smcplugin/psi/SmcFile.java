@@ -39,12 +39,21 @@ public class SmcFile extends PsiFileBase {
 
     public String getContextClassQName() {
         SmcContextClass childOfType = PsiTreeUtil.findChildOfType(this, SmcContextClass.class);
-        if (childOfType == null) return null;
-        return childOfType.getQualifiedName();
+        return childOfType != null? childOfType.getQualifiedName():"";
     }
 
     public PsiClass getContextClass() {
         String contextClassQName = getContextClassQName();
         return StringUtils.isBlank(contextClassQName) ? null : SmcPsiUtil.findClass(contextClassQName);
+    }
+
+    public String getFsmClassQName() {
+        SmcFsmClass childOfType = PsiTreeUtil.findChildOfType(this, SmcFsmClass.class);
+        return childOfType != null? childOfType.getQualifiedName():"";
+    }
+
+    public PsiClass getFsmClass() {
+        String fsmQname = getFsmClassQName();
+        return StringUtils.isBlank(fsmQname) ? null : SmcPsiUtil.findClass(fsmQname);
     }
 }

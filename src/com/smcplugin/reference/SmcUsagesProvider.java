@@ -3,10 +3,7 @@ package com.smcplugin.reference;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
-import com.smcplugin.psi.SmcAction;
-import com.smcplugin.psi.SmcMap;
-import com.smcplugin.psi.SmcNamedElement;
-import com.smcplugin.psi.SmcState;
+import com.smcplugin.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +22,7 @@ public class SmcUsagesProvider implements FindUsagesProvider {
     public boolean canFindUsagesFor(@NotNull PsiElement element) {
         return element instanceof SmcMap ||
                 element instanceof SmcState ||
+                element instanceof SmcTransition ||
                 element instanceof SmcAction;
     }
 
@@ -35,6 +33,9 @@ public class SmcUsagesProvider implements FindUsagesProvider {
         }
         if (element instanceof SmcState) {
             return SmcHelpID.FIND_STATE_USAGES;
+        }
+        if (element instanceof SmcTransition) {
+            return SmcHelpID.FIND_TRANSITION_USAGES;
         }
         if (element instanceof SmcAction) {
             return SmcHelpID.FIND_ACTION_USAGES;
@@ -47,11 +48,13 @@ public class SmcUsagesProvider implements FindUsagesProvider {
     public String getType(@NotNull PsiElement element) {
         if (element instanceof SmcMap) {
             return "Smc map";
-        } else if (element instanceof SmcState){
+        } else if (element instanceof SmcState) {
             return "Smc state";
-        } else if (element instanceof SmcAction){
+        } else if (element instanceof SmcTransition) {
+            return "Smc transition";
+        } else if (element instanceof SmcAction) {
             return "Smc action";
-        }else{
+        } else {
             return "";
         }
     }

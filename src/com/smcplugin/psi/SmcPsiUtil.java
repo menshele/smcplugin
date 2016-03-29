@@ -100,18 +100,19 @@ public class SmcPsiUtil {
     }
 
     public static boolean isMethodInClassNotUnique(String qName, String methodName, int methodParameterCount) {
-        List<PsiMethod> methodInClass = findMethodInClass(qName, methodName, methodParameterCount);
+        return filterSupers(findMethodInClass(qName, methodName, methodParameterCount)).size() > 1;
+    }
 
+    private static List<PsiMethod> filterSupers(List<PsiMethod> methodInClass) {
         List<PsiMethod> methodsToRemove = new ArrayList<>();
-        for(PsiMethod method: methodInClass){
+        for (PsiMethod method : methodInClass) {
             PsiMethod[] superMethods = method.findSuperMethods();
-            if(!ArrayUtils.isEmpty(superMethods)){
+            if (!ArrayUtils.isEmpty(superMethods)) {
                 methodsToRemove.addAll(Arrays.asList(superMethods));
             }
-
         }
         methodInClass.retainAll(methodsToRemove);
-        return methodInClass.size() > 1;
+        return methodInClass;
     }
 
     @SuppressWarnings("ConstantConditions")

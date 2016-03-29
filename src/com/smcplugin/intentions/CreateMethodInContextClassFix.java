@@ -1,14 +1,17 @@
 package com.smcplugin.intentions;
 
+import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.ex.IdeDocumentHistory;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.smcplugin.psi.SmcFile;
 import org.jetbrains.annotations.Nls;
@@ -54,11 +57,11 @@ public class CreateMethodInContextClassFix extends BaseIntentionAction {
     @Override
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         SmcFile smcFile = (SmcFile) file;
-/*        if (!FileModificationService.getInstance().prepareFileForWrite(smcFile.getContextClass().getContainingFile())) {
+        if (!FileModificationService.getInstance().prepareFileForWrite(smcFile.getContextClass().getContainingFile())) {
             return;
         }
 
-        IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace();*/
+        IdeDocumentHistory.getInstance(project).includeCurrentPlaceAsChangePlace();
         ApplicationManager.getApplication().invokeLater(new Runnable() {
                                                             @Override
                                                             public void run() {
@@ -87,6 +90,13 @@ public class CreateMethodInContextClassFix extends BaseIntentionAction {
             PsiParameterList parameterList = factory.createParameterList(getNamesForParamList(parametersCount), getTypesForParamList(targetClass.getManager(), parametersCount));
             psiParameterList.replace(parameterList);
         }
+        if (targetClass.isInterface() || PsiUtil.isAbstractClass(targetClass)) {
+            PsiCodeBlock body = method.getBody();
+            if (body != null) {
+                body.delete();
+            }
+        }
+
         return (PsiMethod) targetClass.add(method);
     }
 

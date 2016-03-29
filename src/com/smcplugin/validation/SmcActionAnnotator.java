@@ -20,9 +20,6 @@ import java.text.MessageFormat;
  */
 public class SmcActionAnnotator implements Annotator {
     private static final String METHOD_NOT_FOUND_IN_CLASS = "Can\'\'t find method \"{0}\" in Java class \"{1}\"";
-    public static final String ARG_PREFIX = "arg";
-    public static final String COMMA = ",";
-    public static final String SPACE = " ";
     private static final String AMBIGUOS_METHOD_FOUND_IN_CLASS = "Ambiguos method call \"{0}\" in Java class \"{1}\"";
 
     @Override

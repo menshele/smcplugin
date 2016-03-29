@@ -18,6 +18,7 @@ import com.intellij.util.containers.Predicate;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.smcplugin.SmcFileType;
 import com.smcplugin.psi.impl.SmcPsiImplUtil;
+import org.apache.commons.lang.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -99,7 +100,18 @@ public class SmcPsiUtil {
     }
 
     public static boolean isMethodInClassNotUnique(String qName, String methodName, int methodParameterCount) {
-        return findMethodInClass(qName, methodName, methodParameterCount).size() > 1;
+        List<PsiMethod> methodInClass = findMethodInClass(qName, methodName, methodParameterCount);
+
+        List<PsiMethod> methodsToRemove = new ArrayList<>();
+        for(PsiMethod method: methodInClass){
+            PsiMethod[] superMethods = method.findSuperMethods();
+            if(!ArrayUtils.isEmpty(superMethods)){
+                methodsToRemove.addAll(Arrays.asList(superMethods));
+            }
+
+        }
+        methodInClass.retainAll(methodsToRemove);
+        return methodInClass.size() > 1;
     }
 
     @SuppressWarnings("ConstantConditions")

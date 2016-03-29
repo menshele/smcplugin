@@ -11,6 +11,6 @@ import org.jetbrains.annotations.NotNull;
 public class SmcFileTypeFactory extends FileTypeFactory{
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer) {
-        fileTypeConsumer.consume(SmcFileType.INSTANCE, "smc");
+        fileTypeConsumer.consume(SmcFileType.INSTANCE, "sm");
     }
 }

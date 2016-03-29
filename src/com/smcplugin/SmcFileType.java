@@ -33,7 +33,7 @@ public class SmcFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return "smc";
+        return "sm";
     }
 
     @Nullable

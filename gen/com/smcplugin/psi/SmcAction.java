@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 import javax.swing.Icon;
 
-public interface SmcAction extends SmcNamedElement {
+public interface SmcAction extends SmcMethodLikeElement {
 
   @Nullable
   SmcArguments getArguments();

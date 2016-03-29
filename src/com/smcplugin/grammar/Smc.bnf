@@ -150,7 +150,7 @@ transitions_block ::= BRACE_OPEN comment* transitions comment* BRACE_CLOSE
 
 transitions ::= comment* transition* comment*
 
-transition ::= TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcTransitionElement" methods=[ getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
+transition ::= TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMethodLikeElement" methods=[ getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
 
 entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" methods=[getType]}
 
@@ -193,7 +193,7 @@ actions_block ::= BRACE_OPEN actions BRACE_CLOSE
 
 actions ::= (comment* action comment*)*
 
-action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
+action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMethodLikeElement"  methods=[ getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
 
 arguments ::= argument (COMMA comment* argument)* { methods=[getArgumentsCount]}
 argument ::= ARGUMENT_STATEMENT|STRING_LITERAL comment*

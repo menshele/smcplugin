@@ -24,7 +24,7 @@ public class SmcPushStateAnnotator implements Annotator {
 
         if (element instanceof SmcPushMapNameElement) {
             SmcPushMapNameElement mapNameElement = (SmcPushMapNameElement) element;
-            if (mapNameElement.getName() != null && SmcPsiUtil.findMap(element.getProject(), mapNameElement.getName()).isEmpty()) {
+            if (mapNameElement.getName() != null && SmcPsiUtil.findMap(element.getContainingFile(), mapNameElement.getName()).isEmpty()) {
                 holder.createErrorAnnotation(element, getNoElementDeclarationFoundMessage(SmcTypes.MAP, mapNameElement.getName()));
             }
         }

@@ -14,6 +14,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.containers.Predicate;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.smcplugin.SmcFileType;
 import com.smcplugin.psi.impl.SmcPsiImplUtil;
@@ -106,7 +107,7 @@ public class SmcPsiUtil {
         return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT)) != null;
     }
 
-    public static List<SmcMap> findMap(Project project, String name) {
+    public static List<SmcMap> findMapGlobally(Project project, String name) {
         List<SmcMap> result = null;
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
                 GlobalSearchScope.allScope(project));
@@ -127,7 +128,22 @@ public class SmcPsiUtil {
         return result != null ? result : Collections.<SmcMap>emptyList();
     }
 
-    public static List<SmcFile> findSmcWithQualifiedNamedElement(Project project, Class<? extends SmcQualifiedNamedElement> cClass, @NotNull String contextQName) {
+    public static List<SmcMap> findMap(@NotNull PsiFile smcFile, String name) {
+        List<SmcMap> result = null;
+        Collection<SmcMap> mapsInFile = PsiTreeUtil.findChildrenOfType(smcFile, SmcMap.class);
+        for (SmcMap property : mapsInFile) {
+            if (name.equals(property.getName())) {
+                if (result == null) {
+                    result = new ArrayList<SmcMap>();
+                }
+                result.add(property);
+            }
+        }
+        return result != null ? result : Collections.<SmcMap>emptyList();
+    }
+
+    public static List<SmcFile> findSmcWithQualifiedNamedElement(Project project, Class<? extends
+            SmcQualifiedNamedElement> cClass, @NotNull String contextQName) {
         List<SmcFile> result = null;
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
                 GlobalSearchScope.allScope(project));
@@ -167,6 +183,30 @@ public class SmcPsiUtil {
             }
         }
         return result != null ? result : Collections.<SmcAction>emptyList();
+    }
+
+    public static List<? extends SmcMethodLikeElement> findMethodLikeForMethod(PsiMethod psiMethod, Class<? extends SmcMethodLikeElement> aClass, Predicate<SmcMethodLikeElement> predicate) {
+        List<SmcMethodLikeElement> result = null;
+        Project project = psiMethod.getProject();
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
+                GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (simpleFile != null) {
+                Collection<? extends SmcMethodLikeElement> methodLikeElements = PsiTreeUtil.findChildrenOfType(simpleFile, aClass);
+                for (SmcMethodLikeElement methodLike : methodLikeElements) {
+                    if (psiMethod.getName().equals(methodLike.getName()) &&
+                            psiMethod.getParameterList().getParametersCount() == methodLike.getArgumentCount() &&
+                            (predicate != null && predicate.apply(methodLike))) {
+                        if (result == null) {
+                            result = new ArrayList<>();
+                        }
+                        result.add(methodLike);
+                    }
+                }
+            }
+        }
+        return result != null ? result : Collections.<SmcMethodLikeElement>emptyList();
     }
 
     public static List<SmcTransition> findTransitionsForMethod(PsiMethod psiMethod) {
@@ -363,7 +403,7 @@ public class SmcPsiUtil {
         return result;
     }
 
-    public static List<SmcMap> findMap(Project project) {
+    public static List<SmcMap> findMapGlobally(Project project) {
         List<SmcMap> result = new ArrayList<SmcMap>();
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
                 GlobalSearchScope.allScope(project));
@@ -377,19 +417,32 @@ public class SmcPsiUtil {
         return result;
     }
 
+    public static List<SmcMap> findMap(PsiFile file) {
+        List<SmcMap> result = new ArrayList<SmcMap>();
+        if (file != null) {
+            Collection<SmcMap> properties = PsiTreeUtil.findChildrenOfType(file, SmcMap.class);
+            result.addAll(properties);
+        }
+        return result;
+    }
+
     @NotNull
     public static String getFullNameMethod(String name, int argumentCount, boolean appendBracesIfNoArgs) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(name);
-        boolean needToShowBracesIfNoArguments= appendBracesIfNoArgs || argumentCount > 0;
-        if(needToShowBracesIfNoArguments) {stringBuilder.append("(");}
+        boolean needToShowBracesIfNoArguments = appendBracesIfNoArgs || argumentCount > 0;
+        if (needToShowBracesIfNoArguments) {
+            stringBuilder.append("(");
+        }
         for (int i = 0; i < argumentCount; i++) {
             stringBuilder.append(SmcPsiImplUtil.ARG_PREFIX).append(i);
             if (i < argumentCount - 1) {
                 stringBuilder.append(SmcPsiImplUtil.MY_COMMA).append(SmcPsiImplUtil.SPACE);
             }
         }
-        if(needToShowBracesIfNoArguments) {stringBuilder.append("}");}
+        if (needToShowBracesIfNoArguments) {
+            stringBuilder.append("}");
+        }
         return stringBuilder.toString();
     }
 }

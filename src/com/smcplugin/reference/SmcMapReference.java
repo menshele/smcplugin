@@ -36,7 +36,7 @@ public class SmcMapReference extends PsiReferenceBase<PsiElement> implements Psi
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
-        final List<SmcMap> properties = SmcPsiUtil.findMap(project, key);
+        final List<SmcMap> properties = SmcPsiUtil.findMap(myElement.getContainingFile(), key);
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (SmcMap property : properties) {
             results.add(new PsiElementResolveResult(property));
@@ -54,14 +54,13 @@ public class SmcMapReference extends PsiReferenceBase<PsiElement> implements Psi
     @NotNull
     @Override
     public Object[] getVariants() {
-        Project project = myElement.getProject();
-        List<SmcMap> properties = SmcPsiUtil.findMap(project);
+        List<SmcMap> smcMaps = SmcPsiUtil.findMap(myElement.getContainingFile());
         List<LookupElement> variants = new ArrayList<LookupElement>();
-        for (final SmcMap property : properties) {
-            if (!StringUtil.isEmpty(property.getName())) {
-                variants.add(LookupElementBuilder.create(property).
+        for (final SmcMap map : smcMaps) {
+            if (!StringUtil.isEmpty(map.getName())) {
+                variants.add(LookupElementBuilder.create(map).
                         withIcon(SmcIcons.SM_MAP).
-                        withTypeText(property.getContainingFile().getName())
+                        withTypeText(map.getContainingFile().getName())
                 );
             }
         }

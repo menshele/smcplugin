@@ -12,7 +12,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitAction(@NotNull SmcAction o) {
-    visitNamedElement(o);
+    visitMethodLikeElement(o);
   }
 
   public void visitActions(@NotNull SmcActions o) {
@@ -192,7 +192,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitTransition(@NotNull SmcTransition o) {
-    visitTransitionElement(o);
+    visitMethodLikeElement(o);
   }
 
   public void visitTransitionArgs(@NotNull SmcTransitionArgs o) {
@@ -209,6 +209,10 @@ public class SmcVisitor extends PsiElementVisitor {
 
   public void visitVerbatimCodeSection(@NotNull SmcVerbatimCodeSection o) {
     visitPsiElement(o);
+  }
+
+  public void visitMethodLikeElement(@NotNull SmcMethodLikeElement o) {
+    visitElement(o);
   }
 
   public void visitCustomNamed(@NotNull SmcCustomNamed o) {
@@ -236,10 +240,6 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitStateFullName(@NotNull SmcStateFullName o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTransitionElement(@NotNull SmcTransitionElement o) {
     visitPsiElement(o);
   }
 

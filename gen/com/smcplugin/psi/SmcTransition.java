@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 import javax.swing.Icon;
 
-public interface SmcTransition extends SmcTransitionElement {
+public interface SmcTransition extends SmcMethodLikeElement {
 
   @Nullable
   SmcActionsBlock getActionsBlock();

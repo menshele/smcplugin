@@ -211,15 +211,15 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMethodLikeElement(@NotNull SmcMethodLikeElement o) {
-    visitElement(o);
-  }
-
   public void visitCustomNamed(@NotNull SmcCustomNamed o) {
     visitPsiElement(o);
   }
 
   public void visitMapElement(@NotNull SmcMapElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethodLikeElement(@NotNull SmcMethodLikeElement o) {
     visitPsiElement(o);
   }
 

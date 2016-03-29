@@ -4,11 +4,10 @@ as;asdjlaksd
 asdasd
 %}
 
-%class com.company.smc.ContextClass
-%package com.company.smc
+%class ContextClass
+%package com.smcplugin.example
 %import sdajasdl.*
-%import com.company.test.ImportedClass
-%fsmfile turnstile
+%import com.smcplugin.example.ImportClass
 %fsmclass StateMachine
 %access private
 %header asd
@@ -127,3 +126,4 @@ Unlocked
         thankyou();
     }
 }
+%%

@@ -44,7 +44,7 @@ VERBATIM_CODE=(.*|{EOL})*
 NOT_BRACKET=([^\[\]])*
 WORD=[A-Za-z][A-Za-z0-9_.]*
 WORD_IN_ARGUMENTS=\"(\\['\"tnbfru01234567]|[^\"\n\r])*?\"
-CONTEXT_CLASS_NAME={WORD}
+CONTEXT_CLASS_NAME={WORD_NOT_DOT}
 FSM_CLASS={WORD}
 FSM_FILE={WORD}
 PACKAGE_STATEMENT={WORD}
@@ -189,6 +189,7 @@ MAP_KEYWORD="%map"
   {WHITE_SPACE}               { yybegin(WAITING_FOR_CONTEXT_CLASS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
   {CONTEXT_CLASS_PACKAGE}     { yybegin(WAITING_FOR_CONTEXT_CLASS_NAME); return CONTEXT_CLASS_PACKAGE; }
+  {CONTEXT_CLASS_NAME}        { yybegin(YYINITIAL); return CONTEXT_CLASS_NAME; }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

@@ -405,7 +405,7 @@ public class SmcPsiUtil {
             }
         }
         if (needToShowBracesIfNoArguments) {
-            stringBuilder.append("}");
+            stringBuilder.append(")");
         }
         return stringBuilder.toString();
     }

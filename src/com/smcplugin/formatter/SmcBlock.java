@@ -28,6 +28,7 @@ public class SmcBlock implements ASTBlock {
 
     public static final String LBRACE = "{";
     public static final String RBRACE = "}";
+    public static final String MAP_BOUND = "%%";
     private final SmcBlock myParent;
 
     private final ASTNode myNode;
@@ -120,7 +121,9 @@ public class SmcBlock implements ASTBlock {
     }
 
     private Block makeSubBlock(@NotNull ASTNode childNode) {
-        if (childNode instanceof SmcGuardRawCode) {
+        if (childNode instanceof SmcGuardRawCode
+                || LBRACE.equals(childNode.getText()) || RBRACE.equals(childNode.getText())
+                || MAP_BOUND.equals(childNode.getText())) {
             return new SmcBlock(this, childNode, mySettings, null, Indent.getNoneIndent(), null);
         }
         Indent indent = Indent.getNoneIndent();
@@ -131,7 +134,7 @@ public class SmcBlock implements ASTBlock {
         if (hasElementType(myNode, SmcParserDefinition.CONTAINERS)) {
             assert myChildWrap != null;
             wrap = myChildWrap;
-            indent = Indent.getNormalIndent();
+            indent = Indent.getNormalIndent(false);
         }
         // Handle properties alignment
         else if (hasElementType(myNode, ARGUMENTS)) {
@@ -175,7 +178,7 @@ public class SmcBlock implements ASTBlock {
             return new ChildAttributes(Indent.getNoneIndent(), null);
         }
         // Will use continuation indent for cases like { "foo"<caret>  }
-        return new ChildAttributes(null, null);
+        return new ChildAttributes(Indent.getNoneIndent(), null);
     }
 
     @Override

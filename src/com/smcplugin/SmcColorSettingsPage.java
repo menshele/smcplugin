@@ -79,7 +79,7 @@ public class SmcColorSettingsPage implements ColorSettingsPage {
                 "\n" +
                 "%class adtest\n" +
                 "%import static sdajasdl.*\n" +
-                "%import com.db.Class\n" +
+                "%import com.company.Class\n" +
                 "%package turnstile\n" +
                 "%fsmfile turnstile\n" +
                 "%fsmclass turnstile\n" +

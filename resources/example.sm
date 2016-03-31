@@ -4,7 +4,7 @@ as;asdjlaksd
 asdasd
 %}
 
-%class ContextClass
+%class IContextable
 %package com.smcplugin.example
 %import sdajasdl.*
 %import com.smcplugin.example.ImportClass
@@ -31,7 +31,7 @@ Locked
     [ asdasd[ ]askldjaskl[][] ]
     Unlocked {}
 
-    coin1 (arggs : asd, arg : sfsd)
+    coin1 (arggs : asd<asdasd>, arg : sfsd)
     [ dasdsad []asdasd ]
     Unlocked {
         alarm();

@@ -1424,17 +1424,18 @@ public class SmcParser implements PsiParser, LightPsiParser {
   // comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE comment*
   public static boolean parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter")) return false;
-    boolean r;
+    boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, "<parameter>");
     r = parameter_0(b, l + 1);
     r = r && consumeToken(b, PARAMETER_NAME);
-    r = r && parameter_2(b, l + 1);
-    r = r && consumeToken(b, COLON);
-    r = r && parameter_4(b, l + 1);
-    r = r && consumeToken(b, PARAMETER_TYPE);
-    r = r && parameter_6(b, l + 1);
-    exit_section_(b, l, m, PARAMETER, r, false, null);
-    return r;
+    p = r; // pin = 2
+    r = r && report_error_(b, parameter_2(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, COLON)) && r;
+    r = p && report_error_(b, parameter_4(b, l + 1)) && r;
+    r = p && report_error_(b, consumeToken(b, PARAMETER_TYPE)) && r;
+    r = p && parameter_6(b, l + 1) && r;
+    exit_section_(b, l, m, PARAMETER, r, p, null);
+    return r || p;
   }
 
   // comment*

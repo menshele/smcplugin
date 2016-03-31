@@ -160,7 +160,7 @@ transition_args ::=PARENTHESES_OPEN comment* parameters comment* PARENTHESES_CLO
 
 parameters ::= parameter (COMMA comment* parameter)*
 
-parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE comment*
+parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE comment* {pin=2}
 
 guard ::= BRACKET_OPEN comment*  guard_raw_code? comment* BRACKET_CLOSE
 

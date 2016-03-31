@@ -23,7 +23,14 @@ public class SmcSingleElementsAnnotator implements Annotator {
     private static final String DUPLICATE_PATTERN = "Duplicate {0} declaration";
     private static final String REQUIRED_PATTERN = "{0} declaration required";
 
-    private final TypeDescriptor[] validateClasses = new TypeDescriptor[]{
+    private final TypeDescriptor[] validateTooFewClasses = new TypeDescriptor[]{
+            new TypeDescriptor<>(SmcFsmPackage.class, SmcTypes.FSM_PACKAGE),
+            new TypeDescriptor<>(SmcFsmClass.class, SmcTypes.FSM_CLASS),
+            new TypeDescriptor<>(SmcContextClass.class, SmcTypes.CONTEXT_CLASS),
+            new TypeDescriptor<>(SmcStartState.class, SmcTypes.START_STATE),
+    };
+
+    private final TypeDescriptor[] validateTooManyClasses = new TypeDescriptor[]{
             new TypeDescriptor<>(SmcFsmFile.class, SmcTypes.FSM_FILE),
             new TypeDescriptor<>(SmcFsmPackage.class, SmcTypes.FSM_PACKAGE),
             new TypeDescriptor<>(SmcFsmClass.class, SmcTypes.FSM_CLASS),
@@ -34,7 +41,7 @@ public class SmcSingleElementsAnnotator implements Annotator {
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
-        for (TypeDescriptor descriptor : validateClasses) {
+        for (TypeDescriptor descriptor : validateTooManyClasses) {
             Class typeClass = descriptor.getTypeClass();
             if (typeClass.isInstance(element)) {
                 PsiFile containingFile = element.getContainingFile();
@@ -49,7 +56,7 @@ public class SmcSingleElementsAnnotator implements Annotator {
         }
 
         if (SmcFile.class.isInstance(element)) {
-            for (TypeDescriptor descriptor : validateClasses) {
+            for (TypeDescriptor descriptor : validateTooFewClasses) {
                 if (descriptor.isRequired()) {
                     Collection<?> childrenOfType = PsiTreeUtil.findChildrenOfType(element, descriptor.getTypeClass());
                     if (isTooFew(childrenOfType)) {

@@ -58,20 +58,6 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
-/*        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClassDeclaration.class),
-                new PsiReferenceProvider() {
-                    @NotNull
-                    @Override
-                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                        SmcContextClassDeclaration qualifiedIdElement = (SmcContextClassDeclaration) element;
-                        SmcQualifiedIdentifier qualifiedIdentifier = qualifiedIdElement.getQualifiedIdentifier();
-                        SmcQualifiedIdElement lastIdentifier = qualifiedIdentifier != null ? qualifiedIdentifier.getLastIdentifier() : null;
-                        if (qualifiedIdElement.getName() != null) {
-                            return new PsiReference[]{new SmcJavaReference(lastIdentifier, new TextRange(0, element.getTextLength()))};
-                        }
-                        return new PsiReference[0];
-                    }
-                });*/
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcPushProxyStateNameElement.class),
                 new PsiReferenceProvider() {
                     @NotNull

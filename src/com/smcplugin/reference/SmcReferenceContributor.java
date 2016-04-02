@@ -58,7 +58,7 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClassDeclaration.class),
+/*        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClassDeclaration.class),
                 new PsiReferenceProvider() {
                     @NotNull
                     @Override
@@ -71,7 +71,7 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         }
                         return new PsiReference[0];
                     }
-                });
+                });*/
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcPushProxyStateNameElement.class),
                 new PsiReferenceProvider() {
                     @NotNull

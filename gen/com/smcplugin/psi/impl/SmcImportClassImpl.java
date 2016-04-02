@@ -30,14 +30,8 @@ public class SmcImportClassImpl extends ASTWrapperPsiElement implements SmcImpor
 
   @Override
   @NotNull
-  public SmcImportClassPackageElement getImportClassPackageElement() {
-    return findNotNullChildByClass(SmcImportClassPackageElement.class);
-  }
-
-  @Override
-  @NotNull
-  public SmcImportClassStatementElement getImportClassStatementElement() {
-    return findNotNullChildByClass(SmcImportClassStatementElement.class);
+  public SmcQualifiedIdentifier getQualifiedIdentifier() {
+    return findNotNullChildByClass(SmcQualifiedIdentifier.class);
   }
 
 }

@@ -17,10 +17,7 @@ public interface SmcTypes {
   IElementType BLOCK_COMMENT = new SmcElementType("BLOCK_COMMENT");
   IElementType CALLBACK_TRANSITION = new SmcElementType("CALLBACK_TRANSITION");
   IElementType COMMENT = new SmcElementType("COMMENT");
-  IElementType CONTEXT_CLASS = new SmcElementType("CONTEXT_CLASS");
   IElementType CONTEXT_CLASS_DECLARATION = new SmcElementType("CONTEXT_CLASS_DECLARATION");
-  IElementType CONTEXT_CLASS_NAME_FULL = new SmcElementType("CONTEXT_CLASS_NAME_FULL");
-  IElementType CONTEXT_CLASS_PACKAGE_ELEMENT = new SmcElementType("CONTEXT_CLASS_PACKAGE_ELEMENT");
   IElementType DECLARE = new SmcElementType("DECLARE");
   IElementType ENTRY = new SmcElementType("ENTRY");
   IElementType EXIT = new SmcElementType("EXIT");
@@ -31,10 +28,9 @@ public interface SmcTypes {
   IElementType GUARD = new SmcElementType("GUARD");
   IElementType GUARD_RAW_CODE = new SmcElementType("GUARD_RAW_CODE");
   IElementType HEADER_FILE = new SmcElementType("HEADER_FILE");
+  IElementType IDENTIFIER = new SmcElementType("IDENTIFIER");
   IElementType IMPORT_CLASS = new SmcElementType("IMPORT_CLASS");
   IElementType IMPORT_CLASS_DECLARATION = new SmcElementType("IMPORT_CLASS_DECLARATION");
-  IElementType IMPORT_CLASS_PACKAGE_ELEMENT = new SmcElementType("IMPORT_CLASS_PACKAGE_ELEMENT");
-  IElementType IMPORT_CLASS_STATEMENT_ELEMENT = new SmcElementType("IMPORT_CLASS_STATEMENT_ELEMENT");
   IElementType INCLUDE_FILE = new SmcElementType("INCLUDE_FILE");
   IElementType MAP = new SmcElementType("MAP");
   IElementType MAP_DECLARATION = new SmcElementType("MAP_DECLARATION");
@@ -49,11 +45,13 @@ public interface SmcTypes {
   IElementType PUSH_STATE = new SmcElementType("PUSH_STATE");
   IElementType PUSH_STATE_NAME_ELEMENT = new SmcElementType("PUSH_STATE_NAME_ELEMENT");
   IElementType PUSH_TRANSITION = new SmcElementType("PUSH_TRANSITION");
+  IElementType QUALIFIED_IDENTIFIER = new SmcElementType("QUALIFIED_IDENTIFIER");
   IElementType START_MAP_NAME_ELEMENT = new SmcElementType("START_MAP_NAME_ELEMENT");
   IElementType START_STATE = new SmcElementType("START_STATE");
   IElementType START_STATE_NAME_ELEMENT = new SmcElementType("START_STATE_NAME_ELEMENT");
   IElementType STATE = new SmcElementType("STATE");
   IElementType STATES = new SmcElementType("STATES");
+  IElementType STATIC_IMPORT = new SmcElementType("STATIC_IMPORT");
   IElementType TRANSITION = new SmcElementType("TRANSITION");
   IElementType TRANSITIONS = new SmcElementType("TRANSITIONS");
   IElementType TRANSITIONS_BLOCK = new SmcElementType("TRANSITIONS_BLOCK");
@@ -79,6 +77,7 @@ public interface SmcTypes {
   IElementType CONTEXT_CLASS_PACKAGE = new SmcTokenType("<context package name>");
   IElementType DECLARE_KEYWORD = new SmcTokenType("%declare");
   IElementType DECLARE_STATEMENT = new SmcTokenType("<declare statement>");
+  IElementType DOT = new SmcTokenType("DOT");
   IElementType ENTRY_KEYWORD = new SmcTokenType("Entry");
   IElementType EXIT_KEYWORD = new SmcTokenType("Exit");
   IElementType FSM_CLASS_KEYWORD = new SmcTokenType("%fsmclass");
@@ -90,7 +89,7 @@ public interface SmcTypes {
   IElementType GUARD_NOT_BRACKET = new SmcTokenType("<any char except '[' or ']' >");
   IElementType HEADER_FILE_NAME = new SmcTokenType("<header file name>");
   IElementType HEADER_KEYWORD = new SmcTokenType("%header");
-  IElementType IMPORT_CLASS_PACKAGE = new SmcTokenType("IMPORT_CLASS_PACKAGE");
+  IElementType IDENTIFIER_NAME = new SmcTokenType("<identifier>");
   IElementType IMPORT_CLASS_STATEMENT = new SmcTokenType("<java import statement>");
   IElementType IMPORT_KEYWORD = new SmcTokenType("%import");
   IElementType INCLUDE_FILE_NAME = new SmcTokenType("<include file name>");
@@ -156,17 +155,8 @@ public interface SmcTypes {
       else if (type == COMMENT) {
         return new SmcCommentImpl(node);
       }
-      else if (type == CONTEXT_CLASS) {
-        return new SmcContextClassImpl(node);
-      }
       else if (type == CONTEXT_CLASS_DECLARATION) {
         return new SmcContextClassDeclarationImpl(node);
-      }
-      else if (type == CONTEXT_CLASS_NAME_FULL) {
-        return new SmcContextClassNameFullImpl(node);
-      }
-      else if (type == CONTEXT_CLASS_PACKAGE_ELEMENT) {
-        return new SmcContextClassPackageElementImpl(node);
       }
       else if (type == DECLARE) {
         return new SmcDeclareImpl(node);
@@ -198,17 +188,14 @@ public interface SmcTypes {
       else if (type == HEADER_FILE) {
         return new SmcHeaderFileImpl(node);
       }
+      else if (type == IDENTIFIER) {
+        return new SmcIdentifierImpl(node);
+      }
       else if (type == IMPORT_CLASS) {
         return new SmcImportClassImpl(node);
       }
       else if (type == IMPORT_CLASS_DECLARATION) {
         return new SmcImportClassDeclarationImpl(node);
-      }
-      else if (type == IMPORT_CLASS_PACKAGE_ELEMENT) {
-        return new SmcImportClassPackageElementImpl(node);
-      }
-      else if (type == IMPORT_CLASS_STATEMENT_ELEMENT) {
-        return new SmcImportClassStatementElementImpl(node);
       }
       else if (type == INCLUDE_FILE) {
         return new SmcIncludeFileImpl(node);
@@ -252,6 +239,9 @@ public interface SmcTypes {
       else if (type == PUSH_TRANSITION) {
         return new SmcPushTransitionImpl(node);
       }
+      else if (type == QUALIFIED_IDENTIFIER) {
+        return new SmcQualifiedIdentifierImpl(node);
+      }
       else if (type == START_MAP_NAME_ELEMENT) {
         return new SmcStartMapNameElementImpl(node);
       }
@@ -266,6 +256,9 @@ public interface SmcTypes {
       }
       else if (type == STATES) {
         return new SmcStatesImpl(node);
+      }
+      else if (type == STATIC_IMPORT) {
+        return new SmcStaticImportImpl(node);
       }
       else if (type == TRANSITION) {
         return new SmcTransitionImpl(node);

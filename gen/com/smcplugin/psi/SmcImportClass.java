@@ -11,9 +11,6 @@ public interface SmcImportClass extends PsiElement {
   List<SmcComment> getCommentList();
 
   @NotNull
-  SmcImportClassPackageElement getImportClassPackageElement();
-
-  @NotNull
-  SmcImportClassStatementElement getImportClassStatementElement();
+  SmcQualifiedIdentifier getQualifiedIdentifier();
 
 }

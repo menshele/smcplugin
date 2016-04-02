@@ -11,7 +11,7 @@ asdasd
 %fsmclass StateMachine
 %access private
 %header asd
-%start Unlocked::Unlocked
+%start Unlocked::Locked
 %declare asdsd
 %include asdas
 
@@ -31,7 +31,7 @@ Locked
     [ asdasd[ ]askldjaskl[][] ]
     Unlocked {}
 
-    coin1 (arggs : asd<asdasd>, arg : sfsd)
+    coin1 (arggs : asd, arg : sfsd)
     [ dasdsad []asdasd ]
     Unlocked {
         alarm();

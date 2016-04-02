@@ -26,7 +26,7 @@ public class SmcSingleElementsAnnotator implements Annotator {
     private final TypeDescriptor[] validateTooFewClasses = new TypeDescriptor[]{
             new TypeDescriptor<>(SmcFsmPackage.class, SmcTypes.FSM_PACKAGE),
             new TypeDescriptor<>(SmcFsmClass.class, SmcTypes.FSM_CLASS),
-            new TypeDescriptor<>(SmcContextClass.class, SmcTypes.CONTEXT_CLASS),
+            new TypeDescriptor<>(SmcContextClassDeclaration.class, SmcTypes.QUALIFIED_IDENTIFIER),
             new TypeDescriptor<>(SmcStartState.class, SmcTypes.START_STATE),
     };
 
@@ -34,7 +34,7 @@ public class SmcSingleElementsAnnotator implements Annotator {
             new TypeDescriptor<>(SmcFsmFile.class, SmcTypes.FSM_FILE),
             new TypeDescriptor<>(SmcFsmPackage.class, SmcTypes.FSM_PACKAGE),
             new TypeDescriptor<>(SmcFsmClass.class, SmcTypes.FSM_CLASS),
-            new TypeDescriptor<>(SmcContextClass.class, SmcTypes.CONTEXT_CLASS),
+            new TypeDescriptor<>(SmcContextClassDeclaration.class, SmcTypes.QUALIFIED_IDENTIFIER),
             new TypeDescriptor<>(SmcStartState.class, SmcTypes.START_STATE),
             new TypeDescriptor<>(SmcVerbatimCodeSection.class, SmcTypes.VERBATIM_CODE_SECTION)
     };

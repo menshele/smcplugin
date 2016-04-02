@@ -5,16 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcImportClassStatementElement extends SmcQualifiedNamedElement {
+public interface SmcIdentifier extends SmcQualifiedIdElement {
 
   @NotNull
   List<SmcComment> getCommentList();
-
-  String getPackageText();
-
-  boolean isWildcard();
-
-  boolean isClassName();
 
   PsiElement getNameIdentifier();
 

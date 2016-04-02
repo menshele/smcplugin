@@ -1,6 +1,7 @@
 package com.smcplugin.util;
 
 import com.intellij.openapi.util.text.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.regex.Matcher;
@@ -19,17 +20,16 @@ public class SmcStringUtils {
     public static final Pattern WHITESPACE_CHAR_PATTERN = Pattern.compile("\\s");
     public static final int NOT_FOUND_CHAR = -1;
 
-    public static int indexOf(final CharSequence seq, String pattern) {
-        Pattern compiled = Pattern.compile(pattern);
-        return indexOf(seq, compiled);
-    }
-
     public static int indexOf(CharSequence seq, Pattern compile) {
         Matcher matcher = compile.matcher(seq);
         if (matcher.find()) {
             return matcher.start();
         }
         return NOT_FOUND_CHAR;
+    }
+
+    public static String getNextPackageName(String base, String qName) {
+        return StringUtils.removeStart(qName, base).substring(1);
     }
 
     public static String toDisplayString(String text) {

@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 
-public class SmcImportClassPackageElementImpl extends SmcNamedElementImpl implements SmcImportClassPackageElement {
+public class SmcIdentifierImpl extends SmcQualifiedIdElementImpl implements SmcIdentifier {
 
-  public SmcImportClassPackageElementImpl(ASTNode node) {
+  public SmcIdentifierImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitImportClassPackageElement(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitIdentifier(this);
     else super.accept(visitor);
   }
 

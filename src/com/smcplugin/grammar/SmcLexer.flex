@@ -37,7 +37,9 @@ import static com.smcplugin.util.SmcStringUtils.*;
 %type IElementType
 %unicode
 
-EOL="\r"|"\n"|"\r\n"
+TWO_SIGN_EOL="\r\n"
+ONE_SIGN_EOL="\r"|"\n"
+EOL={ONE_SIGN_EOL}|{TWO_SIGN_EOL}
 LINE_WS=[\ \t\f]
 WHITE_SPACE=({LINE_WS}|{EOL})+
 VERBATIM_CODE=(.*|{EOL})*
@@ -62,6 +64,8 @@ WORD_NOT_DOT=[A-Za-z][A-Za-z0-9_]*
 CONTEXT_CLASS_PACKAGE=({WORD_NOT_DOT}\.)*
 IMPORT_CLASS_PACKAGE=({WORD_NOT_DOT}\.)*
 IMPORT_CLASS_NAME={WORD_NOT_DOT}|\*
+IDENTIFIER={WORD_NOT_DOT}|\*
+DOT="."
 
 LINE_COMMENT="//".*
 
@@ -139,6 +143,8 @@ MAP_KEYWORD="%map"
 %state WAITING_FOR_PROXY_STATE
 %state WAITING_FOR_CONTEXT_CLASS_NAME
 %state WAITING_FOR_IMPORT_CLASS_NAME
+%state WAITING_FOR_QUALIFIED_NAME
+%state WAITING_FOR_QUALIFIED_IDENTIFIER
 
 %%
 <YYINITIAL> {
@@ -181,15 +187,14 @@ MAP_KEYWORD="%map"
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_PACKAGE_STATEMENT); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
-  {PACKAGE_STATEMENT}         { yybegin(YYINITIAL); return PACKAGE_STATEMENT; }
+  {IDENTIFIER}                { yybegin(WAITING_FOR_QUALIFIED_NAME); yypushback(yylength()); }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 <WAITING_FOR_CONTEXT_CLASS>{
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_CONTEXT_CLASS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
-  {CONTEXT_CLASS_PACKAGE}     { yybegin(WAITING_FOR_CONTEXT_CLASS_NAME); return CONTEXT_CLASS_PACKAGE; }
-  {CONTEXT_CLASS_NAME}        { yybegin(YYINITIAL); return CONTEXT_CLASS_NAME; }
+  {IDENTIFIER}                { yybegin(WAITING_FOR_QUALIFIED_NAME); yypushback(yylength()); }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 
@@ -205,10 +210,30 @@ MAP_KEYWORD="%map"
   {LINE_COMMENT}              { return LINE_COMMENT; }
   {WHITE_SPACE}               { yybegin(WAITING_FOR_IMPORT_CLASS); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
-  {STATIC_KEYWORD}            { yybegin(WAITING_FOR_IMPORT_CLASS); return STATIC_JAVA_KEYWORD; }
-  {IMPORT_CLASS_PACKAGE}      { yybegin(WAITING_FOR_IMPORT_CLASS_NAME); return IMPORT_CLASS_PACKAGE; }
+  {STATIC_KEYWORD}            { yybegin(WAITING_FOR_QUALIFIED_NAME); return STATIC_JAVA_KEYWORD; }
+  {IDENTIFIER}                { yybegin(WAITING_FOR_QUALIFIED_NAME); yypushback(yylength()); }
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
+
+<WAITING_FOR_QUALIFIED_NAME>{
+  {LINE_COMMENT}              { return LINE_COMMENT; }
+  {LINE_WS}                   { yybegin(WAITING_FOR_QUALIFIED_NAME); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {IDENTIFIER}                { yybegin(WAITING_FOR_QUALIFIED_NAME); return IDENTIFIER_NAME; }
+  {DOT}                       { yybegin(WAITING_FOR_QUALIFIED_IDENTIFIER); return DOT; }
+  {EOL}                       { yybegin(YYINITIAL); yypushback(yylength()); }
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+<WAITING_FOR_QUALIFIED_IDENTIFIER>{
+  {LINE_COMMENT}              { return LINE_COMMENT; }
+  {LINE_WS}                   { yybegin(WAITING_FOR_QUALIFIED_IDENTIFIER); return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
+  {IDENTIFIER}                { yybegin(WAITING_FOR_QUALIFIED_NAME); return IDENTIFIER_NAME; }
+  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+}
+
+
 
 <WAITING_FOR_IMPORT_CLASS_NAME>{
   {LINE_COMMENT}              { return LINE_COMMENT; }

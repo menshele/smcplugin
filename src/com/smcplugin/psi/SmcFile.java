@@ -7,6 +7,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.smcplugin.SmcFileType;
 import com.smcplugin.SmcLanguage;
+import com.smcplugin.psi.impl.SmcPsiImplUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,8 +39,14 @@ public class SmcFile extends PsiFileBase {
     }
 
     public String getContextClassQName() {
-        SmcContextClass childOfType = PsiTreeUtil.findChildOfType(this, SmcContextClass.class);
-        return childOfType != null? childOfType.getQualifiedName():"";
+        SmcContextClassDeclaration contextClass = PsiTreeUtil.getChildOfType(this, SmcContextClassDeclaration.class);
+        SmcQualifiedIdentifier qualifiedIdentifier = null;
+        if (contextClass != null) {
+            qualifiedIdentifier = contextClass.getQualifiedIdentifier();
+        }
+        String declaredQname = qualifiedIdentifier != null ? qualifiedIdentifier.getName() : "";
+        String name = declaredQname != null ? declaredQname : "";
+        return name.contains(SmcPsiImplUtil.STRING_DOT) ? name : getPackageName() + SmcPsiImplUtil.STRING_DOT + name;
     }
 
     public PsiClass getContextClass() {
@@ -49,11 +56,16 @@ public class SmcFile extends PsiFileBase {
 
     public String getFsmClassQName() {
         SmcFsmClass childOfType = PsiTreeUtil.findChildOfType(this, SmcFsmClass.class);
-        return childOfType != null? childOfType.getQualifiedName():"";
+        return childOfType != null ? childOfType.getQualifiedName() : "";
     }
 
     public PsiClass getFsmClass() {
         String fsmQname = getFsmClassQName();
         return StringUtils.isBlank(fsmQname) ? null : SmcPsiUtil.findClass(fsmQname);
+    }
+
+    public String getPackageName() {
+        SmcFsmPackage childOfType = PsiTreeUtil.findChildOfType(this, SmcFsmPackage.class);
+        return childOfType != null ? childOfType.getName() : "";
     }
 }

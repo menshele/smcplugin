@@ -3,6 +3,7 @@ package com.smcplugin.reference;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.smcplugin.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,41 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         SmcNextState nextState = (SmcNextState) element;
                         if (nextState.getName() != null) {
                             return new PsiReference[]{new SmcStateReference(element)};
+                        }
+                        return new PsiReference[0];
+                    }
+                });
+
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcQualifiedIdElement.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcQualifiedIdElement qualifiedIdElement = (SmcQualifiedIdElement) element;
+                        if (qualifiedIdElement.getName() != null) {
+                            SmcContextClassDeclaration contextClass = PsiTreeUtil.getParentOfType(qualifiedIdElement, SmcContextClassDeclaration.class);
+                            if (contextClass != null) {
+                                SmcQualifiedIdentifier qualifiedIdentifier = contextClass.getQualifiedIdentifier();
+                                if (qualifiedIdentifier != null && qualifiedIdentifier.getLastIdentifier().isEquivalentTo(element)) {
+                                    String contextClassQName = ((SmcFile) contextClass.getContainingFile()).getContextClassQName();
+                                    return new PsiReference[]{new SmcJavaReference(qualifiedIdElement, contextClassQName, new TextRange(0, element.getTextLength()))};
+                                }
+                            }
+                            return new PsiReference[]{new SmcJavaReference(qualifiedIdElement, new TextRange(0, element.getTextLength()))};
+                        }
+                        return new PsiReference[0];
+                    }
+                });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcContextClassDeclaration.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcContextClassDeclaration qualifiedIdElement = (SmcContextClassDeclaration) element;
+                        SmcQualifiedIdentifier qualifiedIdentifier = qualifiedIdElement.getQualifiedIdentifier();
+                        SmcQualifiedIdElement lastIdentifier = qualifiedIdentifier != null ? qualifiedIdentifier.getLastIdentifier() : null;
+                        if (qualifiedIdElement.getName() != null) {
+                            return new PsiReference[]{new SmcJavaReference(lastIdentifier, new TextRange(0, element.getTextLength()))};
                         }
                         return new PsiReference[0];
                     }

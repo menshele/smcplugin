@@ -8,16 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcContextClassImpl extends SmcQualifiedNamedElementImpl implements SmcContextClass {
+public class SmcStaticImportImpl extends ASTWrapperPsiElement implements SmcStaticImport {
 
-  public SmcContextClassImpl(ASTNode node) {
+  public SmcStaticImportImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitContextClass(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitStaticImport(this);
     else super.accept(visitor);
   }
 
@@ -27,13 +28,14 @@ public class SmcContextClassImpl extends SmcQualifiedNamedElementImpl implements
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
+  @Override
   @Nullable
-  public String getPackageText() {
-    return SmcPsiImplUtil.getPackageText(this);
+  public SmcQualifiedIdentifier getQualifiedIdentifier() {
+    return findChildByClass(SmcQualifiedIdentifier.class);
   }
 
-  public PsiElement getNameIdentifier() {
-    return SmcPsiImplUtil.getNameIdentifier(this);
+  public String getName() {
+    return SmcPsiImplUtil.getName(this);
   }
 
 }

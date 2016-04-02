@@ -29,9 +29,15 @@ public class SmcImportClassDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public SmcImportClass getImportClass() {
-    return findNotNullChildByClass(SmcImportClass.class);
+    return findChildByClass(SmcImportClass.class);
+  }
+
+  @Override
+  @Nullable
+  public SmcStaticImport getStaticImport() {
+    return findChildByClass(SmcStaticImport.class);
   }
 
 }

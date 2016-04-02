@@ -10,6 +10,9 @@ public interface SmcFsmPackage extends SmcCustomNamed {
   @NotNull
   List<SmcComment> getCommentList();
 
+  @Nullable
+  SmcQualifiedIdentifier getQualifiedIdentifier();
+
   String getName();
 
 }

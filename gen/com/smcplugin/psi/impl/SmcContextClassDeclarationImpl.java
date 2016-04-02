@@ -29,9 +29,13 @@ public class SmcContextClassDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
-  public SmcContextClassNameFull getContextClassNameFull() {
-    return findNotNullChildByClass(SmcContextClassNameFull.class);
+  @Nullable
+  public SmcQualifiedIdentifier getQualifiedIdentifier() {
+    return findChildByClass(SmcQualifiedIdentifier.class);
+  }
+
+  public String getName() {
+    return SmcPsiImplUtil.getName(this);
   }
 
 }

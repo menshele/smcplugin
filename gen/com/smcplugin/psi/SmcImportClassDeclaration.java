@@ -10,7 +10,10 @@ public interface SmcImportClassDeclaration extends PsiElement {
   @NotNull
   List<SmcComment> getCommentList();
 
-  @NotNull
+  @Nullable
   SmcImportClass getImportClass();
+
+  @Nullable
+  SmcStaticImport getStaticImport();
 
 }

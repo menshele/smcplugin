@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.smcplugin.PresentationFactory;
 import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.*;
+import org.apache.commons.lang.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ import javax.swing.*;
  */
 public class SmcPsiImplUtil {
 
-    public static final String DOT = ".";
+    public static final String STRING_DOT = ".";
     public static final String ARG_PREFIX = "arg";
     public static final String MY_COMMA = ",";
     public static final String SPACE = " ";
@@ -88,15 +89,14 @@ public class SmcPsiImplUtil {
 
 
     public static String getName(SmcFsmPackage element) {
-        return getStringName(element, SmcTypes.PACKAGE_STATEMENT);
+        SmcQualifiedIdentifier childOfType = PsiTreeUtil.getChildOfType(element, SmcQualifiedIdentifier.class);
+        return childOfType != null? childOfType.getName(): "";
     }
 
-    public static String getName(SmcContextClass element) {
-        return getStringName(element, SmcTypes.CONTEXT_CLASS_NAME);
-    }
 
-    public static PsiElement getNameIdentifier(SmcImportClassStatementElement element) {
-        return gePsiByToken(element, SmcTypes.IMPORT_CLASS_STATEMENT);
+    public static String getName(SmcContextClassDeclaration element) {
+        SmcQualifiedIdentifier childOfType = PsiTreeUtil.getChildOfType(element, SmcQualifiedIdentifier.class);
+        return childOfType != null? childOfType.getName(): "";
     }
 
     public static PsiElement getNameIdentifier(SmcTransition element) {
@@ -111,34 +111,36 @@ public class SmcPsiImplUtil {
         return gePsiByToken(element, SmcTypes.START_STATE_NAME);
     }
 
-    public static PsiElement getNameIdentifier(SmcContextClass element) {
-        return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_NAME);
+    public static PsiElement getNameIdentifier(SmcQualifiedIdentifier element) {
+        SmcIdentifier[] identifiers = PsiTreeUtil.getChildrenOfType(element, SmcIdentifier.class);
+
+        return ArrayUtils.isEmpty(identifiers) ? null : gePsiByToken(identifiers[identifiers.length - 1], SmcTypes.IDENTIFIER_NAME);
     }
 
-    public static PsiElement getNameIdentifier(SmcImportClassPackageElement element) {
-        return gePsiByToken(element, SmcTypes.IMPORT_CLASS_PACKAGE);
+    public static PsiElement getNameIdentifier(SmcIdentifier element) {
+        return gePsiByToken(element, SmcTypes.IDENTIFIER_NAME);
     }
 
-    public static PsiElement getNameIdentifier(SmcContextClassPackageElement element) {
-        return gePsiByToken(element, SmcTypes.CONTEXT_CLASS_PACKAGE);
+    public static String getName(SmcStaticImport element) {
+        return getStringName(element, SmcTypes.IDENTIFIER_NAME);
     }
 
-    public static String getQualifiedName(SmcContextClass element) {
-        return element.getPackageName() + element.getName();
-    }
-
-    @Nullable
-    public static String getPackageText(SmcContextClass element) {
-        SmcContextClassDeclaration smcContextClass = PsiTreeUtil.getParentOfType(element, SmcContextClassDeclaration.class);
-        SmcContextClassPackageElement packageNameElement = PsiTreeUtil.findChildOfType(smcContextClass, SmcContextClassPackageElement.class);
-        String resultPackageName;
-        if (packageNameElement == null) {
-            SmcFsmPackage smcFsmPackage = PsiTreeUtil.getChildOfType(element.getContainingFile(), SmcFsmPackage.class);
-            resultPackageName = smcFsmPackage != null ? smcFsmPackage.getName() : null;
-        } else {
-            resultPackageName = packageNameElement.getName();
+    public static String getName(SmcQualifiedIdentifier element) {
+        SmcQualifiedIdElement[] childrenOfType = PsiTreeUtil.getChildrenOfType(element, SmcQualifiedIdElement.class);
+        String name = "";
+        if(!ArrayUtils.isEmpty(childrenOfType)){
+            name = childrenOfType[childrenOfType.length - 1].getQualifiedName();
         }
-        return resultPackageName;
+        return name;
+    }
+
+    public static SmcQualifiedIdElement getLastIdentifier(SmcQualifiedIdentifier element) {
+        SmcQualifiedIdElement[] childrenOfType = PsiTreeUtil.getChildrenOfType(element, SmcQualifiedIdElement.class);
+        SmcQualifiedIdElement result = null;
+        if(!ArrayUtils.isEmpty(childrenOfType)){
+            result = childrenOfType[childrenOfType.length - 1];
+        }
+        return result;
     }
 
     public static PsiElement getNameIdentifier(SmcFsmClass element) {
@@ -198,12 +200,12 @@ public class SmcPsiImplUtil {
         }
 
         SmcState state = PsiTreeUtil.getParentOfType(action, SmcState.class);
-        return (state != null ? state.getName() + DOT : "") + actionParentName + DOT + action.getFullName();
+        return (state != null ? state.getName() + STRING_DOT : "") + actionParentName + STRING_DOT + action.getFullName();
     }
 
     public static String getQualifiedFullName(SmcTransition smcTransition) {
         SmcState state = PsiTreeUtil.getParentOfType(smcTransition, SmcState.class);
-        return (state != null ? state.getName() + DOT : "") +  smcTransition.getFullName();
+        return (state != null ? state.getName() + STRING_DOT : "") + smcTransition.getFullName();
     }
 
     public static String getFullName(SmcAction action) {
@@ -218,12 +220,6 @@ public class SmcPsiImplUtil {
         return element.getArgumentList().size();
     }
 
-    public static String getPackageText(SmcImportClassStatementElement element) {
-        SmcImportClass smcImportClass = PsiTreeUtil.getParentOfType(element, SmcImportClass.class);
-        SmcImportClassPackageElement packageNameElement = PsiTreeUtil.getChildOfType(smcImportClass, SmcImportClassPackageElement.class);
-        return packageNameElement != null ? packageNameElement.getName() : "";
-    }
-
     @Nullable
     private static PsiElement gePsiByToken(PsiElement element, IElementType nameToken) {
         ASTNode keyNode = element.getNode().findChildByType(nameToken);
@@ -232,14 +228,6 @@ public class SmcPsiImplUtil {
         } else {
             return null;
         }
-    }
-
-    public static boolean isWildcard(SmcImportClassStatementElement element) {
-        return element.getName() != null && element.getName().contains("*");
-    }
-
-    public static boolean isClassName(SmcImportClassStatementElement element) {
-        return element.getName() != null && !element.getName().contains("*");
     }
 
     @Nullable

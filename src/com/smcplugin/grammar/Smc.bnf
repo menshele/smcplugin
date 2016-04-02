@@ -82,6 +82,7 @@
       STRING_LITERAL="<string literal>"
       ARGUMENT_STATEMENT="<argument>"
       CONTEXT_CLASS_PACKAGE="<context package name>"
+      IDENTIFIER_NAME="<identifier>"
      ]
 }
 
@@ -110,28 +111,23 @@ start_state_name_element ::= START_STATE_NAME comment* {pin=1 mixin="com.smcplug
 start_map_name_element ::= START_MAP_NAME comment* {  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
 
 
-context_class_declaration ::= CLASS_KEYWORD comment* context_class_name_full
-
-context_class_name_full ::= (context_class_package_element)? context_class
-
-context_class_package_element ::=  comment* CONTEXT_CLASS_PACKAGE {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
-
-context_class ::= comment*  CONTEXT_CLASS_NAME  {pin=3 mixin="com.smcplugin.psi.impl.SmcQualifiedNamedElementImpl" implements="com.smcplugin.psi.SmcQualifiedNamedElement" methods=[ getPackageText getNameIdentifier]}
+context_class_declaration ::= CLASS_KEYWORD comment* qualified_identifier  {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
 
 header_file ::= HEADER_KEYWORD comment* HEADER_FILE_NAME
 
 include_file ::= INCLUDE_KEYWORD comment* INCLUDE_FILE_NAME
 
-fsm_package ::= PACKAGE_KEYWORD comment* PACKAGE_STATEMENT {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
+fsm_package ::= PACKAGE_KEYWORD comment* qualified_identifier {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
 
-import_class_declaration ::= IMPORT_KEYWORD comment* STATIC_JAVA_KEYWORD? comment* import_class
+import_class_declaration ::= IMPORT_KEYWORD comment* (static_import|import_class)
 
-import_class ::= comment* import_class_package_element import_class_statement_element
+import_class ::= comment* qualified_identifier
 
-import_class_package_element ::=  comment* IMPORT_CLASS_PACKAGE  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[ getNameIdentifier ]}
+static_import ::= STATIC_JAVA_KEYWORD comment* qualified_identifier {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
 
-import_class_statement_element ::= comment* IMPORT_CLASS_STATEMENT {pin=2 mixin="com.smcplugin.psi.impl.SmcQualifiedNamedElementImpl" implements="com.smcplugin.psi.SmcQualifiedNamedElement" methods=[ getPackageText isWildcard isClassName getNameIdentifier ]}
+qualified_identifier ::= (identifier DOT)* identifier {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getLastIdentifier]}
 
+identifier ::= comment* IDENTIFIER_NAME comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcQualifiedIdElementImpl"  implements="com.smcplugin.psi.SmcQualifiedIdElement" methods=[ getNameIdentifier ]}
 
 declare ::= DECLARE_KEYWORD comment* DECLARE_STATEMENT
 

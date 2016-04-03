@@ -48,10 +48,11 @@ public class SmcJavaLineMarkerProvider extends RelatedItemLineMarkerProvider {
             PsiMethod psiMethod = methodCallExpression.resolveMethod();
             if (psiMethod != null) {
                 PsiClass containingClass = psiMethod.getContainingClass();
-                if (containingClass != null)
+                if (containingClass != null) {
                     registerMethodLike(psiMethod, methodCallExpression, result, SmcTransition.class,
                             new FsmClassMethodPredicate(containingClass),
                             SmcIcons.TRANSITION_REF, "Navigate to a FSM transition for \"{0}\"");
+                }
             }
         }
     }

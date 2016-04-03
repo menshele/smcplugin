@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiMethod;
 import javax.swing.Icon;
 
 public interface SmcAction extends SmcMethodLikeElement {
@@ -14,6 +15,8 @@ public interface SmcAction extends SmcMethodLikeElement {
 
   @NotNull
   List<SmcComment> getCommentList();
+
+  boolean matches(PsiMethod method);
 
   PsiElement getNameIdentifier();
 

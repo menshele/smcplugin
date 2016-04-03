@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiMethod;
 import javax.swing.Icon;
 
 public class SmcActionImpl extends SmcNamedElementImpl implements SmcAction {
@@ -33,6 +34,10 @@ public class SmcActionImpl extends SmcNamedElementImpl implements SmcAction {
   @NotNull
   public List<SmcComment> getCommentList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
+  public boolean matches(PsiMethod method) {
+    return SmcPsiImplUtil.matches(this, method);
   }
 
   public PsiElement getNameIdentifier() {

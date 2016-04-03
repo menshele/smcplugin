@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <vendor email="leonid.menshenin@gmail.com" url="https://github.com/menshele">LeMen</vendor>
 
     <description><![CDATA[
@@ -10,8 +10,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Updated metadata<br>
-      <em>No changes</em>
+      Java 1.7 support<br>
+      Static import support<br>
     ]]>
     </change-notes>
 

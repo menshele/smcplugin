@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiMethod;
 import javax.swing.Icon;
 
 public interface SmcTransition extends SmcMethodLikeElement {
@@ -29,6 +30,8 @@ public interface SmcTransition extends SmcMethodLikeElement {
 
   @Nullable
   SmcTransitionArgs getTransitionArgs();
+
+  boolean matches(PsiMethod method);
 
   PsiElement getNameIdentifier();
 

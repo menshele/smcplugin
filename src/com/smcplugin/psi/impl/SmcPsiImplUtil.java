@@ -3,7 +3,9 @@ package com.smcplugin.psi.impl;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.Iconable;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -91,18 +93,34 @@ public class SmcPsiImplUtil {
 
     public static String getName(SmcFsmPackage element) {
         SmcQualifiedIdentifier childOfType = PsiTreeUtil.getChildOfType(element, SmcQualifiedIdentifier.class);
-        return childOfType != null? childOfType.getName(): "";
+        return childOfType != null ? childOfType.getName() : "";
     }
 
 
     public static String getName(SmcContextClassDeclaration element) {
         SmcQualifiedIdentifier childOfType = PsiTreeUtil.getChildOfType(element, SmcQualifiedIdentifier.class);
-        return childOfType != null? childOfType.getName(): "";
+        return childOfType != null ? childOfType.getName() : "";
     }
 
     public static PsiElement getNameIdentifier(SmcTransition element) {
         return gePsiByToken(element, SmcTypes.TRANSITION_NAME);
     }
+
+    public static boolean matches(SmcMethodLikeElement methodLikeElement, PsiMethod method) {
+        PsiClass containingClass = method.getContainingClass();
+        SmcFile containingFile = (SmcFile) methodLikeElement.getContainingFile();
+        PsiClass fsmClass = containingFile.getFsmClass();
+        if (fsmClass == null || containingClass == null) {
+            return false;
+        }
+        if (!containingClass.isEquivalentTo(fsmClass) && !containingClass.isInheritor(fsmClass, true)) {
+            return false;
+        }
+
+        return method.getName().equals(methodLikeElement.getName()) &&
+                method.getParameterList().getParametersCount() == methodLikeElement.getArgumentCount();
+    }
+
 
     public static PsiElement getNameIdentifier(SmcStartMapNameElement element) {
         return gePsiByToken(element, SmcTypes.START_MAP_NAME);
@@ -129,7 +147,7 @@ public class SmcPsiImplUtil {
     public static String getName(SmcQualifiedIdentifier element) {
         SmcQualifiedIdElement[] childrenOfType = PsiTreeUtil.getChildrenOfType(element, SmcQualifiedIdElement.class);
         String name = "";
-        if(!ArrayUtils.isEmpty(childrenOfType)){
+        if (!ArrayUtils.isEmpty(childrenOfType)) {
             name = childrenOfType[childrenOfType.length - 1].getQualifiedName();
         }
         return name;
@@ -138,7 +156,7 @@ public class SmcPsiImplUtil {
     public static SmcQualifiedIdElement getLastIdentifier(SmcQualifiedIdentifier element) {
         SmcQualifiedIdElement[] childrenOfType = PsiTreeUtil.getChildrenOfType(element, SmcQualifiedIdElement.class);
         SmcQualifiedIdElement result = null;
-        if(!ArrayUtils.isEmpty(childrenOfType)){
+        if (!ArrayUtils.isEmpty(childrenOfType)) {
             result = childrenOfType[childrenOfType.length - 1];
         }
         return result;

@@ -259,6 +259,29 @@ public class SmcPsiUtil {
         return result != null ? result : Collections.<SmcMethodLikeElement>emptyList();
     }
 
+    public static List<PsiMethodCallExpression> findMethodLikeCalls(SmcMethodLikeElement psiMethodLike) {
+        SmcFile containingFile = (SmcFile) psiMethodLike.getContainingFile().getContainingFile();
+        PsiClass fsmClass = containingFile.getFsmClass();
+        Project project = psiMethodLike.getProject();
+        if (fsmClass == null) return Collections.emptyList();
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, JavaFileType.INSTANCE,
+                GlobalSearchScope.projectScope(project));
+        List<PsiMethodCallExpression> result = new ArrayList<>();
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile psiJavaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (psiJavaFile != null) {
+                Collection<PsiMethodCallExpression> methodCallExpressions = PsiTreeUtil.findChildrenOfType(psiJavaFile, PsiMethodCallExpression.class);
+                for (PsiMethodCallExpression methodCall : methodCallExpressions) {
+                    PsiMethod psiMethod = methodCall.resolveMethod();
+                    if (psiMethod != null && psiMethodLike.matches(psiMethod)) {
+                        result.add(methodCall);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public static List<PsiMethod> findJavaMethod(Project project, String name) {
         List<PsiMethod> result = null;
         Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, JavaFileType.INSTANCE,
@@ -312,7 +335,7 @@ public class SmcPsiUtil {
 
     /**
      * Check that element type of the given AST node belongs to the token set.
-     * <p>
+     * <p/>
      * It slightly less verbose than {@code set.contains(node.getElementType())} and overloaded methods with the same name
      * allow check ASTNode/PsiElement against both concrete element types and token sets in uniform way.
      */
@@ -478,7 +501,7 @@ public class SmcPsiUtil {
         String shortName = SmcStringUtils.getSimpleName(qualifiedName, parentName);
         PsiClass aClass = findClass(parentName);
         Set<String> staticNames = null;
-        if (aClass != null && fsmClassQName!= null) {
+        if (aClass != null && fsmClassQName != null) {
             staticNames = collectStaticNames(aClass.getMethods(), fsmClassQName);
             staticNames.addAll(
                     collectStaticNames(aClass.getFields(), fsmClassQName));

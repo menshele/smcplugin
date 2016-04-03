@@ -10,7 +10,7 @@ public interface SmcStaticImport extends SmcCustomNamed {
   @NotNull
   List<SmcComment> getCommentList();
 
-  @Nullable
+  @NotNull
   SmcQualifiedIdentifier getQualifiedIdentifier();
 
   String getName();

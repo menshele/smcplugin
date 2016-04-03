@@ -28,7 +28,7 @@ public class SmcStringUtils {
         return NOT_FOUND_CHAR;
     }
 
-    public static String getNextPackageName(String base, String qName) {
+    public static String getSimpleName(String qName, String base) {
         return StringUtils.removeStart(qName, base).substring(1);
     }
 

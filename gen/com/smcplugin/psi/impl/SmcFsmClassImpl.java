@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 
-public class SmcFsmClassImpl extends SmcQualifiedNamedElementImpl implements SmcFsmClass {
+public class SmcFsmClassImpl extends SmcNamedElementImpl implements SmcFsmClass {
 
   public SmcFsmClassImpl(ASTNode node) {
     super(node);
@@ -25,11 +25,6 @@ public class SmcFsmClassImpl extends SmcQualifiedNamedElementImpl implements Smc
   @NotNull
   public List<SmcComment> getCommentList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
-  }
-
-  @Nullable
-  public String getPackageText() {
-    return SmcPsiImplUtil.getPackageText(this);
   }
 
   public PsiElement getNameIdentifier() {

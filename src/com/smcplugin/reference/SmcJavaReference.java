@@ -7,6 +7,7 @@ import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
+import com.smcplugin.psi.SmcFile;
 import com.smcplugin.psi.SmcPsiUtil;
 import com.smcplugin.psi.SmcQualifiedIdElement;
 import com.smcplugin.util.SmcStringUtils;
@@ -34,7 +35,7 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
         this.name = element.getQualifiedName();
     }
 
-    public SmcJavaReference(SmcQualifiedIdElement element, String name,TextRange textRange) {
+    public SmcJavaReference(SmcQualifiedIdElement element, String name, TextRange textRange) {
         super(element, textRange);
         this.name = name;
     }
@@ -44,9 +45,25 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         final PsiClass[] properties = SmcPsiUtil.findClasses(name);
         List<ResolveResult> results = new ArrayList<ResolveResult>();
-        for (PsiClass property : properties) {
-            results.add(new PsiElementResolveResult(property));
+        for (PsiClass psiClass : properties) {
+            results.add(new PsiElementResolveResult(psiClass));
         }
+        SmcQualifiedIdElement previousQualifiedIdElement = myElement.getPreviousQualifiedIdElement();
+        if (previousQualifiedIdElement != null) {
+            String previousQualifiedName = previousQualifiedIdElement.getQualifiedName();
+            PsiClass previousClass = SmcPsiUtil.findClass(previousQualifiedName);
+            if (previousClass != null) {
+                PsiField fieldByName = previousClass.findFieldByName(myElement.getName(), false);
+                if(fieldByName != null){
+                    results.add(new PsiElementResolveResult(fieldByName));
+                }
+                PsiMethod[] methodsByName = previousClass.findMethodsByName(myElement.getName(), false);
+                for (PsiMethod method :methodsByName) {
+                    results.add(new PsiElementResolveResult(method));
+                }
+            }
+        }
+
         return results.toArray(new ResolveResult[results.size()]);
     }
 
@@ -65,11 +82,21 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
         List<PsiPackage> subPackages = SmcPsiUtil.findSubPackagesForPackage(previousQualifiedName);
         List<LookupElement> variants = new ArrayList<LookupElement>();
         for (final PsiPackage subPackage : subPackages) {
-            final String shortName = SmcStringUtils.getNextPackageName(previousQualifiedName, subPackage.getQualifiedName());
+            final String shortName = SmcStringUtils.getSimpleName(subPackage.getQualifiedName(), previousQualifiedName);
             if (PsiNameHelper.getInstance(subPackage.getProject()).isIdentifier(shortName)) {
                 variants.add(LookupElementBuilder.create(subPackage).withIcon(subPackage.getIcon(Iconable.ICON_FLAG_VISIBILITY)));
             }
         }
+
+        List<PsiClass> findInnerClasses = SmcPsiUtil.findInnerClasses(previousQualifiedName);
+        for (final PsiClass psiClass : findInnerClasses) {
+            if (!StringUtils.isEmpty(psiClass.getQualifiedName())) {
+                variants.add(JavaLookupElementBuilder.forClass(psiClass));
+            }
+        }
+
+        variants.addAll(SmcPsiUtil.fillVariantsForStaticMembers(previousQualifiedName,
+                ((SmcFile) myElement.getContainingFile()).getFsmClass()));
 
         for (final PsiClass psiClass : classesForPackage) {
             if (!StringUtils.isEmpty(psiClass.getQualifiedName())) {
@@ -77,10 +104,6 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
             }
         }
         return variants.toArray();
-    }
-
-    private String getPackageName(String name) {
-        return name.substring(0, name.lastIndexOf("."));
     }
 
     @Override

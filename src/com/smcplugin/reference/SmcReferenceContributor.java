@@ -10,18 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class SmcReferenceContributor extends PsiReferenceContributor {
 
-    public static final PsiReferenceProvider CLASS_REFERENCE_PROVIDER = new PsiReferenceProvider() {
-        @NotNull
-        @Override
-        public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-            SmcQualifiedNamedElement smcQualifiedElement = (SmcQualifiedNamedElement) element;
-
-            if (smcQualifiedElement.getQualifiedName() != null) {
-                return new PsiReference[]{new SmcJavaClassReference(smcQualifiedElement, new TextRange(0, element.getTextLength()))};
-            }
-            return new PsiReference[0];
-        }
-    };
 
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
@@ -162,7 +150,24 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcQualifiedNamedElement.class), CLASS_REFERENCE_PROVIDER);
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcFsmClass.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcFsmClass fsmClass = (SmcFsmClass) element;
+
+                        PsiElement namePsiElement = fsmClass.getNameIdentifier();
+                        if (namePsiElement != null && fsmClass.getName() != null) {
+                            TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
+                            SmcFile containingFile = (SmcFile) fsmClass.getContainingFile();
+                            return new PsiReference[]{new SmcJavaClassReference(fsmClass, containingFile.getPackageName(),
+                                    textRange)};
+
+                        }
+                        return new PsiReference[0];
+                    }
+                });
     /*    registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
                 new PsiReferenceProvider() {
                     @NotNull

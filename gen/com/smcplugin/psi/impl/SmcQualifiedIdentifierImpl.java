@@ -36,4 +36,8 @@ public class SmcQualifiedIdentifierImpl extends ASTWrapperPsiElement implements 
     return SmcPsiImplUtil.getLastIdentifier(this);
   }
 
+  public boolean isWildcard() {
+    return SmcPsiImplUtil.isWildcard(this);
+  }
+
 }

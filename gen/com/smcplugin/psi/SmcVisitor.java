@@ -60,7 +60,7 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitFsmClass(@NotNull SmcFsmClass o) {
-    visitQualifiedNamedElement(o);
+    visitNamedElement(o);
   }
 
   public void visitFsmClassDeclaration(@NotNull SmcFsmClassDeclaration o) {
@@ -224,10 +224,6 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitQualifiedIdElement(@NotNull SmcQualifiedIdElement o) {
-    visitPsiElement(o);
-  }
-
-  public void visitQualifiedNamedElement(@NotNull SmcQualifiedNamedElement o) {
     visitPsiElement(o);
   }
 

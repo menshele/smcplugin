@@ -29,9 +29,9 @@ public class SmcStaticImportImpl extends ASTWrapperPsiElement implements SmcStat
   }
 
   @Override
-  @Nullable
+  @NotNull
   public SmcQualifiedIdentifier getQualifiedIdentifier() {
-    return findChildByClass(SmcQualifiedIdentifier.class);
+    return findNotNullChildByClass(SmcQualifiedIdentifier.class);
   }
 
   public String getName() {

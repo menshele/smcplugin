@@ -55,8 +55,8 @@ public class SmcFile extends PsiFileBase {
     }
 
     public String getFsmClassQName() {
-        SmcFsmClass childOfType = PsiTreeUtil.findChildOfType(this, SmcFsmClass.class);
-        return childOfType != null ? childOfType.getQualifiedName() : "";
+        SmcFsmClass smcFsmClass = PsiTreeUtil.findChildOfType(this, SmcFsmClass.class);
+        return smcFsmClass != null ?  getPackageName() + SmcPsiImplUtil.STRING_DOT + smcFsmClass.getName() : "";
     }
 
     public PsiClass getFsmClass() {

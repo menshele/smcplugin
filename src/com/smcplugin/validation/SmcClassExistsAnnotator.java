@@ -34,7 +34,19 @@ public class SmcClassExistsAnnotator implements Annotator {
             SmcImportClass classNameElement = (SmcImportClass) element;
             SmcQualifiedIdentifier qualifiedIdentifier = classNameElement.getQualifiedIdentifier();
             String qualifiedName = classNameElement.getQualifiedIdentifier().getName();
-            if (StringUtils.isNotBlank(qualifiedName) && !SmcPsiUtil.classExists(qualifiedName)) {
+            if (StringUtils.isNotBlank(qualifiedName) && !qualifiedIdentifier.isWildcard()
+                    && !SmcPsiUtil.classExists(qualifiedName)) {
+                Annotation errorAnnotation = holder.createErrorAnnotation(qualifiedIdentifier.getLastIdentifier(),
+                        getMessage(qualifiedName));
+                errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
+            }
+        }else if (element instanceof SmcStaticImport) {
+            SmcStaticImport classNameElement = (SmcStaticImport) element;
+            SmcFile containingFile = (SmcFile)classNameElement.getContainingFile();
+            SmcQualifiedIdentifier qualifiedIdentifier = classNameElement.getQualifiedIdentifier();
+            String qualifiedName = classNameElement.getQualifiedIdentifier().getName();
+            if(StringUtils.isBlank(qualifiedName) || qualifiedIdentifier.isWildcard()) return;
+            if (!SmcPsiUtil.staticClassExists(qualifiedName) && !SmcPsiUtil.staticMemberExists(qualifiedName,containingFile.getFsmClass())) {
                 Annotation errorAnnotation = holder.createErrorAnnotation(qualifiedIdentifier.getLastIdentifier(),
                         getMessage(qualifiedName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);

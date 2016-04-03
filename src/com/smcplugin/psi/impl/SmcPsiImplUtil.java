@@ -25,6 +25,7 @@ public class SmcPsiImplUtil {
     public static final String ARG_PREFIX = "arg";
     public static final String MY_COMMA = ",";
     public static final String SPACE = " ";
+    public static final String WILDCARD = "*";
 
     public static PsiElement getNameIdentifier(SmcMap element) {
         return gePsiByToken(element, SmcTypes.MAP_NAME);
@@ -143,16 +144,15 @@ public class SmcPsiImplUtil {
         return result;
     }
 
+    public static boolean isWildcard(SmcQualifiedIdentifier element) {
+        SmcQualifiedIdElement lastIdentifier = element.getLastIdentifier();
+        return lastIdentifier != null && WILDCARD.equals(lastIdentifier.getName());
+    }
+
     public static PsiElement getNameIdentifier(SmcFsmClass element) {
         return gePsiByToken(element, SmcTypes.FSM_CLASS_NAME);
     }
 
-
-    @Nullable
-    public static String getPackageText(SmcFsmClass element) {
-        SmcFsmPackage smcFsmPackage = PsiTreeUtil.getChildOfType(element.getContainingFile(), SmcFsmPackage.class);
-        return smcFsmPackage != null ? smcFsmPackage.getName() : ".";
-    }
 
     public static int getArgumentCount(SmcAction element) {
         return element.getArguments() != null ? element.getArguments().getArgumentsCount() : 0;

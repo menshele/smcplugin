@@ -99,11 +99,9 @@ fsm_file ::= FSM_FILE_KEYWORD comment* FSM_FILE_NAME
 
 fsm_class_declaration ::= FSM_CLASS_KEYWORD comment* fsm_class
 
-fsm_class ::= comment* FSM_CLASS_NAME {pin=3 mixin="com.smcplugin.psi.impl.SmcQualifiedNamedElementImpl" implements="com.smcplugin.psi.SmcQualifiedNamedElement" methods=[ getPackageText getNameIdentifier]}
-
+fsm_class ::= comment* FSM_CLASS_NAME  {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement" methods=[getNameIdentifier]}
 
 start_state ::= START_KEYWORD comment* start_map_name_element MAP_NAME_STATE_NAME_SEPARATOR comment* start_state_name_element { implements="com.smcplugin.psi.SmcStateFullName" methods=[getMapName getStateName]}
-
 
 start_state_name_element ::= START_STATE_NAME comment* {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier ]}
 
@@ -123,9 +121,9 @@ import_class_declaration ::= IMPORT_KEYWORD comment* (static_import|import_class
 
 import_class ::= comment* qualified_identifier
 
-static_import ::= STATIC_JAVA_KEYWORD comment* qualified_identifier {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
+static_import ::= STATIC_JAVA_KEYWORD comment* qualified_identifier {pin=3 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName]}
 
-qualified_identifier ::= (identifier DOT)* identifier {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getLastIdentifier]}
+qualified_identifier ::= (identifier DOT)* identifier {pin=1 implements="com.smcplugin.psi.SmcCustomNamed" methods=[getName getLastIdentifier isWildcard]}
 
 identifier ::= comment* IDENTIFIER_NAME comment* {pin=2 mixin="com.smcplugin.psi.impl.SmcQualifiedIdElementImpl"  implements="com.smcplugin.psi.SmcQualifiedIdElement" methods=[ getNameIdentifier ]}
 

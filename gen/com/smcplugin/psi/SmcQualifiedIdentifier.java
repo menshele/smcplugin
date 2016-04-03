@@ -14,4 +14,6 @@ public interface SmcQualifiedIdentifier extends SmcCustomNamed {
 
   SmcQualifiedIdElement getLastIdentifier();
 
+  boolean isWildcard();
+
 }

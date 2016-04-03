@@ -2,13 +2,10 @@ package com.smcplugin.reference;
 
 import com.intellij.codeInsight.completion.JavaLookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import com.smcplugin.psi.SmcPsiUtil;
-import com.smcplugin.psi.SmcQualifiedNamedElement;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,22 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Deprecation candidate see {@link AbstractNamedLocalReference}
  * <p>
  * Created by lemen on 13.03.2016.
  */
-public class SmcJavaClassReference extends PsiReferenceBase<SmcQualifiedNamedElement> implements PsiPolyVariantReference {
-
+public class SmcJavaClassReference extends PsiReferenceBase<PsiNamedElement> implements PsiPolyVariantReference {
 
     private static final String DOT = ".";
     private String packageName;
     private String name;
 
 
-    public SmcJavaClassReference(SmcQualifiedNamedElement element, TextRange textRange) {
+    public SmcJavaClassReference(PsiNamedElement element, String packageName, TextRange textRange) {
         super(element, textRange);
-        this.name = element.getQualifiedName();
-        this.packageName = element.getPackageName();
+        this.name = packageName + DOT + element.getName();
+        this.packageName = packageName;
     }
 
     @NotNull
@@ -57,14 +52,7 @@ public class SmcJavaClassReference extends PsiReferenceBase<SmcQualifiedNamedEle
     @Override
     public Object[] getVariants() {
         List<PsiClass> classesForPackage = SmcPsiUtil.findClassesForPackage(packageName);
-        List<PsiPackage> subPackages = SmcPsiUtil.findSubPackagesForPackage(packageName);
         List<LookupElement> variants = new ArrayList<LookupElement>();
-        for (final PsiPackage subPackage : subPackages) {
-            final String shortName = getShortName(subPackage.getQualifiedName());
-            if (PsiNameHelper.getInstance(subPackage.getProject()).isIdentifier(shortName)) {
-                variants.add(LookupElementBuilder.create(subPackage).withIcon(subPackage.getIcon(Iconable.ICON_FLAG_VISIBILITY)));
-            }
-        }
 
         for (final PsiClass psiClass : classesForPackage) {
             if (!StringUtils.isEmpty(psiClass.getQualifiedName())) {
@@ -72,15 +60,6 @@ public class SmcJavaClassReference extends PsiReferenceBase<SmcQualifiedNamedEle
             }
         }
         return variants.toArray();
-    }
-
-    @NotNull
-    private String getShortName(String qualifiedName) {
-        int beginIndex = packageName.lastIndexOf(DOT);
-        int beginIndexSub = beginIndex < 0 ? 0 : beginIndex + 1;
-        final String nameAfterDot = qualifiedName.substring(beginIndexSub);
-        int nextDotIndex = nameAfterDot.indexOf(DOT);
-        return nameAfterDot.substring(0, nextDotIndex < 0 ? nameAfterDot.length() : nextDotIndex);
     }
 
     @Override

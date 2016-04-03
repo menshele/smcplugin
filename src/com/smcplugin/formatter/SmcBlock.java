@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
+import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import com.smcplugin.SmcLanguage;
 import com.smcplugin.SmcParserDefinition;
@@ -110,11 +111,14 @@ public class SmcBlock implements ASTBlock {
     @Override
     public List<Block> getSubBlocks() {
         if (mySubBlocks == null) {
-            mySubBlocks = ContainerUtil.mapNotNull(myNode.getChildren(null), node -> {
-                if (isWhitespaceOrEmpty(node)) {
-                    return null;
+            mySubBlocks = ContainerUtil.mapNotNull(myNode.getChildren(null), new Function<ASTNode, Block>() {
+                @Override
+                public Block fun(ASTNode node) {
+                    if (isWhitespaceOrEmpty(node)) {
+                        return null;
+                    }
+                    return SmcBlock.this.makeSubBlock(node);
                 }
-                return makeSubBlock(node);
             });
         }
         return mySubBlocks;

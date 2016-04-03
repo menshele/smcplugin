@@ -23,7 +23,7 @@ public class SmcNamedElementExistsAnnotator implements Annotator {
     private final List<TypeDescriptor<SmcNamedElement>> validateClasses = new ArrayList<>();
 
     public SmcNamedElementExistsAnnotator() {
-        validateClasses.add(new TypeDescriptor<>(SmcNextState.class, SmcTypes.STATE));
+        validateClasses.add(new TypeDescriptor<SmcNamedElement>(SmcNextState.class, SmcTypes.STATE));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class PresentationFactory {
         };
     }
 
-    public static ItemPresentation forState(SmcState element) {
+    public static ItemPresentation forState(final SmcState element) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -62,7 +62,7 @@ public class PresentationFactory {
         };
     }
 
-    public static ItemPresentation forAction(SmcAction element) {
+    public static ItemPresentation forAction(final SmcAction element) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -85,7 +85,7 @@ public class PresentationFactory {
         };
     }
 
-    public static ItemPresentation forTransition(SmcTransition element) {
+    public static ItemPresentation forTransition(final SmcTransition element) {
         return new ItemPresentation() {
             @Nullable
             @Override

@@ -60,7 +60,7 @@ public class SmcPsiUtil {
         if (aClass != null) {
             innerClasses = aClass.getInnerClasses();
         }
-        return ArrayUtils.isEmpty(innerClasses) ? Collections.emptyList() : Arrays.asList(innerClasses);
+        return ArrayUtils.isEmpty(innerClasses) ? Collections.<PsiClass>emptyList() : Arrays.asList(innerClasses);
     }
 
     public static List<LookupElement> fillVariantsForStaticMembers(String qname, PsiClass accessibleFromClass) {

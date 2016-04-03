@@ -55,8 +55,8 @@ public class CreateMethodInContextClassFix extends BaseIntentionAction {
 
 
     @Override
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        SmcFile smcFile = (SmcFile) file;
+    public void invoke(@NotNull final Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
+        final SmcFile smcFile = (SmcFile) file;
         if (!FileModificationService.getInstance().prepareFileForWrite(smcFile.getContextClass().getContainingFile())) {
             return;
         }

@@ -38,7 +38,7 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
         buildSimpleNamedFolding(root, descriptors, SmcMap.class);
         Collection<SmcMap> maps = PsiTreeUtil.findChildrenOfType(root, SmcMap.class);
         for (SmcMap map : maps) {
-            List<SmcState> smcStates = map.getStates() == null ? Collections.emptyList() : map.getStates().getStateList();
+            List<SmcState> smcStates = map.getStates() == null ? Collections.<SmcState>emptyList() : map.getStates().getStateList();
             buildNamedFoldingForElements(descriptors, smcStates, true, false, false);
             for (SmcState state : smcStates) {
                 SmcOnState onState = state.getOnState();
@@ -48,7 +48,7 @@ public class SmcFoldingBuilder extends FoldingBuilderEx {
                 }
                 SmcTransitionsBlock transitionsBlock = state.getTransitionsBlock();
                 buildFoldingForBlock(descriptors, transitionsBlock, "transitions");
-                List<SmcTransition> smcTransitions = transitionsBlock == null ? Collections.emptyList() : transitionsBlock.getTransitions().getTransitionList();
+                List<SmcTransition> smcTransitions = transitionsBlock == null ? Collections.<SmcTransition>emptyList() : transitionsBlock.getTransitions().getTransitionList();
                 buildNamedFoldingForElements(descriptors, smcTransitions, true, false, false);
                 for (SmcTransition transition : smcTransitions) {
                     buildFoldingForBlock(descriptors, transition.getActionsBlock(), "actions");

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <vendor email="leonid.menshenin@gmail.com" url="https://github.com/menshele">LeMen</vendor>
 
     <description><![CDATA[
@@ -10,8 +10,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Java 1.7 support<br>
-      Static import support<br>
+      Switching off line markers for Smc until optional switch implementation to avoid performance issues <br>
     ]]>
     </change-notes>
 
@@ -47,7 +46,7 @@
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcTransitionAnnotator"/>
         <psi.referenceContributor language="smc" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <psi.referenceContributor language="JAVA" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
-        <codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/>
+        <!--codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/-->
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.linemarker.SmcJavaLineMarkerProvider"/>
         <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
         <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.refactoring.SmcRefactoringSupportProvider"/>

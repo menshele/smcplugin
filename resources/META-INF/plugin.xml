@@ -50,6 +50,7 @@
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.smcplugin.linemarker.SmcJavaLineMarkerProvider"/>
         <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
         <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.refactoring.SmcRefactoringSupportProvider"/>
+        <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.structview.SmcStructureViewFactory"/>
         <!--completion.contributor language="smc" implementationClass="com.smcplugin."/-->
         <!--
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>

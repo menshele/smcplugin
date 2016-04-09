@@ -146,9 +146,9 @@ transitions ::= comment* transition* comment*
 
 transition ::= TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMethodLikeElement" methods=[matches getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
 
-entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" methods=[getType]}
+entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" methods=[getType getPresentation]}
 
-exit ::= comment* EXIT_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement"  methods=[getType] }
+exit ::= comment* EXIT_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement"  methods=[getType getPresentation] }
 
 transition_args ::=PARENTHESES_OPEN comment* parameters comment* PARENTHESES_CLOSE {pin=1}
 
@@ -183,7 +183,7 @@ pop_transition ::= POP_KEYWORD callback_transition? {pin=1}
 
 callback_transition ::= comment*  PARENTHESES_OPEN comment* CALLBACK_TRANSITION_NAME comment* (COMMA comment* arguments)? PARENTHESES_CLOSE
 
-actions_block ::= BRACE_OPEN actions BRACE_CLOSE
+actions_block ::= BRACE_OPEN comment* actions comment* BRACE_CLOSE
 
 actions ::= (comment* action comment*)*
 

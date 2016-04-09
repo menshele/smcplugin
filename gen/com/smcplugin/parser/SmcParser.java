@@ -322,17 +322,43 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BRACE_OPEN actions BRACE_CLOSE
+  // BRACE_OPEN comment* actions comment* BRACE_CLOSE
   public static boolean actions_block(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "actions_block")) return false;
     if (!nextTokenIs(b, BRACE_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, BRACE_OPEN);
+    r = r && actions_block_1(b, l + 1);
     r = r && actions(b, l + 1);
+    r = r && actions_block_3(b, l + 1);
     r = r && consumeToken(b, BRACE_CLOSE);
     exit_section_(b, m, ACTIONS_BLOCK, r);
     return r;
+  }
+
+  // comment*
+  private static boolean actions_block_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "actions_block_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "actions_block_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // comment*
+  private static boolean actions_block_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "actions_block_3")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "actions_block_3", c)) break;
+      c = current_position_(b);
+    }
+    return true;
   }
 
   /* ********************************************************** */

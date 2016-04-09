@@ -28,6 +28,7 @@ public class SmcPsiImplUtil {
     public static final String MY_COMMA = ",";
     public static final String SPACE = " ";
     public static final String WILDCARD = "*";
+    public static final String ARROW = "->";
 
     public static PsiElement getNameIdentifier(SmcMap element) {
         return gePsiByToken(element, SmcTypes.MAP_NAME);
@@ -203,8 +204,16 @@ public class SmcPsiImplUtil {
         return SmcOnStateNestedElement.ON_ENTRY_TYPE;
     }
 
+    public static ItemPresentation getPresentation(SmcEntry element) {
+        return PresentationFactory.forEntry(element);
+    }
+
     public static String getType(SmcExit element) {
         return SmcOnStateNestedElement.ON_EXIT_TYPE;
+    }
+
+    public static ItemPresentation getPresentation(SmcExit element) {
+        return PresentationFactory.forExit(element);
     }
 
     public static String getQualifiedFullName(SmcAction action) {
@@ -231,7 +240,31 @@ public class SmcPsiImplUtil {
     }
 
     public static String getFullName(SmcTransition transition) {
-        return SmcPsiUtil.getFullNameMethod(transition.getName(), transition.getArgumentCount(), false);
+        StringBuilder stringBuilder = new StringBuilder();
+        String name = transition.getName();
+        stringBuilder.append(name);
+        SmcTransitionArgs transitionArgs = transition.getTransitionArgs();
+        if (transitionArgs != null) {
+            stringBuilder.append(transitionArgs.getText());
+        }
+        SmcNextState next = transition.getNextState();
+        if (next != null) {
+            stringBuilder.append(ARROW);
+            stringBuilder.append(next.getText());
+        } else {
+            SmcPushTransition push = transition.getPushTransition();
+            if (push != null) {
+                stringBuilder.append(ARROW);
+                stringBuilder.append(push.getText());
+            } else {
+                SmcPopTransition pop = transition.getPopTransition();
+                if (pop != null) {
+                    stringBuilder.append(ARROW);
+                    stringBuilder.append(pop.getText());
+                }
+            }
+        }
+        return stringBuilder.toString();
     }
 
     public static int getArgumentsCount(SmcArguments element) {

@@ -18,6 +18,8 @@ public class SmcIcons {
     public static final Icon CONTEXT = IconLoader.getIcon("/com/smcplugin/icons/ctxClass.png"); //16x16
     public static final Icon CTX_ACTION_REF = IconLoader.getIcon("/com/smcplugin/icons/actionRef.png"); //16x16
     public static final Icon CTX_ACTION = IconLoader.getIcon("/com/smcplugin/icons/action.png"); //16x16
+    public static final Icon STATE_ENTRY = IconLoader.getIcon("/com/smcplugin/icons/entry.png"); //16x16
+    public static final Icon STATE_EXIT = IconLoader.getIcon("/com/smcplugin/icons/exit.png"); //16x16
 
 
     public static final Icon SM_BIG = IconLoader.getIcon("/com/smcplugin/icons/sm@2x.png"); //32X32
@@ -28,4 +30,6 @@ public class SmcIcons {
     public static final Icon CONTEXT_BIG = IconLoader.getIcon("/com/smcplugin/icons/ctxClass@2x.png"); //32X32
     public static final Icon CTX_ACTION_REF_BIG = IconLoader.getIcon("/com/smcplugin/icons/actionRef@2x.png"); //32X32
     public static final Icon CTX_ACTION_BIG = IconLoader.getIcon("/com/smcplugin/icons/action@2x.png"); //32X32
+    public static final Icon STATE_ENTRY_BIG = IconLoader.getIcon("/com/smcplugin/icons/entry@2x.png"); //32X32
+    public static final Icon STATE_EXIT_BIG = IconLoader.getIcon("/com/smcplugin/icons/exit@2x.png"); //32X32
 }

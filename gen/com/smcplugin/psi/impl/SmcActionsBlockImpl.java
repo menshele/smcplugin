@@ -28,4 +28,10 @@ public class SmcActionsBlockImpl extends ASTWrapperPsiElement implements SmcActi
     return findNotNullChildByClass(SmcActions.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmcComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
+  }
+
 }

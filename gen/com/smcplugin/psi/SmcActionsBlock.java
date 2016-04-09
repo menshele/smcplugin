@@ -10,4 +10,7 @@ public interface SmcActionsBlock extends PsiElement {
   @NotNull
   SmcActions getActions();
 
+  @NotNull
+  List<SmcComment> getCommentList();
+
 }

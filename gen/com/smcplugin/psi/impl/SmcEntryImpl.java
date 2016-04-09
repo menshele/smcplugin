@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
 public class SmcEntryImpl extends ASTWrapperPsiElement implements SmcEntry {
 
@@ -36,6 +37,10 @@ public class SmcEntryImpl extends ASTWrapperPsiElement implements SmcEntry {
 
   public String getType() {
     return SmcPsiImplUtil.getType(this);
+  }
+
+  public ItemPresentation getPresentation() {
+    return SmcPsiImplUtil.getPresentation(this);
   }
 
 }

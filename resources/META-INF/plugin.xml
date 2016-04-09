@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <vendor email="leonid.menshenin@gmail.com" url="https://github.com/menshele">LeMen</vendor>
 
     <description><![CDATA[

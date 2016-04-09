@@ -10,7 +10,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Switching off line markers for Smc until optional switch implementation to avoid performance issues <br>
+     Added Structure View. <br>
+     Bug with syntax error when placing comment into Actions <br>
+     Extended transition presentation <br>
     ]]>
     </change-notes>
 

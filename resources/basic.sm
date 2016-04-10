@@ -1,0 +1,19 @@
+%package com.company.smc
+
+%class ContextClass
+%fsmclass StateMachine
+
+%access public
+%start MAP_NAME::StartState
+
+%map MAP_NAME %%
+    StartState {
+
+        transition
+        NextState {
+
+        }
+    }
+
+    NextState {}
+%%

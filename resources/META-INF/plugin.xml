@@ -53,17 +53,20 @@
         <lang.findUsagesProvider language="smc" implementationClass="com.smcplugin.reference.SmcUsagesProvider"/>
         <lang.refactoringSupport language="smc" implementationClass="com.smcplugin.refactoring.SmcRefactoringSupportProvider"/>
         <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.structview.SmcStructureViewFactory"/>
-        <!--completion.contributor language="smc" implementationClass="com.smcplugin."/-->
         <!--
             <completion.contributor language="smc" implementationClass="com.smcplugin.SmcCompletionContributor"/>
 
 
             <gotoSymbolContributor implementation="com.smcplugin.SmcChooseByNameContributor"/>
-            <lang.psiStructureViewFactory language="smc" implementationClass="com.smcplugin.SmcStructureViewFactory"/>
 -->
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
+        <action id="com.smcplugin.smcfile.new" class="com.smcplugin.actions.CreateFsmFileAction" text="New FSM file"
+                description="Create new FSM file">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt F"/>
+        </action>
     </actions>
 </idea-plugin>

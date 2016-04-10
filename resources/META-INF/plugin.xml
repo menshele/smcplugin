@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <vendor email="leonid.menshenin@gmail.com" url="https://github.com/menshele">LeMen</vendor>
 
     <description><![CDATA[
@@ -10,9 +10,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-     Added Structure View. <br>
-     Bug with syntax error when placing comment into Actions <br>
-     Extended transition presentation <br>
+     Create FSM File functionality added <br>
     ]]>
     </change-notes>
 

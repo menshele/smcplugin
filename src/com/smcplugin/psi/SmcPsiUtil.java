@@ -54,6 +54,21 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
+    public static List<SmcParameter> findParameterListByTypedArgument(SmcTypedArgumentElement argument) {
+        SmcTransition transition = PsiTreeUtil.getParentOfType(argument, SmcTransition.class);
+        if (transition != null) {
+            SmcTransitionArgs transitionArgs = transition.getTransitionArgs();
+            if (transitionArgs != null) {
+                SmcParameters parameters = transitionArgs.getParameters();
+                if (parameters != null) {
+                    return parameters.getParameterList();
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public static List<PsiClass> findInnerClasses(String qname) {
         PsiClass aClass = findClass(qname);
         PsiClass[] innerClasses = null;

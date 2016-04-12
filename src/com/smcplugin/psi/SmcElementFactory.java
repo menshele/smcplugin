@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class SmcElementFactory {
 
-    public static final String DUMMY_SM = "%package com.company.smc\n" +
+/*    public static final String DUMMY_SM = "%package com.company.smc\n" +
             "\n" +
             "%class com.company.smc.ContextClass\n" +
             "\n" +
@@ -35,7 +35,36 @@ public class SmcElementFactory {
             "        ACTION_NAME();\n" +
             "    }\n" +
             "}\n" +
-            "%%\n";
+            "%%\n";  */
+
+    public static final String DUMMY_SM = "%package com.company.smc\n" +
+            "\n" +
+            "%class com.company.smc.SomeContextClass\n" +
+            "\n" +
+            "%import com.company.smc.SomeContextClass\n" +
+            "%fsmfile turnstile\n" +
+            "%fsmclass StateMachine\n" +
+            "%access private\n" +
+            "%start STARTMAPNAMEELEMENT_NAME::STARTSTATENAMEELEMENT_NAME\n" +
+            "\n" +
+            "%map MAP_NAME %%\n" +
+            "\n" +
+            "    STATE_NAME\n" +
+            "    {\n" +
+            "        PUSH_TRANSITION_NAME PUSHPROXYSTATENAMEELEMENT_NAME/push(PUSHMAPNAMEELEMENT_NAME::PUSHSTATENAMEELEMENT_NAME) {\n" +
+            "\n" +
+            "\n" +
+            "        }\n" +
+            "\n" +
+            "        TRANSITION_NAME(PARAMETERNAMEELEMENT_NAME: PARAMETERTYPEELEMENT_NAME)\n" +
+            "        NEXTSTATE_NAME\n" +
+            "        {\n" +
+            "            ACTION_NAME(TYPEDARGUMENTELEMENT_NAME);\n" +
+            "        }\n" +
+            "    }\n" +
+            "%%\n" +
+            "\n" +
+            "\n";
 
     public static final String DEFAULT_PACKAGE_NAME = "com.company.smc";
     public static final String DEFAULT_STATE_MACHINE_CLASS = "StateMachine";

@@ -25,6 +25,18 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcTypedArgumentElement.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcTypedArgumentElement argument = (SmcTypedArgumentElement) element;
+                        if (argument.getName() != null) {
+                            return new PsiReference[]{new SmcParameterReference(argument)};
+                        }
+                        return new PsiReference[0];
+                    }
+                });
 
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcQualifiedIdElement.class),
                 new PsiReferenceProvider() {

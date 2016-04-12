@@ -154,7 +154,9 @@ transition_args ::=PARENTHESES_OPEN comment* parameters comment* PARENTHESES_CLO
 
 parameters ::= parameter (COMMA comment* parameter)*
 
-parameter ::= comment* PARAMETER_NAME comment* COLON comment* PARAMETER_TYPE comment* {pin=2}
+parameter ::= parameter_name_element comment* COLON comment* parameter_type_element {pin=5 methods=[getName getType]}
+parameter_type_element ::= PARAMETER_TYPE comment* {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getNameIdentifier]}
+parameter_name_element ::= comment* PARAMETER_NAME {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getNameIdentifier]}
 
 guard ::= BRACKET_OPEN comment*  guard_raw_code? comment* BRACKET_CLOSE
 
@@ -190,4 +192,5 @@ actions ::= (comment* action comment*)*
 action ::= ACTION_NAME comment* PARENTHESES_OPEN comment* arguments? PARENTHESES_CLOSE comment* SEMICOLON {pin=1  mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMethodLikeElement"  methods=[ matches getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
 
 arguments ::= argument (COMMA comment* argument)* { methods=[getArgumentsCount]}
-argument ::= ARGUMENT_STATEMENT|STRING_LITERAL comment*
+argument ::= typed_argument_element|STRING_LITERAL comment*
+typed_argument_element ::= comment* ARGUMENT_STATEMENT { pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[ getNameIdentifier getDeclaration]}

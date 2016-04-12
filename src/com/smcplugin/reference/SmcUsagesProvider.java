@@ -23,7 +23,8 @@ public class SmcUsagesProvider implements FindUsagesProvider {
         return element instanceof SmcMap ||
                 element instanceof SmcState ||
                 element instanceof SmcTransition ||
-                element instanceof SmcAction;
+                element instanceof SmcAction ||
+                element instanceof SmcParameterNameElement;
     }
 
     @Override
@@ -40,6 +41,9 @@ public class SmcUsagesProvider implements FindUsagesProvider {
         if (element instanceof SmcAction) {
             return SmcHelpID.FIND_ACTION_USAGES;
         }
+        if (element instanceof SmcParameterNameElement) {
+            return SmcHelpID.FIND_PARAMETER_NAMED_ELEMENT_USAGES;
+        }
         return com.intellij.lang.HelpID.FIND_OTHER_USAGES;
     }
 
@@ -53,6 +57,8 @@ public class SmcUsagesProvider implements FindUsagesProvider {
         } else if (element instanceof SmcTransition) {
             return "Smc transition";
         } else if (element instanceof SmcAction) {
+            return "Smc action";
+        } else if (element instanceof SmcParameterNameElement) {
             return "Smc action";
         } else {
             return "";

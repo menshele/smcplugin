@@ -16,6 +16,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * scmplugin
@@ -129,6 +130,46 @@ public class SmcPsiImplUtil {
 
     public static PsiElement getNameIdentifier(SmcStartStateNameElement element) {
         return gePsiByToken(element, SmcTypes.START_STATE_NAME);
+    }
+
+    public static PsiElement getNameIdentifier(SmcParameterNameElement element) {
+        return gePsiByToken(element, SmcTypes.PARAMETER_NAME);
+    }
+
+    public static PsiElement getNameIdentifier(SmcParameterTypeElement element) {
+        return gePsiByToken(element, SmcTypes.PARAMETER_TYPE);
+    }
+
+    public static PsiElement getNameIdentifier(SmcTypedArgumentElement element) {
+        return gePsiByToken(element, SmcTypes.ARGUMENT_STATEMENT);
+    }
+
+    @Nullable
+    public static SmcParameter getDeclaration(SmcTypedArgumentElement element) {
+        SmcTransition transition = PsiTreeUtil.getParentOfType(element, SmcTransition.class);
+        if(transition != null){
+            SmcTransitionArgs transitionArgs = transition.getTransitionArgs();
+            if(transitionArgs != null){
+                SmcParameters parameters = transitionArgs.getParameters();
+                if(parameters!=null){
+                    List<SmcParameter> parameterList = parameters.getParameterList();
+                    for(SmcParameter parameter: parameterList){
+                        if(parameter.getName().equals(element.getName())){
+                            return parameter;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getName(SmcParameter parameter) {
+        return parameter.getParameterNameElement().getName();
+    }
+
+    public static String getType(SmcParameter parameter) {
+        return parameter.getParameterTypeElement().getName();
     }
 
     public static PsiElement getNameIdentifier(SmcQualifiedIdentifier element) {

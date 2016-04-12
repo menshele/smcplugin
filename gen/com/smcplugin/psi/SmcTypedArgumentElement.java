@@ -5,12 +5,14 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcArgument extends PsiElement {
+public interface SmcTypedArgumentElement extends SmcNamedElement {
 
   @NotNull
   List<SmcComment> getCommentList();
 
+  PsiElement getNameIdentifier();
+
   @Nullable
-  SmcTypedArgumentElement getTypedArgumentElement();
+  SmcParameter getDeclaration();
 
 }

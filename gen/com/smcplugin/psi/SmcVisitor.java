@@ -123,6 +123,14 @@ public class SmcVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitParameterNameElement(@NotNull SmcParameterNameElement o) {
+    visitNamedElement(o);
+  }
+
+  public void visitParameterTypeElement(@NotNull SmcParameterTypeElement o) {
+    visitNamedElement(o);
+  }
+
   public void visitParameters(@NotNull SmcParameters o) {
     visitPsiElement(o);
   }
@@ -197,6 +205,10 @@ public class SmcVisitor extends PsiElementVisitor {
 
   public void visitTransitionsBlock(@NotNull SmcTransitionsBlock o) {
     visitPsiElement(o);
+  }
+
+  public void visitTypedArgumentElement(@NotNull SmcTypedArgumentElement o) {
+    visitNamedElement(o);
   }
 
   public void visitVerbatimCodeSection(@NotNull SmcVerbatimCodeSection o) {

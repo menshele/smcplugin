@@ -8,17 +8,16 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcArgumentImpl extends ASTWrapperPsiElement implements SmcArgument {
+public class SmcParameterNameElementImpl extends SmcNamedElementImpl implements SmcParameterNameElement {
 
-  public SmcArgumentImpl(ASTNode node) {
+  public SmcParameterNameElementImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitArgument(this);
+    if (visitor instanceof SmcVisitor) ((SmcVisitor)visitor).visitParameterNameElement(this);
     else super.accept(visitor);
   }
 
@@ -28,10 +27,8 @@ public class SmcArgumentImpl extends ASTWrapperPsiElement implements SmcArgument
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmcComment.class);
   }
 
-  @Override
-  @Nullable
-  public SmcTypedArgumentElement getTypedArgumentElement() {
-    return findChildByClass(SmcTypedArgumentElement.class);
+  public PsiElement getNameIdentifier() {
+    return SmcPsiImplUtil.getNameIdentifier(this);
   }
 
 }

@@ -1,0 +1,28 @@
+%package com.company.smc
+
+%class com.company.smc.SomeContextClass
+
+%import com.company.smc.SomeContextClass
+%fsmfile turnstile
+%fsmclass StateMachine
+%access private
+%start STARTMAPNAMEELEMENT_NAME::STARTSTATENAMEELEMENT_NAME
+
+%map MAP_NAME %%
+
+    STATE_NAME
+    {
+        PUSH_TRANSITION_NAME PUSHPROXYSTATENAMEELEMENT_NAME/push(PUSHMAPNAMEELEMENT_NAME::PUSHSTATENAMEELEMENT_NAME) {
+
+
+        }
+
+        TRANSITION_NAME(PARAMETERNAMEELEMENT_NAME: PARAMETERTYPEELEMENT_NAME)
+        NEXTSTATE_NAME
+        {
+            ACTION_NAME(TYPEDARGUMENTELEMENT_NAME);
+        }
+    }
+%%
+
+

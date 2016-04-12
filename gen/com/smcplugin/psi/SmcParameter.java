@@ -10,4 +10,14 @@ public interface SmcParameter extends PsiElement {
   @NotNull
   List<SmcComment> getCommentList();
 
+  @NotNull
+  SmcParameterNameElement getParameterNameElement();
+
+  @NotNull
+  SmcParameterTypeElement getParameterTypeElement();
+
+  String getName();
+
+  String getType();
+
 }

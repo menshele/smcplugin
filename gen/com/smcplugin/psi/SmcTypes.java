@@ -38,6 +38,8 @@ public interface SmcTypes {
   IElementType ON_STATE = new SmcElementType("ON_STATE");
   IElementType PARAMETER = new SmcElementType("PARAMETER");
   IElementType PARAMETERS = new SmcElementType("PARAMETERS");
+  IElementType PARAMETER_NAME_ELEMENT = new SmcElementType("PARAMETER_NAME_ELEMENT");
+  IElementType PARAMETER_TYPE_ELEMENT = new SmcElementType("PARAMETER_TYPE_ELEMENT");
   IElementType POP_TRANSITION = new SmcElementType("POP_TRANSITION");
   IElementType PUSH_MAP_NAME_ELEMENT = new SmcElementType("PUSH_MAP_NAME_ELEMENT");
   IElementType PUSH_PROXY_STATE = new SmcElementType("PUSH_PROXY_STATE");
@@ -56,6 +58,7 @@ public interface SmcTypes {
   IElementType TRANSITIONS = new SmcElementType("TRANSITIONS");
   IElementType TRANSITIONS_BLOCK = new SmcElementType("TRANSITIONS_BLOCK");
   IElementType TRANSITION_ARGS = new SmcElementType("TRANSITION_ARGS");
+  IElementType TYPED_ARGUMENT_ELEMENT = new SmcElementType("TYPED_ARGUMENT_ELEMENT");
   IElementType VERBATIM_CODE_SECTION = new SmcElementType("VERBATIM_CODE_SECTION");
 
   IElementType ACCESS_KEYWORD = new SmcTokenType("%access");
@@ -218,6 +221,12 @@ public interface SmcTypes {
       else if (type == PARAMETERS) {
         return new SmcParametersImpl(node);
       }
+      else if (type == PARAMETER_NAME_ELEMENT) {
+        return new SmcParameterNameElementImpl(node);
+      }
+      else if (type == PARAMETER_TYPE_ELEMENT) {
+        return new SmcParameterTypeElementImpl(node);
+      }
       else if (type == POP_TRANSITION) {
         return new SmcPopTransitionImpl(node);
       }
@@ -271,6 +280,9 @@ public interface SmcTypes {
       }
       else if (type == TRANSITION_ARGS) {
         return new SmcTransitionArgsImpl(node);
+      }
+      else if (type == TYPED_ARGUMENT_ELEMENT) {
+        return new SmcTypedArgumentElementImpl(node);
       }
       else if (type == VERBATIM_CODE_SECTION) {
         return new SmcVerbatimCodeSectionImpl(node);

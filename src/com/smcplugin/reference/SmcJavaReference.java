@@ -25,8 +25,6 @@ import java.util.List;
  */
 public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> implements PsiPolyVariantReference {
 
-
-    private static final String DOT = ".";
     private String name;
 
 

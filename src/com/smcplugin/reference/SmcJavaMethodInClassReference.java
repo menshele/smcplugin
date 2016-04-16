@@ -13,19 +13,22 @@ import java.util.List;
 
 /**
  * Deprecation candidate see {@link AbstractNamedLocalReference}
- * <p>
+ * <p/>
  * Created by lemen on 13.03.2016.
  */
 public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
     //private final static JavaQualifiedNameProvider methodProvider = new JavaQualifiedNameProvider();
     private final String className;
     private final int paramCount;
+    private boolean checkBases;
 
-    public SmcJavaMethodInClassReference(PsiElement element, TextRange textRange, String className, int paramCount) {
+    public SmcJavaMethodInClassReference(PsiElement element, TextRange textRange, String className, int paramCount,
+                                         boolean checkBases) {
         super(element, textRange);
         methodName = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
         this.className = className;
         this.paramCount = paramCount;
+        this.checkBases = checkBases;
     }
 
     public SmcJavaMethodInClassReference(PsiElement element, TextRange textRange, String className) {
@@ -41,7 +44,7 @@ public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> 
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount, myElement.getProject());
+        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount, myElement.getProject(), checkBases);
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (PsiMethod property : properties) {
             results.add(new PsiElementResolveResult(property));

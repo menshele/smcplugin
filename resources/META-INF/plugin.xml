@@ -2,7 +2,7 @@
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
     <version>1.0.7</version>
-    <vendor email="leonid.menshenin@gmail.com" url="https://github.com/menshele">LeMen</vendor>
+    <vendor email="leonid.menshenin@gmail.com" url="mailto:leonid.menshenin@gmail.com">LeMen</vendor>
 
     <description><![CDATA[
      Smc(<a href="http://smc.sourceforge.net/">http://smc.sourceforge.net/<a>) syntax plugin<br>

@@ -21,6 +21,6 @@ public class FsmClassMethodPredicate implements Predicate<SmcMethodLikeElement> 
     public boolean apply(@Nullable SmcMethodLikeElement methodLikeElement) {
         if (methodLikeElement == null) return false;
         PsiClass fsmClass = ((SmcFile) methodLikeElement.getContainingFile()).getFsmClass();
-        return containingClass.isEquivalentTo(fsmClass) || containingClass.isInheritor(fsmClass, true);
+        return fsmClass != null && (containingClass.isEquivalentTo(fsmClass) || containingClass.isInheritor(fsmClass, true));
     }
 }

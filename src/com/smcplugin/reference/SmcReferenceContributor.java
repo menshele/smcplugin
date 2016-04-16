@@ -154,10 +154,14 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         PsiElement namePsiElement = smcTransition.getNameIdentifier();
                         if (namePsiElement != null && smcTransition.getName() != null) {
                             TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
-                            SmcFile containingFile = (SmcFile) smcTransition.getContainingFile();
-                            return new PsiReference[]{new SmcToJavaMethodReference(namePsiElement, textRange,
-                                    containingFile.getFsmClassQName(), smcTransition.getArgumentCount())};
-
+                            if (SmcPsiUtil.classExists(smcTransition.getSmStateClassQName(), element.getProject())) {
+                                return new PsiReference[]{new SmcToJavaMethodReference(namePsiElement, textRange,
+                                        smcTransition.getSmStateClassQName(), smcTransition.getArgumentCount() + 1, false)};
+                            } else {
+                                SmcFile containingFile = (SmcFile) smcTransition.getContainingFile();
+                                return new PsiReference[]{new SmcToJavaMethodReference(namePsiElement, textRange,
+                                        containingFile.getFsmClassQName(), smcTransition.getArgumentCount())};
+                            }
                         }
                         return new PsiReference[0];
                     }

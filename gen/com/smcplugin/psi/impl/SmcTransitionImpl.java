@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
 import com.smcplugin.psi.*;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
 import javax.swing.Icon;
 
@@ -68,6 +69,14 @@ public class SmcTransitionImpl extends SmcNamedElementImpl implements SmcTransit
 
   public boolean matches(PsiMethod method) {
     return SmcPsiImplUtil.matches(this, method);
+  }
+
+  public PsiClass getSmStateClass() {
+    return SmcPsiImplUtil.getSmStateClass(this);
+  }
+
+  public String getSmStateClassQName() {
+    return SmcPsiImplUtil.getSmStateClassQName(this);
   }
 
   public PsiElement getNameIdentifier() {

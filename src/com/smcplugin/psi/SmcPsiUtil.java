@@ -81,6 +81,7 @@ public class SmcPsiUtil {
     }
 
     public static List<LookupElement> fillVariantsForStaticMembers(String qname, PsiClass accessibleFromClass) {
+        if (accessibleFromClass == null) return Collections.emptyList();
         List<LookupElement> variants = new ArrayList<>();
         Project project = accessibleFromClass.getProject();
         PsiClass aClass = findClass(qname, project);
@@ -160,10 +161,11 @@ public class SmcPsiUtil {
 
 
     @SuppressWarnings("ConstantConditions")
-    public static List<PsiMethod> findMethodInClass(String qName, String methodName, int methodParameterCount, Project project) {
+    public static List<PsiMethod> findMethodInClass(String qName, String methodName, int methodParameterCount,
+                                                    Project project, boolean checkBases) {
         PsiClass aClass = SmcPsiUtil.findClass(qName, project);
         if (aClass == null) return Collections.<PsiMethod>emptyList();
-        final PsiMethod[] methodsByName = aClass.findMethodsByName(methodName, true);
+        final PsiMethod[] methodsByName = aClass.findMethodsByName(methodName, checkBases);
         if (methodParameterCount < 0) {
             return Arrays.asList(methodsByName);
         }
@@ -177,11 +179,11 @@ public class SmcPsiUtil {
     }
 
     public static boolean isMethodInClass(String qName, String methodName, int methodParameterCount, Project project) {
-        return !findMethodInClass(qName, methodName, methodParameterCount, project).isEmpty();
+        return !findMethodInClass(qName, methodName, methodParameterCount, project, true).isEmpty();
     }
 
     public static boolean isMethodInClassNotUnique(String qName, String methodName, int methodParameterCount, Project project) {
-        return filterSupers(findMethodInClass(qName, methodName, methodParameterCount, project)).size() > 1;
+        return filterSupers(findMethodInClass(qName, methodName, methodParameterCount, project, true)).size() > 1;
     }
 
     private static List<PsiMethod> filterSupers(List<PsiMethod> methodInClass) {

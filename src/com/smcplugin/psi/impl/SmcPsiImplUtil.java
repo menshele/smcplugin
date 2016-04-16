@@ -13,6 +13,7 @@ import com.smcplugin.PresentationFactory;
 import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.*;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -124,6 +125,22 @@ public class SmcPsiImplUtil {
     }
 
 
+    public static PsiClass getSmStateClass(SmcTransition transition) {
+        //PsiClass fsmClassQName = ((SmcFile) transition.getContainingFile()).getFsmClass();
+        return SmcPsiUtil.findClass(transition.getSmStateClassQName(),transition.getProject());
+    }
+
+    public static String getSmStateClassQName(SmcTransition transition) {
+        SmcState state = PsiTreeUtil.getParentOfType(transition, SmcState.class);
+        SmcMap map = PsiTreeUtil.getParentOfType(transition, SmcMap.class);
+        String mapName = map == null ? StringUtils.EMPTY : map.getName();
+        String stateName = state == null ? StringUtils.EMPTY : state.getName();
+        String transitionClass = mapName + "_" + stateName;
+        String fsmClassQName = ((SmcFile) transition.getContainingFile()).getFsmClassQName();
+        return fsmClassQName + STRING_DOT + transitionClass;
+    }
+
+
     public static PsiElement getNameIdentifier(SmcStartMapNameElement element) {
         return gePsiByToken(element, SmcTypes.START_MAP_NAME);
     }
@@ -147,14 +164,14 @@ public class SmcPsiImplUtil {
     @Nullable
     public static SmcParameter getDeclaration(SmcTypedArgumentElement element) {
         SmcTransition transition = PsiTreeUtil.getParentOfType(element, SmcTransition.class);
-        if(transition != null){
+        if (transition != null) {
             SmcTransitionArgs transitionArgs = transition.getTransitionArgs();
-            if(transitionArgs != null){
+            if (transitionArgs != null) {
                 SmcParameters parameters = transitionArgs.getParameters();
-                if(parameters!=null){
+                if (parameters != null) {
                     List<SmcParameter> parameterList = parameters.getParameterList();
-                    for(SmcParameter parameter: parameterList){
-                        if(parameter.getName().equals(element.getName())){
+                    for (SmcParameter parameter : parameterList) {
+                        if (parameter.getName().equals(element.getName())) {
                             return parameter;
                         }
                     }

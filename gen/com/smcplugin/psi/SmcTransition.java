@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
 import javax.swing.Icon;
 
@@ -32,6 +33,10 @@ public interface SmcTransition extends SmcMethodLikeElement {
   SmcTransitionArgs getTransitionArgs();
 
   boolean matches(PsiMethod method);
+
+  PsiClass getSmStateClass();
+
+  String getSmStateClassQName();
 
   PsiElement getNameIdentifier();
 

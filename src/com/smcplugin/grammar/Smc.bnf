@@ -144,7 +144,7 @@ transitions_block ::= BRACE_OPEN comment* transitions comment* BRACE_CLOSE
 
 transitions ::= comment* transition* comment*
 
-transition ::= TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMethodLikeElement" methods=[matches getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
+transition ::= TRANSITION_NAME comment* transition_args? comment* guard? comment* (push_transition|pop_transition|next_state) comment* actions_block  {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcMethodLikeElement" methods=[matches getSmStateClass getSmStateClassQName getNameIdentifier getArgumentCount getPresentation getFullName getQualifiedFullName getElementIcon]}
 
 entry ::= comment* ENTRY_KEYWORD comment* actions_block {pin=2 implements="com.smcplugin.psi.SmcOnStateNestedElement" methods=[getType getPresentation]}
 

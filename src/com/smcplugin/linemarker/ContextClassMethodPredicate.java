@@ -21,6 +21,6 @@ public class ContextClassMethodPredicate implements Predicate<SmcMethodLikeEleme
     public boolean apply(@Nullable SmcMethodLikeElement methodLikeElement) {
         if (methodLikeElement == null) return false;
         PsiClass contextClass = ((SmcFile) methodLikeElement.getContainingFile()).getContextClass();
-        return containingClass.isEquivalentTo(contextClass) || containingClass.isInheritor(contextClass, true);
+        return contextClass != null && (containingClass.isEquivalentTo(contextClass) || containingClass.isInheritor(contextClass, true));
     }
 }

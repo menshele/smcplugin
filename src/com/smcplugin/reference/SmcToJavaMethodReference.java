@@ -14,7 +14,12 @@ import com.smcplugin.psi.SmcTypes;
 public class SmcToJavaMethodReference extends SmcJavaMethodInClassReference {
 
     public SmcToJavaMethodReference(PsiElement element, TextRange textRange, String className, int paramCount) {
-        super(element, textRange, className, paramCount);
+        super(element, textRange, className, paramCount, true);
+    }
+
+    public SmcToJavaMethodReference(PsiElement element, TextRange textRange, String className, int paramCount,
+                                    boolean checkBase) {
+        super(element, textRange, className, paramCount, checkBase);
     }
 
     @Override

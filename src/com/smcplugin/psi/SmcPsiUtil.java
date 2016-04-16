@@ -5,7 +5,6 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectCoreUtil;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -34,19 +33,22 @@ import java.util.*;
  */
 public class SmcPsiUtil {
 
-    public static final Project PROJECT = ProjectCoreUtil.theOnlyOpenProject();
-    @SuppressWarnings("ConstantConditions")
-    public static final JavaFileManager fileManager = new JavaFileManagerImpl(PROJECT);
-    public static final PsiResolveHelper resolveHelper = new PsiResolveHelperImpl(PsiManager.getInstance(PROJECT));
+    public static JavaFileManager getFileManager(Project project) {
+        return new JavaFileManagerImpl(project);
+    }
 
-    @SuppressWarnings("ConstantConditions")
-    public static PsiClass[] findClasses(String name) {
-        return fileManager.findClasses(name, GlobalSearchScope.projectScope(PROJECT));
+    public static PsiResolveHelper getPsiResolveHelper(Project project) {
+        return new PsiResolveHelperImpl(PsiManager.getInstance(project));
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static List<PsiClass> findClassesForPackage(String name) {
-        PsiPackage aPackage = fileManager.findPackage(name);
+    public static PsiClass[] findClasses(String name, Project project) {
+        return getFileManager(project).findClasses(name, GlobalSearchScope.projectScope(project));
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static List<PsiClass> findClassesForPackage(String name, Project project) {
+        PsiPackage aPackage = getFileManager(project).findPackage(name);
         if (aPackage != null) {
             return Arrays.asList(aPackage.getClasses());
         }
@@ -69,8 +71,8 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static List<PsiClass> findInnerClasses(String qname) {
-        PsiClass aClass = findClass(qname);
+    public static List<PsiClass> findInnerClasses(String qname, Project project) {
+        PsiClass aClass = findClass(qname, project);
         PsiClass[] innerClasses = null;
         if (aClass != null) {
             innerClasses = aClass.getInnerClasses();
@@ -80,7 +82,8 @@ public class SmcPsiUtil {
 
     public static List<LookupElement> fillVariantsForStaticMembers(String qname, PsiClass accessibleFromClass) {
         List<LookupElement> variants = new ArrayList<>();
-        PsiClass aClass = findClass(qname);
+        Project project = accessibleFromClass.getProject();
+        PsiClass aClass = findClass(qname, project);
         if (aClass != null) {
             Set<PsiMethod> methods = new HashSet<>();
             methods.addAll(Arrays.asList(aClass.getMethods()));
@@ -93,11 +96,11 @@ public class SmcPsiUtil {
                 }
                 PsiSubstitutor methodSubst = pair.getSecond();
 
-                if (method.hasModifierProperty(PsiModifier.STATIC) && resolveHelper.isAccessible(method, accessibleFromClass, null)) {
+                if (method.hasModifierProperty(PsiModifier.STATIC) && getPsiResolveHelper(project).isAccessible(method, accessibleFromClass, null)) {
                     variants.add(JavaLookupElementBuilder.forMethod(method, methodSubst));
                 }
             }
-            for (PsiField field : collectStatics(aClass.getFields(), accessibleFromClass)) {
+            for (PsiField field : collectStatics(aClass.getFields(), accessibleFromClass, project)) {
 
                 variants.add(JavaLookupElementBuilder.forField(field));
             }
@@ -105,10 +108,10 @@ public class SmcPsiUtil {
         return variants;
     }
 
-    private static <T extends PsiMember> List<T> collectStatics(T[] members, PsiClass accessibleFromPsiClass) {
+    private static <T extends PsiMember> List<T> collectStatics(T[] members, PsiClass accessibleFromPsiClass, Project project) {
         List<T> result = new ArrayList<>();
         for (T member : members) {
-            if (member.hasModifierProperty(PsiModifier.STATIC) && resolveHelper.isAccessible(member, accessibleFromPsiClass, null)) {
+            if (member.hasModifierProperty(PsiModifier.STATIC) && getPsiResolveHelper(project).isAccessible(member, accessibleFromPsiClass, null)) {
                 result.add(member);
             }
         }
@@ -126,8 +129,8 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static List<PsiPackage> findSubPackagesForPackage(String name) {
-        PsiPackage aPackage = fileManager.findPackage(name);
+    public static List<PsiPackage> findSubPackagesForPackage(String name, Project project) {
+        PsiPackage aPackage = getFileManager(project).findPackage(name);
         if (aPackage != null) {
             return Arrays.asList(aPackage.getSubPackages());
         }
@@ -135,13 +138,13 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static PsiClass findClass(String qName) {
-        return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT));
+    public static PsiClass findClass(String qName, Project project) {
+        return getFileManager(project).findClass(qName, GlobalSearchScope.projectScope(project));
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static List<PsiMethod> findMethodsWithAtLeastArgCount(String qName, int argNum) {
-        PsiClass aClass = findClass(qName);
+    public static List<PsiMethod> findMethodsWithAtLeastArgCount(String qName, int argNum, Project project) {
+        PsiClass aClass = findClass(qName, project);
         if (aClass == null) {
             return Collections.emptyList();
         }
@@ -157,8 +160,8 @@ public class SmcPsiUtil {
 
 
     @SuppressWarnings("ConstantConditions")
-    public static List<PsiMethod> findMethodInClass(String qName, String methodName, int methodParameterCount) {
-        PsiClass aClass = SmcPsiUtil.findClass(qName);
+    public static List<PsiMethod> findMethodInClass(String qName, String methodName, int methodParameterCount, Project project) {
+        PsiClass aClass = SmcPsiUtil.findClass(qName, project);
         if (aClass == null) return Collections.<PsiMethod>emptyList();
         final PsiMethod[] methodsByName = aClass.findMethodsByName(methodName, true);
         if (methodParameterCount < 0) {
@@ -173,12 +176,12 @@ public class SmcPsiUtil {
         return methodsNyNameAndParamCount;
     }
 
-    public static boolean isMethodInClass(String qName, String methodName, int methodParameterCount) {
-        return !findMethodInClass(qName, methodName, methodParameterCount).isEmpty();
+    public static boolean isMethodInClass(String qName, String methodName, int methodParameterCount, Project project) {
+        return !findMethodInClass(qName, methodName, methodParameterCount, project).isEmpty();
     }
 
-    public static boolean isMethodInClassNotUnique(String qName, String methodName, int methodParameterCount) {
-        return filterSupers(findMethodInClass(qName, methodName, methodParameterCount)).size() > 1;
+    public static boolean isMethodInClassNotUnique(String qName, String methodName, int methodParameterCount, Project project) {
+        return filterSupers(findMethodInClass(qName, methodName, methodParameterCount, project)).size() > 1;
     }
 
     private static List<PsiMethod> filterSupers(List<PsiMethod> methodInClass) {
@@ -194,8 +197,8 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static boolean classExists(String qName) {
-        return fileManager.findClass(qName, GlobalSearchScope.projectScope(PROJECT)) != null;
+    public static boolean classExists(String qName, Project project) {
+        return getFileManager(project).findClass(qName, GlobalSearchScope.projectScope(project)) != null;
     }
 
     public static List<SmcMap> findMapGlobally(Project project, String name) {
@@ -511,23 +514,23 @@ public class SmcPsiUtil {
         return stringBuilder.toString();
     }
 
-    public static boolean staticMemberExists(String qualifiedName, PsiClass fsmClassQName) {
+    public static boolean staticMemberExists(String qualifiedName, PsiClass fsmClassQName, Project project) {
         String parentName = getParentName(qualifiedName);
         String shortName = SmcStringUtils.getSimpleName(qualifiedName, parentName);
-        PsiClass aClass = findClass(parentName);
+        PsiClass aClass = findClass(parentName, project);
         Set<String> staticNames = null;
         if (aClass != null && fsmClassQName != null) {
-            staticNames = collectStaticNames(aClass.getMethods(), fsmClassQName);
+            staticNames = collectStaticNames(aClass.getMethods(), fsmClassQName, project);
             staticNames.addAll(
-                    collectStaticNames(aClass.getFields(), fsmClassQName));
+                    collectStaticNames(aClass.getFields(), fsmClassQName, project));
         }
         return staticNames != null && staticNames.contains(shortName);
     }
 
-    private static <T extends PsiMember> Set<String> collectStaticNames(T[] members, PsiClass psiClass) {
+    private static <T extends PsiMember> Set<String> collectStaticNames(T[] members, PsiClass psiClass, Project project) {
         Set<String> result = new HashSet<>();
         for (T member : members) {
-            if (member.hasModifierProperty(PsiModifier.STATIC) && resolveHelper.isAccessible(member, psiClass, null)) {
+            if (member.hasModifierProperty(PsiModifier.STATIC) && getPsiResolveHelper(project).isAccessible(member, psiClass, null)) {
                 result.add(member.getName());
             }
         }
@@ -540,8 +543,8 @@ public class SmcPsiUtil {
         return lastDotIndex < 0 ? "" : qname.substring(0, lastDotIndex);
     }
 
-    public static boolean staticClassExists(String qualifiedName) {
-        PsiClass aClass = findClass(qualifiedName);
+    public static boolean staticClassExists(String qualifiedName, Project project) {
+        PsiClass aClass = findClass(qualifiedName, project);
         return aClass != null && aClass.hasModifierProperty(PsiModifier.STATIC);
     }
 }

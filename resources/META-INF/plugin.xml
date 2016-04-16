@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <vendor email="leonid.menshenin@gmail.com" url="https://github.com/menshele">LeMen</vendor>
 
     <description><![CDATA[
@@ -10,7 +10,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-     Create FSM File functionality added <br>
+     Parameter rename + completion <br>
     ]]>
     </change-notes>
 

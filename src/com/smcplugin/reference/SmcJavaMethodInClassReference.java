@@ -41,7 +41,7 @@ public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> 
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount);
+        List<PsiMethod> properties = SmcPsiUtil.findMethodInClass(className, methodName, paramCount, myElement.getProject());
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (PsiMethod property : properties) {
             results.add(new PsiElementResolveResult(property));
@@ -59,7 +59,7 @@ public class SmcJavaMethodInClassReference extends PsiReferenceBase<PsiElement> 
     @NotNull
     @Override
     public Object[] getVariants() {
-        List<PsiMethod> properties = SmcPsiUtil.findMethodsWithAtLeastArgCount(className, paramCount);
+        List<PsiMethod> properties = SmcPsiUtil.findMethodsWithAtLeastArgCount(className, paramCount, myElement.getProject());
         List<LookupElement> variants = new ArrayList<LookupElement>();
         for (final PsiMethod psiMethod : properties) {
             if (psiMethod.getName().length() > 0) {

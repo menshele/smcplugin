@@ -33,7 +33,7 @@ public class SmcJavaClassReference extends PsiReferenceBase<PsiNamedElement> imp
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        final PsiClass[] properties = SmcPsiUtil.findClasses(name);
+        final PsiClass[] properties = SmcPsiUtil.findClasses(name, myElement.getProject());
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (PsiClass property : properties) {
             results.add(new PsiElementResolveResult(property));
@@ -51,7 +51,7 @@ public class SmcJavaClassReference extends PsiReferenceBase<PsiNamedElement> imp
     @NotNull
     @Override
     public Object[] getVariants() {
-        List<PsiClass> classesForPackage = SmcPsiUtil.findClassesForPackage(packageName);
+        List<PsiClass> classesForPackage = SmcPsiUtil.findClassesForPackage(packageName, myElement.getProject());
         List<LookupElement> variants = new ArrayList<LookupElement>();
 
         for (final PsiClass psiClass : classesForPackage) {

@@ -51,7 +51,7 @@ public class SmcFile extends PsiFileBase {
 
     public PsiClass getContextClass() {
         String contextClassQName = getContextClassQName();
-        return StringUtils.isBlank(contextClassQName) ? null : SmcPsiUtil.findClass(contextClassQName);
+        return StringUtils.isBlank(contextClassQName) ? null : SmcPsiUtil.findClass(contextClassQName, getProject());
     }
 
     public String getFsmClassQName() {
@@ -61,7 +61,7 @@ public class SmcFile extends PsiFileBase {
 
     public PsiClass getFsmClass() {
         String fsmQname = getFsmClassQName();
-        return StringUtils.isBlank(fsmQname) ? null : SmcPsiUtil.findClass(fsmQname);
+        return StringUtils.isBlank(fsmQname) ? null : SmcPsiUtil.findClass(fsmQname, getProject());
     }
 
     public String getPackageName() {

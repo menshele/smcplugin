@@ -3,6 +3,7 @@ package com.smcplugin.reference;
 import com.intellij.codeInsight.completion.JavaLookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -41,7 +42,8 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        final PsiClass[] properties = SmcPsiUtil.findClasses(name);
+        Project project = myElement.getProject();
+        final PsiClass[] properties = SmcPsiUtil.findClasses(name, project);
         List<ResolveResult> results = new ArrayList<ResolveResult>();
         for (PsiClass psiClass : properties) {
             results.add(new PsiElementResolveResult(psiClass));
@@ -49,7 +51,7 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
         SmcQualifiedIdElement previousQualifiedIdElement = myElement.getPreviousQualifiedIdElement();
         if (previousQualifiedIdElement != null) {
             String previousQualifiedName = previousQualifiedIdElement.getQualifiedName();
-            PsiClass previousClass = SmcPsiUtil.findClass(previousQualifiedName);
+            PsiClass previousClass = SmcPsiUtil.findClass(previousQualifiedName, project);
             if (previousClass != null) {
                 PsiField fieldByName = previousClass.findFieldByName(myElement.getName(), false);
                 if(fieldByName != null){
@@ -76,8 +78,9 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
     @Override
     public Object[] getVariants() {
         String previousQualifiedName = myElement.getPreviousQualifiedName();
-        List<PsiClass> classesForPackage = SmcPsiUtil.findClassesForPackage(previousQualifiedName);
-        List<PsiPackage> subPackages = SmcPsiUtil.findSubPackagesForPackage(previousQualifiedName);
+        Project project = myElement.getProject();
+        List<PsiClass> classesForPackage = SmcPsiUtil.findClassesForPackage(previousQualifiedName, project);
+        List<PsiPackage> subPackages = SmcPsiUtil.findSubPackagesForPackage(previousQualifiedName, project);
         List<LookupElement> variants = new ArrayList<LookupElement>();
         for (final PsiPackage subPackage : subPackages) {
             final String shortName = SmcStringUtils.getSimpleName(subPackage.getQualifiedName(), previousQualifiedName);
@@ -86,7 +89,7 @@ public class SmcJavaReference extends PsiReferenceBase<SmcQualifiedIdElement> im
             }
         }
 
-        List<PsiClass> findInnerClasses = SmcPsiUtil.findInnerClasses(previousQualifiedName);
+        List<PsiClass> findInnerClasses = SmcPsiUtil.findInnerClasses(previousQualifiedName, project);
         for (final PsiClass psiClass : findInnerClasses) {
             if (!StringUtils.isEmpty(psiClass.getQualifiedName())) {
                 variants.add(JavaLookupElementBuilder.forClass(psiClass));

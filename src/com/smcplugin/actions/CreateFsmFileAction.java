@@ -15,7 +15,6 @@ import com.smcplugin.SmcFileType;
 import com.smcplugin.SmcIcons;
 import com.smcplugin.psi.SmcElementFactory;
 import com.smcplugin.psi.SmcFile;
-import com.smcplugin.psi.SmcPsiUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,7 @@ public class CreateFsmFileAction extends CreateFromTemplateAction<SmcFile> {
     @Override
     protected SmcFile createFile(String name, String templateName, PsiDirectory dir) {
         String aPackageName = getPackageName(dir);
-        boolean validName = PsiNameHelper.getInstance(SmcPsiUtil.PROJECT).isQualifiedName(name);
+        boolean validName = PsiNameHelper.getInstance(dir.getProject()).isQualifiedName(name);
         String shortClassName = StringUtils.capitalize(PsiNameHelper.getShortClassName(name));
         String smClassName = validName ? shortClassName + STATE_MACHINE_SUFFIX : "";
         String smContextClassName = validName ?  shortClassName + CONTEXT_SUFFIX : "";
@@ -48,7 +47,7 @@ public class CreateFsmFileAction extends CreateFromTemplateAction<SmcFile> {
             JavaDirectoryService.getInstance().createClass(dir, smContextClassName, templateName, true);
         }
         String nameWithExtension = name + DOT_EXTENSION;
-        SmcFile newFile = SmcElementFactory.createNewFile(SmcPsiUtil.PROJECT, nameWithExtension, aPackageName,
+        SmcFile newFile = SmcElementFactory.createNewFile(dir.getProject(), nameWithExtension, aPackageName,
                 smClassName, smContextClassName);
         dir.add(newFile);
         return newFile;

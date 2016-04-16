@@ -25,7 +25,7 @@ public class SmcClassExistsAnnotator implements Annotator {
             SmcFile file = (SmcFile) classNameElement.getContainingFile();
             String contextClassQName = file.getContextClassQName();
             SmcQualifiedIdentifier qualifiedIdentifier = classNameElement.getQualifiedIdentifier();
-            if (contextClassQName != null && !SmcPsiUtil.classExists(contextClassQName) && qualifiedIdentifier != null) {
+            if (contextClassQName != null && !SmcPsiUtil.classExists(contextClassQName, element.getProject()) && qualifiedIdentifier != null) {
                 Annotation errorAnnotation = holder.createErrorAnnotation(qualifiedIdentifier.getLastIdentifier(),
                         getMessage(contextClassQName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
@@ -35,7 +35,7 @@ public class SmcClassExistsAnnotator implements Annotator {
             SmcQualifiedIdentifier qualifiedIdentifier = classNameElement.getQualifiedIdentifier();
             String qualifiedName = classNameElement.getQualifiedIdentifier().getName();
             if (StringUtils.isNotBlank(qualifiedName) && !qualifiedIdentifier.isWildcard()
-                    && !SmcPsiUtil.classExists(qualifiedName)) {
+                    && !SmcPsiUtil.classExists(qualifiedName, element.getProject())) {
                 Annotation errorAnnotation = holder.createErrorAnnotation(qualifiedIdentifier.getLastIdentifier(),
                         getMessage(qualifiedName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
@@ -46,7 +46,7 @@ public class SmcClassExistsAnnotator implements Annotator {
             SmcQualifiedIdentifier qualifiedIdentifier = classNameElement.getQualifiedIdentifier();
             String qualifiedName = classNameElement.getQualifiedIdentifier().getName();
             if(StringUtils.isBlank(qualifiedName) || qualifiedIdentifier.isWildcard()) return;
-            if (!SmcPsiUtil.staticClassExists(qualifiedName) && !SmcPsiUtil.staticMemberExists(qualifiedName,containingFile.getFsmClass())) {
+            if (!SmcPsiUtil.staticClassExists(qualifiedName, element.getProject()) && !SmcPsiUtil.staticMemberExists(qualifiedName,containingFile.getFsmClass(), element.getProject())) {
                 Annotation errorAnnotation = holder.createErrorAnnotation(qualifiedIdentifier.getLastIdentifier(),
                         getMessage(qualifiedName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);

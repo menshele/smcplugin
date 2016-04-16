@@ -32,11 +32,11 @@ public class SmcActionAnnotator implements Annotator {
             SmcAction action = (SmcAction) parent;
             SmcFile containingFile = (SmcFile)action.getContainingFile();
             String contextClassName = containingFile.getContextClassQName();
-            if (!SmcPsiUtil.isMethodInClass(contextClassName, action.getName(), action.getArgumentCount())) {
+            if (!SmcPsiUtil.isMethodInClass(contextClassName, action.getName(), action.getArgumentCount(), element.getProject())) {
                 Annotation errorAnnotation = holder.createErrorAnnotation(element, getNotResolvedMessage(action.getFullName(), contextClassName));
                 errorAnnotation.setTextAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
                 errorAnnotation.registerFix(new CreateMethodInContextClassFix(action.getName(), action.getArgumentCount()));
-            } else if (SmcPsiUtil.isMethodInClassNotUnique(contextClassName, action.getName(), action.getArgumentCount())) {
+            } else if (SmcPsiUtil.isMethodInClassNotUnique(contextClassName, action.getName(), action.getArgumentCount(), element.getProject())) {
                 holder.createWarningAnnotation(element, getAmbiguityMessage(action.getFullName(),contextClassName));
             }
         }

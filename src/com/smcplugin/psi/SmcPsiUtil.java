@@ -279,6 +279,31 @@ public class SmcPsiUtil {
         return result != null ? result : Collections.<SmcMethodLikeElement>emptyList();
     }
 
+    public static List<SmcTransition> findTransitionByMethod(PsiMethod psiMethod, Predicate<SmcTransition> predicate) {
+        List<SmcTransition> result = null;
+        Project project = psiMethod.getProject();
+        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SmcFileType.INSTANCE,
+                GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            SmcFile simpleFile = (SmcFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (simpleFile != null) {
+                Collection<SmcTransition> smcTransitions = PsiTreeUtil.findChildrenOfType(simpleFile, SmcTransition.class);
+                for (SmcTransition transition : smcTransitions) {
+                    if (psiMethod.getName().equals(transition.getName()) &&
+                            (psiMethod.getParameterList().getParametersCount() == transition.getArgumentCount() + 1) &&
+                            (predicate == null || predicate.apply(transition))) {
+                        if (result == null) {
+                            result = new ArrayList<>();
+                        }
+                        result.add(transition);
+                    }
+                }
+            }
+        }
+        return result != null ? result : Collections.<SmcTransition>emptyList();
+    }
+
+
     public static List<PsiMethodCallExpression> findMethodLikeCalls(SmcMethodLikeElement psiMethodLike) {
         SmcFile containingFile = (SmcFile) psiMethodLike.getContainingFile().getContainingFile();
         PsiClass fsmClass = containingFile.getFsmClass();

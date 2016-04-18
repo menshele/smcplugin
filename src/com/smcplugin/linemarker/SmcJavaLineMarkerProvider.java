@@ -41,6 +41,9 @@ public class SmcJavaLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 registerMethodLike(psiMethod, null, result, SmcTransition.class,
                         new FsmClassMethodPredicate(containingClass),
                         SmcIcons.TRANSITION, "Navigate to a FSM transitions for \"{0}\"");
+                registerTransition(psiMethod, null, result,
+                        new StateMethodPredicate(containingClass),
+                        SmcIcons.TRANSITION, "Navigate to a FSM transition for \"{0}\"");
             }
         }
         if (element instanceof PsiMethodCallExpression) {
@@ -72,6 +75,28 @@ public class SmcJavaLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 NavigationGutterIconBuilder<PsiElement> builder =
                         NavigationGutterIconBuilder.create(icon).
                                 setTargets(methodLikeElements).
+                                setTooltipText(MessageFormat.format(toolTipPattern,
+                                        presentation != null ? presentation.getPresentableText() : psiMethod.getName()));
+                result.add(builder.createLineMarkerInfo(nameIdentifier));
+            }
+        }
+    }
+
+
+    private void registerTransition(PsiMethod psiMethod,
+                                    PsiElement identifier,
+                                    Collection<? super RelatedItemLineMarkerInfo> result,
+                                    Predicate<SmcTransition> predicate,
+                                    Icon icon,
+                                    String toolTipPattern) {
+        PsiElement nameIdentifier = identifier != null ? identifier : psiMethod.getNameIdentifier();
+        if (nameIdentifier != null) {
+            final List<SmcTransition> transitions = SmcPsiUtil.findTransitionByMethod(psiMethod, predicate);
+            if (transitions != null && !transitions.isEmpty()) {
+                ItemPresentation presentation = psiMethod.getPresentation();
+                NavigationGutterIconBuilder<PsiElement> builder =
+                        NavigationGutterIconBuilder.create(icon).
+                                setTargets(transitions).
                                 setTooltipText(MessageFormat.format(toolTipPattern,
                                         presentation != null ? presentation.getPresentableText() : psiMethod.getName()));
                 result.add(builder.createLineMarkerInfo(nameIdentifier));

@@ -75,6 +75,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     else if (t == FSM_PACKAGE) {
       r = fsm_package(b, 0);
     }
+    else if (t == GENERIC_PARAMETER) {
+      r = generic_parameter(b, 0);
+    }
     else if (t == GUARD) {
       r = guard(b, 0);
     }
@@ -113,6 +116,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     }
     else if (t == PARAMETER_NAME_ELEMENT) {
       r = parameter_name_element(b, 0);
+    }
+    else if (t == PARAMETER_TYPE) {
+      r = parameter_type(b, 0);
     }
     else if (t == PARAMETER_TYPE_ELEMENT) {
       r = parameter_type_element(b, 0);
@@ -958,6 +964,61 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ANGLE_OPEN (QUESTION_MARK|TYPE_PARAMETER) ((EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)? ANGLE_CLOSE
+  public static boolean generic_parameter(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter")) return false;
+    if (!nextTokenIs(b, ANGLE_OPEN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ANGLE_OPEN);
+    r = r && generic_parameter_1(b, l + 1);
+    r = r && generic_parameter_2(b, l + 1);
+    r = r && consumeToken(b, ANGLE_CLOSE);
+    exit_section_(b, m, GENERIC_PARAMETER, r);
+    return r;
+  }
+
+  // QUESTION_MARK|TYPE_PARAMETER
+  private static boolean generic_parameter_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, QUESTION_MARK);
+    if (!r) r = consumeToken(b, TYPE_PARAMETER);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ((EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)?
+  private static boolean generic_parameter_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_2")) return false;
+    generic_parameter_2_0(b, l + 1);
+    return true;
+  }
+
+  // (EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type
+  private static boolean generic_parameter_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = generic_parameter_2_0_0(b, l + 1);
+    r = r && parameter_type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // EXTENDS_KEYWORD|SUPER_KEYWORD
+  private static boolean generic_parameter_2_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_2_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EXTENDS_KEYWORD);
+    if (!r) r = consumeToken(b, SUPER_KEYWORD);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // BRACKET_OPEN comment*  guard_raw_code? comment* BRACKET_CLOSE
   public static boolean guard(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "guard")) return false;
@@ -1414,13 +1475,33 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PARAMETER_TYPE comment*
+  // PARAMETER_TYPE_NAME generic_parameter?
+  public static boolean parameter_type(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_type")) return false;
+    if (!nextTokenIs(b, PARAMETER_TYPE_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PARAMETER_TYPE_NAME);
+    r = r && parameter_type_1(b, l + 1);
+    exit_section_(b, m, PARAMETER_TYPE, r);
+    return r;
+  }
+
+  // generic_parameter?
+  private static boolean parameter_type_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_type_1")) return false;
+    generic_parameter(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // parameter_type comment*
   public static boolean parameter_type_element(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter_type_element")) return false;
-    if (!nextTokenIs(b, PARAMETER_TYPE)) return false;
+    if (!nextTokenIs(b, PARAMETER_TYPE_NAME)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, null);
-    r = consumeToken(b, PARAMETER_TYPE);
+    r = parameter_type(b, l + 1);
     p = r; // pin = 1
     r = r && parameter_type_element_1(b, l + 1);
     exit_section_(b, l, m, PARAMETER_TYPE_ELEMENT, r, p, null);

@@ -75,6 +75,10 @@ public class SmcVisitor extends PsiElementVisitor {
     visitCustomNamed(o);
   }
 
+  public void visitGenericParameter(@NotNull SmcGenericParameter o) {
+    visitPsiElement(o);
+  }
+
   public void visitGuard(@NotNull SmcGuard o) {
     visitPsiElement(o);
   }
@@ -125,6 +129,10 @@ public class SmcVisitor extends PsiElementVisitor {
 
   public void visitParameterNameElement(@NotNull SmcParameterNameElement o) {
     visitNamedElement(o);
+  }
+
+  public void visitParameterType(@NotNull SmcParameterType o) {
+    visitPsiElement(o);
   }
 
   public void visitParameterTypeElement(@NotNull SmcParameterTypeElement o) {

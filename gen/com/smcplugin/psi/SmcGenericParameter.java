@@ -5,14 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SmcParameterTypeElement extends SmcNamedElement {
+public interface SmcGenericParameter extends PsiElement {
 
-  @NotNull
-  List<SmcComment> getCommentList();
-
-  @NotNull
+  @Nullable
   SmcParameterType getParameterType();
-
-  PsiElement getNameIdentifier();
 
 }

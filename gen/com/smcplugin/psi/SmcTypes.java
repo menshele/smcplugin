@@ -25,6 +25,7 @@ public interface SmcTypes {
   IElementType FSM_CLASS_DECLARATION = new SmcElementType("FSM_CLASS_DECLARATION");
   IElementType FSM_FILE = new SmcElementType("FSM_FILE");
   IElementType FSM_PACKAGE = new SmcElementType("FSM_PACKAGE");
+  IElementType GENERIC_PARAMETER = new SmcElementType("GENERIC_PARAMETER");
   IElementType GUARD = new SmcElementType("GUARD");
   IElementType GUARD_RAW_CODE = new SmcElementType("GUARD_RAW_CODE");
   IElementType HEADER_FILE = new SmcElementType("HEADER_FILE");
@@ -39,6 +40,7 @@ public interface SmcTypes {
   IElementType PARAMETER = new SmcElementType("PARAMETER");
   IElementType PARAMETERS = new SmcElementType("PARAMETERS");
   IElementType PARAMETER_NAME_ELEMENT = new SmcElementType("PARAMETER_NAME_ELEMENT");
+  IElementType PARAMETER_TYPE = new SmcElementType("PARAMETER_TYPE");
   IElementType PARAMETER_TYPE_ELEMENT = new SmcElementType("PARAMETER_TYPE_ELEMENT");
   IElementType POP_TRANSITION = new SmcElementType("POP_TRANSITION");
   IElementType PUSH_MAP_NAME_ELEMENT = new SmcElementType("PUSH_MAP_NAME_ELEMENT");
@@ -64,6 +66,8 @@ public interface SmcTypes {
   IElementType ACCESS_KEYWORD = new SmcTokenType("%access");
   IElementType ACCESS_LEVEL = new SmcTokenType("<public|protected|private>");
   IElementType ACTION_NAME = new SmcTokenType("<method name>");
+  IElementType ANGLE_CLOSE = new SmcTokenType("ANGLE_CLOSE");
+  IElementType ANGLE_OPEN = new SmcTokenType("ANGLE_OPEN");
   IElementType ARGUMENT_STATEMENT = new SmcTokenType("<argument>");
   IElementType BLOCK_COMMENT_CLOSE = new SmcTokenType("*/");
   IElementType BLOCK_COMMENT_CONTENT = new SmcTokenType("<comment body>");
@@ -83,6 +87,7 @@ public interface SmcTypes {
   IElementType DOT = new SmcTokenType("DOT");
   IElementType ENTRY_KEYWORD = new SmcTokenType("Entry");
   IElementType EXIT_KEYWORD = new SmcTokenType("Exit");
+  IElementType EXTENDS_KEYWORD = new SmcTokenType("EXTENDS_KEYWORD");
   IElementType FSM_CLASS_KEYWORD = new SmcTokenType("%fsmclass");
   IElementType FSM_CLASS_NAME = new SmcTokenType("<fsm class name>");
   IElementType FSM_FILE_KEYWORD = new SmcTokenType("%fsmfile");
@@ -107,7 +112,7 @@ public interface SmcTypes {
   IElementType PACKAGE_KEYWORD = new SmcTokenType("%package");
   IElementType PACKAGE_STATEMENT = new SmcTokenType("<package: like com.foo.bar>");
   IElementType PARAMETER_NAME = new SmcTokenType("<parameter name>");
-  IElementType PARAMETER_TYPE = new SmcTokenType("<parameter type>");
+  IElementType PARAMETER_TYPE_NAME = new SmcTokenType("PARAMETER_TYPE_NAME");
   IElementType PARENTHESES_CLOSE = new SmcTokenType(")");
   IElementType PARENTHESES_OPEN = new SmcTokenType("(");
   IElementType POP_KEYWORD = new SmcTokenType("pop");
@@ -116,6 +121,7 @@ public interface SmcTypes {
   IElementType PUSH_PROXY_STATE_KEYWORD_SEPARATOR = new SmcTokenType("/");
   IElementType PUSH_PROXY_STATE_NAME = new SmcTokenType("<proxy state name>");
   IElementType PUSH_STATE_NAME = new SmcTokenType("<push state name>");
+  IElementType QUESTION_MARK = new SmcTokenType("QUESTION_MARK");
   IElementType SEMICOLON = new SmcTokenType(";");
   IElementType START_KEYWORD = new SmcTokenType("%start");
   IElementType START_MAP_NAME = new SmcTokenType("<start map name>");
@@ -123,7 +129,9 @@ public interface SmcTypes {
   IElementType STATE_NAME = new SmcTokenType("<state name>");
   IElementType STATIC_JAVA_KEYWORD = new SmcTokenType("<keyword \"static\">");
   IElementType STRING_LITERAL = new SmcTokenType("<string literal>");
+  IElementType SUPER_KEYWORD = new SmcTokenType("SUPER_KEYWORD");
   IElementType TRANSITION_NAME = new SmcTokenType("<transition name>");
+  IElementType TYPE_PARAMETER = new SmcTokenType("TYPE_PARAMETER");
   IElementType VERBATIM_CLOSE = new SmcTokenType("%}");
   IElementType VERBATIM_CODE = new SmcTokenType("<row code block>");
   IElementType VERBATIM_OPEN = new SmcTokenType("%{");
@@ -182,6 +190,9 @@ public interface SmcTypes {
       else if (type == FSM_PACKAGE) {
         return new SmcFsmPackageImpl(node);
       }
+      else if (type == GENERIC_PARAMETER) {
+        return new SmcGenericParameterImpl(node);
+      }
       else if (type == GUARD) {
         return new SmcGuardImpl(node);
       }
@@ -223,6 +234,9 @@ public interface SmcTypes {
       }
       else if (type == PARAMETER_NAME_ELEMENT) {
         return new SmcParameterNameElementImpl(node);
+      }
+      else if (type == PARAMETER_TYPE) {
+        return new SmcParameterTypeImpl(node);
       }
       else if (type == PARAMETER_TYPE_ELEMENT) {
         return new SmcParameterTypeElementImpl(node);

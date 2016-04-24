@@ -144,6 +144,11 @@ public class SmcPsiUtil {
     }
 
     @SuppressWarnings("ConstantConditions")
+    public static PsiClass findClassEverywhere(String qName, Project project) {
+        return getFileManager(project).findClass(qName, GlobalSearchScope.allScope(project));
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public static List<PsiMethod> findMethodsWithAtLeastArgCount(String qName, int argNum, Project project) {
         PsiClass aClass = findClass(qName, project);
         if (aClass == null) {
@@ -277,6 +282,53 @@ public class SmcPsiUtil {
             }
         }
         return result != null ? result : Collections.<SmcMethodLikeElement>emptyList();
+    }
+
+    public static Collection<PsiClass> findDirectlyImportedClassBySimpleName(SmcFile file, String simpleName) {
+        SmcImportClass singleImportStatement = file.findSingleImportStatement(simpleName);
+        String name = (singleImportStatement != null) ?
+                singleImportStatement.getQualifiedIdentifier().getLastIdentifier().getQualifiedName() : null;
+        return name == null ? Collections.<PsiClass>emptyList() : Arrays.asList(SmcPsiUtil.findClasses(name, file.getProject()));
+    }
+
+    public static Collection<PsiClass> findImportedInPackageClassBySimpleName(SmcFile file, String simpleName) {
+        Set<String> packages = file.findImportedPackageNames();
+        List<PsiClass> candidates = new ArrayList<>();
+        for (String packageName : packages) {
+            PsiPackage aPackage = getFileManager(file.getProject()).findPackage(packageName);
+            if (aPackage != null) {
+                PsiClass[] classByShortName = aPackage.findClassByShortName(simpleName, GlobalSearchScope.allScope(file.getProject()));
+                candidates.addAll(Arrays.asList(classByShortName));
+            }
+        }
+        return candidates;
+    }
+
+    public static Collection<PsiClass> getImportedInPackageClasses(SmcFile file) {
+        Set<String> packages = file.findImportedPackageNames();
+        List<PsiClass> candidates = new ArrayList<>();
+        for (String packageName : packages) {
+            PsiPackage aPackage = getFileManager(file.getProject()).findPackage(packageName);
+            if (aPackage != null) {
+                candidates.addAll(Arrays.asList(aPackage.getClasses()));
+            }
+        }
+        return candidates;
+    }
+
+    public static Collection<PsiClass> findImportedClass(SmcFile smFile, String simpleClassName) {
+        List<PsiClass> availableClasses = new ArrayList<>();
+        availableClasses.addAll(findDirectlyImportedClassBySimpleName(smFile, simpleClassName));
+        availableClasses.addAll(findImportedInPackageClassBySimpleName(smFile, simpleClassName));
+        return availableClasses;
+    }
+
+    public static Collection<PsiClass> findAllImportedClass(SmcFile smFile) {
+        List<PsiClass> availableClasses = new ArrayList<>();
+        availableClasses.addAll(smFile.getDirectlyImportedClasses());
+        availableClasses.addAll(getImportedInPackageClasses(smFile));
+
+        return availableClasses;
     }
 
     public static List<SmcTransition> findTransitionByMethod(PsiMethod psiMethod, Predicate<SmcTransition> predicate) {
@@ -573,5 +625,11 @@ public class SmcPsiUtil {
     public static boolean staticClassExists(String qualifiedName, Project project) {
         PsiClass aClass = findClass(qualifiedName, project);
         return aClass != null && aClass.hasModifierProperty(PsiModifier.STATIC);
+    }
+
+    public static boolean isTypeAvailableFromSmc(SmcParameterType name) {
+        SmcFile containingFile = (SmcFile)name.getContainingFile();
+        Collection<PsiClass> importedClasses = findImportedClass(containingFile, name.getName());
+        return !importedClasses.isEmpty();
     }
 }

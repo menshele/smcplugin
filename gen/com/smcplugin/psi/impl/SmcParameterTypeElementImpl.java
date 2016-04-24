@@ -8,9 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.smcplugin.psi.SmcTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.smcplugin.psi.*;
 
-public class SmcParameterTypeElementImpl extends SmcNamedElementImpl implements SmcParameterTypeElement {
+public class SmcParameterTypeElementImpl extends ASTWrapperPsiElement implements SmcParameterTypeElement {
 
   public SmcParameterTypeElementImpl(ASTNode node) {
     super(node);
@@ -31,10 +32,6 @@ public class SmcParameterTypeElementImpl extends SmcNamedElementImpl implements 
   @NotNull
   public SmcParameterType getParameterType() {
     return findNotNullChildByClass(SmcParameterType.class);
-  }
-
-  public PsiElement getNameIdentifier() {
-    return SmcPsiImplUtil.getNameIdentifier(this);
   }
 
 }

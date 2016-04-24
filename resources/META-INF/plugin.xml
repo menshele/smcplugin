@@ -45,6 +45,7 @@
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcClassExistsAnnotator"/>
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcActionAnnotator"/>
         <annotator language="smc" implementationClass="com.smcplugin.validation.SmcTransitionAnnotator"/>
+        <annotator language="smc" implementationClass="com.smcplugin.validation.SmcTypeIsAvailableAnnotator"/>
         <psi.referenceContributor language="smc" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <psi.referenceContributor language="JAVA" implementation="com.smcplugin.reference.SmcReferenceContributor"/>
         <!--codeInsight.lineMarkerProvider language="smc" implementationClass="com.smcplugin.linemarker.SmcLineMarkerProvider"/-->

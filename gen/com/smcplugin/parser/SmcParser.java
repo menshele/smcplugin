@@ -1479,12 +1479,13 @@ public class SmcParser implements PsiParser, LightPsiParser {
   public static boolean parameter_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter_type")) return false;
     if (!nextTokenIs(b, PARAMETER_TYPE_NAME)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeToken(b, PARAMETER_TYPE_NAME);
+    p = r; // pin = 1
     r = r && parameter_type_1(b, l + 1);
-    exit_section_(b, m, PARAMETER_TYPE, r);
-    return r;
+    exit_section_(b, l, m, PARAMETER_TYPE, r, p, null);
+    return r || p;
   }
 
   // generic_parameter?
@@ -1499,13 +1500,12 @@ public class SmcParser implements PsiParser, LightPsiParser {
   public static boolean parameter_type_element(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameter_type_element")) return false;
     if (!nextTokenIs(b, PARAMETER_TYPE_NAME)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, null);
+    boolean r;
+    Marker m = enter_section_(b);
     r = parameter_type(b, l + 1);
-    p = r; // pin = 1
     r = r && parameter_type_element_1(b, l + 1);
-    exit_section_(b, l, m, PARAMETER_TYPE_ELEMENT, r, p, null);
-    return r || p;
+    exit_section_(b, m, PARAMETER_TYPE_ELEMENT, r);
+    return r;
   }
 
   // comment*

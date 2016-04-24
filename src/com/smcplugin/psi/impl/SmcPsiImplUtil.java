@@ -153,8 +153,8 @@ public class SmcPsiImplUtil {
         return gePsiByToken(element, SmcTypes.PARAMETER_NAME);
     }
 
-    public static PsiElement getNameIdentifier(SmcParameterTypeElement element) {
-        return gePsiByToken(element, SmcTypes.PARAMETER_TYPE);
+    public static PsiElement getNameIdentifier(SmcParameterType element) {
+        return gePsiByToken(element, SmcTypes.PARAMETER_TYPE_NAME);
     }
 
     public static PsiElement getNameIdentifier(SmcTypedArgumentElement element) {
@@ -186,7 +186,7 @@ public class SmcPsiImplUtil {
     }
 
     public static String getType(SmcParameter parameter) {
-        return parameter.getParameterTypeElement().getName();
+        return parameter.getParameterTypeElement().getParameterType().getName();
     }
 
     public static PsiElement getNameIdentifier(SmcQualifiedIdentifier element) {

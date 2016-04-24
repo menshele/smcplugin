@@ -132,11 +132,11 @@ public class SmcVisitor extends PsiElementVisitor {
   }
 
   public void visitParameterType(@NotNull SmcParameterType o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitParameterTypeElement(@NotNull SmcParameterTypeElement o) {
-    visitNamedElement(o);
+    visitPsiElement(o);
   }
 
   public void visitParameters(@NotNull SmcParameters o) {

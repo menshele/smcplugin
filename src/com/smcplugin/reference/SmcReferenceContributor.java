@@ -184,6 +184,22 @@ public class SmcReferenceContributor extends PsiReferenceContributor {
                         return new PsiReference[0];
                     }
                 });
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmcParameterType.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                        SmcParameterType smcParameterType = (SmcParameterType) element;
+
+                        PsiElement namePsiElement = smcParameterType.getNameIdentifier();
+                        if (namePsiElement != null && smcParameterType.getName() != null) {
+                            TextRange textRange = new TextRange(0, namePsiElement.getTextLength());
+                            return new PsiReference[]{new SmcImportedJavaClassReference(smcParameterType, textRange)};
+
+                        }
+                        return new PsiReference[0];
+                    }
+                });
     /*    registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
                 new PsiReferenceProvider() {
                     @NotNull

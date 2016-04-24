@@ -113,6 +113,7 @@ public class SmcFile extends PsiFileBase {
         Collection<SmcImportClass> smcImportClasses = getSmcImportClasses();
         Set<String> packages = new HashSet<>();
         packages.add(JAVA_LANG_PACKAGE);
+        packages.add( getPackageName());
         for (SmcImportClass classImport : smcImportClasses) {
             SmcQualifiedIdentifier qualifiedIdentifier = classImport.getQualifiedIdentifier();
             if (qualifiedIdentifier.isWildcard()) {

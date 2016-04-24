@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.smcplugin.leonid.menshenin.plugin.id</id>
     <name>SmcPlugin</name>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <vendor email="leonid.menshenin@gmail.com" url="mailto:leonid.menshenin@gmail.com">LeMen</vendor>
 
     <description><![CDATA[
@@ -10,8 +10,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-     Fixing bug with multiple progects and changing link from transition to State implementation of transition for java but <br>
-     not java7 Smc compiled code.<br>
+     Added Parameter Parsing and validation<br>
     ]]>
     </change-notes>
 

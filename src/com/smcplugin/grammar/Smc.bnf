@@ -157,7 +157,7 @@ parameters ::= parameter (COMMA comment* parameter)*
 parameter ::= parameter_name_element comment* COLON comment* parameter_type_element {pin=5 methods=[getName getType]}
 parameter_type_element ::= parameter_type comment*
 parameter_type ::= PARAMETER_TYPE_NAME generic_parameter? {pin=1 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getNameIdentifier]}
-generic_parameter ::= ANGLE_OPEN (QUESTION_MARK|TYPE_PARAMETER) ((EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)? ANGLE_CLOSE
+generic_parameter ::= ANGLE_OPEN (parameter_type|((QUESTION_MARK|TYPE_PARAMETER) (EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)) ANGLE_CLOSE
 parameter_name_element ::= comment* PARAMETER_NAME {pin=2 mixin="com.smcplugin.psi.impl.SmcNamedElementImpl" implements="com.smcplugin.psi.SmcNamedElement"  methods=[getNameIdentifier]}
 
 guard ::= BRACKET_OPEN comment*  guard_raw_code? comment* BRACKET_CLOSE

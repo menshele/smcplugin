@@ -964,7 +964,7 @@ public class SmcParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ANGLE_OPEN (QUESTION_MARK|TYPE_PARAMETER) ((EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)? ANGLE_CLOSE
+  // ANGLE_OPEN (parameter_type|((QUESTION_MARK|TYPE_PARAMETER) (EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)) ANGLE_CLOSE
   public static boolean generic_parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "generic_parameter")) return false;
     if (!nextTokenIs(b, ANGLE_OPEN)) return false;
@@ -972,15 +972,37 @@ public class SmcParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, ANGLE_OPEN);
     r = r && generic_parameter_1(b, l + 1);
-    r = r && generic_parameter_2(b, l + 1);
     r = r && consumeToken(b, ANGLE_CLOSE);
     exit_section_(b, m, GENERIC_PARAMETER, r);
     return r;
   }
 
-  // QUESTION_MARK|TYPE_PARAMETER
+  // parameter_type|((QUESTION_MARK|TYPE_PARAMETER) (EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)
   private static boolean generic_parameter_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "generic_parameter_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = parameter_type(b, l + 1);
+    if (!r) r = generic_parameter_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (QUESTION_MARK|TYPE_PARAMETER) (EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type
+  private static boolean generic_parameter_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_1_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = generic_parameter_1_1_0(b, l + 1);
+    r = r && generic_parameter_1_1_1(b, l + 1);
+    r = r && parameter_type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // QUESTION_MARK|TYPE_PARAMETER
+  private static boolean generic_parameter_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_1_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, QUESTION_MARK);
@@ -989,27 +1011,9 @@ public class SmcParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type)?
-  private static boolean generic_parameter_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "generic_parameter_2")) return false;
-    generic_parameter_2_0(b, l + 1);
-    return true;
-  }
-
-  // (EXTENDS_KEYWORD|SUPER_KEYWORD) parameter_type
-  private static boolean generic_parameter_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "generic_parameter_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = generic_parameter_2_0_0(b, l + 1);
-    r = r && parameter_type(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // EXTENDS_KEYWORD|SUPER_KEYWORD
-  private static boolean generic_parameter_2_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "generic_parameter_2_0_0")) return false;
+  private static boolean generic_parameter_1_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "generic_parameter_1_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, EXTENDS_KEYWORD);

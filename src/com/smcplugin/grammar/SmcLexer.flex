@@ -389,7 +389,7 @@ TYPE_PARAMETER={WORD_NOT_DOT}
   {WHITE_SPACE}               { yybegin(WAITING_FOR_PARAMETER_GENERIC_TYPE); return com.intellij.psi.TokenType.WHITE_SPACE; }
   {BLOCK_COMMENT_OPEN}        { yypushState(IN_BLOCK_COMMENT); return BLOCK_COMMENT_OPEN;}
   {QUESTION_MARK}             { yybegin(WAITING_FOR_PARAMETER_GENERIC_KEYWORD); return QUESTION_MARK; }
-  {TYPE_PARAMETER}            { yybegin(WAITING_FOR_PARAMETER_GENERIC_KEYWORD); return TYPE_PARAMETER;}
+  {TYPE_PARAMETER}            { yybegin(WAITING_FOR_PARAMETER_TYPE); return PARAMETER_TYPE_NAME;}
   [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 

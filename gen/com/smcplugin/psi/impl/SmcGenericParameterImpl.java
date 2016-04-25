@@ -23,9 +23,9 @@ public class SmcGenericParameterImpl extends ASTWrapperPsiElement implements Smc
   }
 
   @Override
-  @Nullable
+  @NotNull
   public SmcParameterType getParameterType() {
-    return findChildByClass(SmcParameterType.class);
+    return findNotNullChildByClass(SmcParameterType.class);
   }
 
 }

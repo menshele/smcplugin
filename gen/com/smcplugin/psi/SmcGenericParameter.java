@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmcGenericParameter extends PsiElement {
 
-  @Nullable
+  @NotNull
   SmcParameterType getParameterType();
 
 }
